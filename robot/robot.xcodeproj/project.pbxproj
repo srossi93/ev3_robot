@@ -239,7 +239,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib/source/ev3";
+				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib_ev3/source/ev3";
 			};
 			name = Debug;
 		};
@@ -248,7 +248,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib/source/ev3";
+				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib_ev3/source/ev3";
 			};
 			name = Release;
 		};
