@@ -1,0 +1,3 @@
+[submodule "yupp"]
+	path = lib
+	url = https://github.com/in4lio/ev3dev-c/tree/master/source/ev3
