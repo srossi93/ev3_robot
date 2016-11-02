@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FC9FE0F81DCA020800227F94 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = FC9FE0F71DCA020800227F94 /* main.c */; };
+		FC72AF9C1DCA08E400CC1908 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = FC72AF9B1DCA08E400CC1908 /* main.c */; settings = {COMPILER_FLAGS = "-Ofast"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +23,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FC72AF9B1DCA08E400CC1908 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = src/main.c; sourceTree = SOURCE_ROOT; };
+		FC72AF9D1DCA095900CC1908 /* template.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = template.h; path = include/template.h; sourceTree = SOURCE_ROOT; };
 		FC9FE0F41DCA020800227F94 /* robot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = robot; sourceTree = BUILT_PRODUCTS_DIR; };
-		FC9FE0F71DCA020800227F94 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,10 +39,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FC72AF9A1DCA084700CC1908 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				FC72AF9B1DCA08E400CC1908 /* main.c */,
+			);
+			name = src;
+			path = robot;
+			sourceTree = "<group>";
+		};
 		FC9FE0EB1DCA020800227F94 = {
 			isa = PBXGroup;
 			children = (
-				FC9FE0F61DCA020800227F94 /* robot */,
+				FC72AF9A1DCA084700CC1908 /* src */,
+				FC9FE0F61DCA020800227F94 /* include */,
 				FC9FE0F51DCA020800227F94 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,11 +65,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FC9FE0F61DCA020800227F94 /* robot */ = {
+		FC9FE0F61DCA020800227F94 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				FC9FE0F71DCA020800227F94 /* main.c */,
+				FC72AF9D1DCA095900CC1908 /* template.h */,
 			);
+			name = include;
 			path = robot;
 			sourceTree = "<group>";
 		};
@@ -72,6 +84,7 @@
 				FC9FE0F01DCA020800227F94 /* Sources */,
 				FC9FE0F11DCA020800227F94 /* Frameworks */,
 				FC9FE0F21DCA020800227F94 /* CopyFiles */,
+				FC9FE0FF1DCA035400227F94 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -113,12 +126,29 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		FC9FE0FF1DCA035400227F94 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#cd ../lib/source/ev3\n#make clean\n#make";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		FC9FE0F01DCA020800227F94 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC9FE0F81DCA020800227F94 /* main.c in Sources */,
+				FC72AF9C1DCA08E400CC1908 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,14 +237,18 @@
 		FC9FE0FC1DCA020800227F94 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib/source/ev3";
 			};
 			name = Debug;
 		};
 		FC9FE0FD1DCA020800227F94 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib/source/ev3";
 			};
 			name = Release;
 		};
@@ -237,6 +271,7 @@
 				FC9FE0FD1DCA020800227F94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
