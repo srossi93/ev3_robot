@@ -7,3 +7,6 @@
 [submodule "lib"]
 	path = lib
 	url = https://github.com/in4lio/ev3dev-c/
+[submodule "lib_ev3"]
+	path = lib_ev3
+	url = https://github.com/in4lio/ev3dev-c
