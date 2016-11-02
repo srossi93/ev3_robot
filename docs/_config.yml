@@ -2,6 +2,7 @@
 #
 
 # Site settings
+
 title: EV3 Robot
 description: |
   Project website for the competition
@@ -21,9 +22,9 @@ social:
   linkedin-square: https://linkedin.com/in/<username>
   facebook-official: https://facebook.com/<username>
   google-plus-square: https://plus.google.com/u/0/+<username>
-  #email: rossi@eurecom.fr
-  flickr:
-  instagram:
+  #email: /contact/
+  #flickr:
+  #instagram:
   #youtube-square:
   #spotify:
   #stack-overflow:
