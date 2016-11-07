@@ -5,10 +5,6 @@
 //
 
 #include "movement.h"
-#include "ev3.h"
-#include "ev3_port.h"
-#include "ev3_tacho.h"
-#include "ev3_sensor.h"
 
 void
 turn_by_relative_angle(uint16_t angle)

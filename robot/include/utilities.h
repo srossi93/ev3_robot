@@ -18,8 +18,23 @@
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
 
+typedef uint8_t engine_ptr;
+
+/**
+ *  \details Append the message in a file called "log.txt"
+ *           If it does not exist, it will be created
+ */
 void
-identify_engines(uint8_t *right_engine, uint8_t *left_engine);
+log_to_file(char *msg);
+
+/**
+ *  \details Identify the correct right and left engine
+ *  \param right_engine Will contain the pointer to the right engine
+ *  \param left_engine Will contain the pointer to the left engine
+ *  \return 1 if successful, 0 otherwise
+ */
+int
+identify_engines(engine_ptr *right_engine, engine_ptr *left_engine);
 
 
 #endif /* utilities_h */
