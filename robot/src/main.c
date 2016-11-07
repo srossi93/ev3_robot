@@ -213,6 +213,7 @@ int main( void )
 	}
 
 // Some demo
+#if 0
 	printf("Demo: turning left now...");
 	TURN_LEFT();
 	Sleep(1000);
@@ -224,7 +225,7 @@ int main( void )
 	TURN_LEFT();
 	Sleep(1000);
 	TURN_AROUND();
-
+#endif
 //Run all sensors
 	ev3_sensor_init();
 
