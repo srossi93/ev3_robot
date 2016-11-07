@@ -47,6 +47,7 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
   set_tacho_position_sp( engine1, 90 );
   set_tacho_command_inx( engine1, TACHO_RUN_TO_REL_POS );
   
+  usleep(1000*1000); 
   get_sensor_value(0, gyro_sensor_id, &final_absolute_angle);
   printf("[GYRO] : Final absolute value %d\n", final_absolute_angle);
   
