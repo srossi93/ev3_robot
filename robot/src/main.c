@@ -133,8 +133,8 @@ void GO_STRAIGHT(uint32_t time) {
 	MOVE(right_motor_id, 30000);
 	MOVE(left_motor_id, 30000);
 #endif
-	int snr = right_motor_id;
-	int snl = left_motor_id;
+	int snr = 2; //right_motor_id;
+	int snl = 1; //left_motor_id;
 	int max_speedr, max_speedl;
 	FLAGS_T statel, stater;
 
@@ -223,7 +223,7 @@ int main( void )
 		printf( "LEGO_EV3_L_MOTOR 1 is found ...\n" );
 		//test_motor(sn);
 		/* assign LEFT motor */
-		left_motor_id = sn;
+		//left_motor_id = sn;
 		printf("LEFT motor ID is: %d\n", left_motor_id);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 1 is NOT found\n" );
@@ -232,7 +232,7 @@ int main( void )
 		printf( "LEGO_EV3_L_MOTOR 2 is found ...\n" );
 		//test_motor(sn);
 		/* assign RIGHT motor */
-		right_motor_id = sn;
+		//right_motor_id = sn;
 		printf("RIGHT motor ID is: %d\n", right_motor_id);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 2 is NOT found\n" );
@@ -313,8 +313,12 @@ int main( void )
 			if ( !get_sensor_value0(sn_sonar, &value )) {
 				value = 0;
 			} else if ( value  < 200 ) {
-				printf( " It's too close: \r(%f) \n", value);
+				printf( "                  It's too close: \r(%f) \n", value);
 				printf(" Stop the motor!!\n");
+				set_tacho_stop_action_inx( left_motor_id, TACHO_COAST );
+				set_tacho_stop_action_inx( right_motor_id, TACHO_COAST );
+			} else if (value > 200 ) {
+				GO_STRAIGHT(30000);
 			}
 			fflush( stdout );
 	    	}
