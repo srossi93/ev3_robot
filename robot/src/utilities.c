@@ -37,7 +37,7 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
     return;
   }
 
-  printf("motor1: %d\nmotor2: %d\n",engine1, engine2); 
+  printf("motor1: %d\nmotor2: %d\n",engine1, engine2);
 
   get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
   printf("[GYRO] : Initial absolute value %d\n", initial_absolute_angle);

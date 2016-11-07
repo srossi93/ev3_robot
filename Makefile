@@ -4,7 +4,7 @@ C_FILES = $(wildcard robot/src/*.c)
 OBJ_FILES = $(addprefix $(OBJ_DIR),$(notdir $(C_FILES:.c=.o)))
 
 
-CFLAGS = $(INC_DIR) -Wall -Ofast
+CFLAGS = $(INC_DIR) -Wall -O0 -g
 LDFLAGS = -lm -lbluetooth -pthread
 
 robot: $(OBJ_FILES)

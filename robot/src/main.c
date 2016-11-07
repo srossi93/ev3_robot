@@ -258,14 +258,13 @@ int main( void )
   uint8_t r_eng, l_eng;
   identify_engines(&r_eng, &l_eng);
   
-  int max_speed;
-  get_tacho_max_speed( r_eng, &max_speed );
-  set_tacho_speed_sp( r_eng, max_speed / 2 );
-  set_tacho_ramp_up_sp( r_eng, 0 );
-  set_tacho_ramp_down_sp( r_eng, 0 );
-  set_tacho_position_sp( r_eng, 90 );
-  set_tacho_command_inx( r_eng, TACHO_RUN_TO_REL_POS );
-  
+//  int max_speed;
+//  get_tacho_max_speed( r_eng, &max_speed );
+//  set_tacho_speed_sp( r_eng, max_speed / 2 );
+//  set_tacho_ramp_up_sp( r_eng, 0 );
+//  set_tacho_ramp_down_sp( r_eng, 0 );
+//  set_tacho_position_sp( r_eng, 90 );
+//  set_tacho_command_inx( r_eng, TACHO_RUN_TO_REL_POS );
   
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
