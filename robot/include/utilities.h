@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <time.h>
+#include <stdlib.h>
 
 #include "ev3.h"
 #include "ev3_port.h"
@@ -22,6 +23,12 @@
 #define msleep(msec) usleep(msec*1000)
 typedef uint8_t engine_ptr;
 char msg[255];
+
+/**
+ *  \details ...
+ */
+char*
+time_stamp();
 
 
 /**
