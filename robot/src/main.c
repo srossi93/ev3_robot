@@ -161,8 +161,8 @@ void GO_STRAIGHT(uint32_t time) {
 	set_tacho_ramp_up_sp( snl, 500 );
 	set_tacho_ramp_up_sp( snr, 500 );
 	/* set wtf? */
-	set_tacho_ramp_down_sp( snl 500 );
-	set_tacho_ramp_down_sp( snr 500 );
+	set_tacho_ramp_down_sp( snl, 500 );
+	set_tacho_ramp_down_sp( snr, 500 );
 	/* RUN with specified time */
 	set_tacho_command_inx( snl, TACHO_RUN_TIMED );
 	set_tacho_command_inx( snr, TACHO_RUN_TIMED );
