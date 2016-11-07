@@ -31,6 +31,7 @@
 		FCA2FC101DD0CCBB0007F935 /* movement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = movement.c; path = src/movement.c; sourceTree = SOURCE_ROOT; };
 		FCA2FC121DD0CFF30007F935 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utilities.h; path = include/utilities.h; sourceTree = SOURCE_ROOT; };
 		FCA2FC131DD0D0690007F935 /* utilities.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utilities.c; path = src/utilities.c; sourceTree = SOURCE_ROOT; };
+		FCA2FC151DD13FC20007F935 /* init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = init.h; path = include/init.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +78,7 @@
 			children = (
 				FC72AF9D1DCA095900CC1908 /* movement.h */,
 				FCA2FC121DD0CFF30007F935 /* utilities.h */,
+				FCA2FC151DD13FC20007F935 /* init.h */,
 			);
 			name = include;
 			path = robot;

@@ -26,8 +26,8 @@ turn_by_relative_angle(uint16_t angle);
 
 /**
  *  \details Identify the correct right and left engine
- *  \param right_engine Will contain the pointer to the right engine
- *  \param left_engine Will contain the pointer to the left engine
+ *  \param[out] right_engine Will contain the pointer to the right engine
+ *  \param[out] left_engine Will contain the pointer to the left engine
  *  \return 1 if successful, 0 otherwise
  */
 int
