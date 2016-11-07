@@ -31,7 +31,7 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
   if (! ev3_search_tacho( LEGO_EV3_L_MOTOR, &engine2, 1 ))
     return;
   
-  if( !ev3_search_sensor(LEGO_EV3_TOUCH, &gyro_sensor_id, 0))
+  if( !ev3_search_sensor(LEGO_EV3_GYRO, &gyro_sensor_id, 0))
   {
     printf("Gyro sensor not found...\n");
     return;
