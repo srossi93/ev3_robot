@@ -19,7 +19,7 @@
 void
 identify_engines(uint8_t *right_engine, uint8_t *left_engine)
 {
-  int max_speed;
+  int max_speed = 5;
   uint8_t gyro_sensor_id;
   uint8_t engine1, engine2;
   int32_t initial_absolute_angle = 0;
@@ -50,5 +50,16 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
   usleep(1000*1000); 
   get_sensor_value(0, gyro_sensor_id, &final_absolute_angle);
   printf("[GYRO] : Final absolute value %d\n", final_absolute_angle);
+  
+  if ((final_absolute_angle - initial_absolute_angle) > 0)
+  {
+    *right_engine = engine1;
+    *left_engine = engine2;
+  }
+  else
+  {
+    *right_engine = engine2;
+    *left_engine = engine1;
+  }
   
 }
