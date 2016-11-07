@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		FC72AF9C1DCA08E400CC1908 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = FC72AF9B1DCA08E400CC1908 /* main.c */; settings = {COMPILER_FLAGS = "-Ofast"; }; };
+		FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC101DD0CCBB0007F935 /* movement.c */; };
+		FCA2FC141DD0D0690007F935 /* utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC131DD0D0690007F935 /* utilities.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,8 +26,11 @@
 
 /* Begin PBXFileReference section */
 		FC72AF9B1DCA08E400CC1908 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = src/main.c; sourceTree = SOURCE_ROOT; };
-		FC72AF9D1DCA095900CC1908 /* template.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = template.h; path = include/template.h; sourceTree = SOURCE_ROOT; };
+		FC72AF9D1DCA095900CC1908 /* movement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = movement.h; path = include/movement.h; sourceTree = SOURCE_ROOT; };
 		FC9FE0F41DCA020800227F94 /* robot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = robot; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCA2FC101DD0CCBB0007F935 /* movement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = movement.c; path = src/movement.c; sourceTree = SOURCE_ROOT; };
+		FCA2FC121DD0CFF30007F935 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utilities.h; path = include/utilities.h; sourceTree = SOURCE_ROOT; };
+		FCA2FC131DD0D0690007F935 /* utilities.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utilities.c; path = src/utilities.c; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +48,8 @@
 			isa = PBXGroup;
 			children = (
 				FC72AF9B1DCA08E400CC1908 /* main.c */,
+				FCA2FC101DD0CCBB0007F935 /* movement.c */,
+				FCA2FC131DD0D0690007F935 /* utilities.c */,
 			);
 			name = src;
 			path = robot;
@@ -68,7 +75,8 @@
 		FC9FE0F61DCA020800227F94 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				FC72AF9D1DCA095900CC1908 /* template.h */,
+				FC72AF9D1DCA095900CC1908 /* movement.h */,
+				FCA2FC121DD0CFF30007F935 /* utilities.h */,
 			);
 			name = include;
 			path = robot;
@@ -148,6 +156,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCA2FC141DD0D0690007F935 /* utilities.c in Sources */,
+				FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */,
 				FC72AF9C1DCA08E400CC1908 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,7 +249,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib_ev3/source/ev3";
+				USER_HEADER_SEARCH_PATHS = "../lib_ev3/** ../lib_ev3/source/ev3/**";
 			};
 			name = Debug;
 		};
@@ -248,7 +258,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib_ev3/source/ev3";
+				USER_HEADER_SEARCH_PATHS = "../lib_ev3/** ../lib_ev3/source/ev3/**";
 			};
 			name = Release;
 		};
