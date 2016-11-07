@@ -2,13 +2,11 @@
 //  utilities.c
 //  robot
 //
-//  Created by Simone Rossi on 07/11/16.
-//  Copyright © 2016 Simone Rossi. All rights reserved.
 //
 
 #include "utilities.h"
 
-char msg[255];
+extern char msg[255];
 
 void
 log_to_file(char *msg)
@@ -33,7 +31,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   int32_t initial_absolute_angle = 0;
   int32_t final_absolute_angle = 0;
   
-  sprintf(msg, "*** Start engine identification ***");
+  sprintf(msg, "*** Start engine identification ***\n");
   log_to_file(msg);
   
   // Search the first engine
@@ -71,16 +69,20 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   set_tacho_position_sp( engine1, 180 );
   set_tacho_command_inx( engine1, TACHO_RUN_TO_REL_POS );
   
-  usleep(5000*1000);
+  sleep(50*1000);
   get_sensor_value(0, gyro_sensor_id, &final_absolute_angle);
-  printf("[GYRO] : Final absolute value %d\n", final_absolute_angle);
+  
+  sprintf(msg, "[GYRO] : Final absolute value %d\n", final_absolute_angle);
+  log_to_file(msg);
   
   set_tacho_position_sp( engine1, -180 );
   set_tacho_command_inx( engine1, TACHO_RUN_TO_REL_POS );
   
   usleep(5000*1000);
   get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
-  printf("[GYRO] : Restart absolute value %d\n", initial_absolute_angle);
+  
+  sprintf(msg, "[GYRO] : Restart absolute value %d\n", initial_absolute_angle);
+  log_to_file(msg);
   
   if ((final_absolute_angle - initial_absolute_angle) < 0)
   {

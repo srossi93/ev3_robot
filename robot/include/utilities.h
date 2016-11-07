@@ -18,7 +18,10 @@
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
 
+#define msleep(msec) usleep(msec*1000)
 typedef uint8_t engine_ptr;
+char msg[255];
+
 
 /**
  *  \details Append the message in a file called "log.txt"
