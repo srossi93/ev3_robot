@@ -8,7 +8,7 @@ CFLAGS = $(INC_DIR) -Wall -Ofast
 LDFLAGS = -lm -lbluetooth -pthread
 
 robot: $(OBJ_FILES)
-	$(CC) $(CFLAGS) -o $@ $^ lib_ev3/lib/ev3c.a $(LDFLAGS)
+	$(CC) $(CFLAGS) -o run $^ lib_ev3/lib/libev3dev-c.a $(LDFLAGS)
 
 obj/%.o: robot/src/%.c
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi
