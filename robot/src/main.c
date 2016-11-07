@@ -145,22 +145,24 @@ void GO_STRAIGHT(uint32_t time) {
 	}
 
 	/* get max speed of the motor */
-	get_tacho_max_speed( snr, &max_speed );
-	get_tacho_max_speed( snl, &max_speed );
+	get_tacho_max_speed( snr, &max_speedr );
+	get_tacho_max_speed( snl, &max_speedl );
 	printf("  max_speed right = %d, left = %d\n", max_speedr, max_speedl );
 	/* stop */
 	set_tacho_stop_action_inx( snl, TACHO_COAST );
 	set_tacho_stop_action_inx( snr, TACHO_COAST );
 	/* set the speed */
-	set_tacho_speed_sp( snl, max_speed * 2 / 3 );
-	set_tacho_speed_sp( snr, max_speed * 2 / 3 );
+	set_tacho_speed_sp( snl, max_speedl * 2 / 3 );
+	set_tacho_speed_sp( snr, max_speedr * 2 / 3 );
 	/* set duration of running */
 	set_tacho_time_sp( snl, time );
 	set_tacho_time_sp( snr, time );
 	/* set wtf? */
-	set_tacho_ramp_up_sp( sn, 500 );
+	set_tacho_ramp_up_sp( snl, 500 );
+	set_tacho_ramp_up_sp( snr, 500 );
 	/* set wtf? */
-	set_tacho_ramp_down_sp( sn, 500 );
+	set_tacho_ramp_down_sp( snl 500 );
+	set_tacho_ramp_down_sp( snr 500 );
 	/* RUN with specified time */
 	set_tacho_command_inx( snl, TACHO_RUN_TIMED );
 	set_tacho_command_inx( snr, TACHO_RUN_TIMED );
