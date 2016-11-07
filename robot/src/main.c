@@ -255,7 +255,7 @@ int main( void )
 //    Sleep( 200 );
 //  }
   
-  identify_engines(<#uint8_t *engine1#>, <#uint8_t *engine2#>, <#uint8_t *right_engine#>, <#uint8_t *left_engine#>)
+  identify_engines((uint8_t)0, (uint8_t)0);
   
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
