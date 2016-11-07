@@ -28,7 +28,7 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
   if (! ev3_search_tacho( LEGO_EV3_L_MOTOR, &engine1, 0 ))
     return;
   
-  if (! ev3_search_tacho( LEGO_EV3_L_MOTOR, &engine2, 1 ))
+  if (! ev3_search_tacho( LEGO_EV3_L_MOTOR, &engine2, engine1+1 ))
     return;
   
   if( !ev3_search_sensor(LEGO_EV3_GYRO, &gyro_sensor_id, 0))
@@ -36,6 +36,8 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
     printf("Gyro sensor not found...\n");
     return;
   }
+
+printf("motor1: %d\nmotor2: %d\n",engine1, engine2); 
 
   get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
   printf("[GYRO] : Initial absolute value %d\n", initial_absolute_angle);
@@ -50,6 +52,13 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
   usleep(1000*1000); 
   get_sensor_value(0, gyro_sensor_id, &final_absolute_angle);
   printf("[GYRO] : Final absolute value %d\n", final_absolute_angle);
+
+  //get_tacho_max_speed( engine2, &max_speed );
+  //set_tacho_speed_sp( engine2, max_speed / 2 );
+  //set_tacho_ramp_up_sp( engine2, 0 );
+  //set_tacho_ramp_down_sp( engine2, 0 );
+  //set_tacho_position_sp( engine2, 90 );
+  //set_tacho_command_inx( engine2, TACHO_RUN_TO_REL_POS );
   
   if ((final_absolute_angle - initial_absolute_angle) < 0)
   {
