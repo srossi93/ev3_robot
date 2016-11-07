@@ -12,7 +12,14 @@ void
 log_to_file(char *msg)
 {
   FILE *file_ptr = fopen("log.txt", "a");
-  fprintf(file_ptr, "%s", msg);
+  char msg_to_file[255];
+  time_t ltime;
+  ltime=time(NULL);
+  struct tm *tm;
+  tm=localtime(&ltime);
+  
+  sprintf(msg_to_file, "%s : %s", asctime(tm), msg);
+  fprintf(file_ptr, "%s", msg_to_file);
   
 #ifdef DEBUG_TERMINAL
   printf("%s", msg);
@@ -69,7 +76,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   set_tacho_position_sp( engine1, 180 );
   set_tacho_command_inx( engine1, TACHO_RUN_TO_REL_POS );
   
-  sleep(50*1000);
+  msleep(5000);
   get_sensor_value(0, gyro_sensor_id, &final_absolute_angle);
   
   sprintf(msg, "[GYRO] : Final absolute value %d\n", final_absolute_angle);
@@ -78,7 +85,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   set_tacho_position_sp( engine1, -180 );
   set_tacho_command_inx( engine1, TACHO_RUN_TO_REL_POS );
   
-  usleep(5000*1000);
+  msleep(5000);
   get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
   
   sprintf(msg, "[GYRO] : Restart absolute value %d\n", initial_absolute_angle);
