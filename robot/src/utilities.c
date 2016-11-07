@@ -37,7 +37,7 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
     return;
   }
 
-printf("motor1: %d\nmotor2: %d\n",engine1, engine2); 
+  printf("motor1: %d\nmotor2: %d\n",engine1, engine2); 
 
   get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
   printf("[GYRO] : Initial absolute value %d\n", initial_absolute_angle);
@@ -53,12 +53,12 @@ printf("motor1: %d\nmotor2: %d\n",engine1, engine2);
   get_sensor_value(0, gyro_sensor_id, &final_absolute_angle);
   printf("[GYRO] : Final absolute value %d\n", final_absolute_angle);
 
-  //get_tacho_max_speed( engine2, &max_speed );
-  //set_tacho_speed_sp( engine2, max_speed / 2 );
-  //set_tacho_ramp_up_sp( engine2, 0 );
-  //set_tacho_ramp_down_sp( engine2, 0 );
-  //set_tacho_position_sp( engine2, 90 );
-  //set_tacho_command_inx( engine2, TACHO_RUN_TO_REL_POS );
+  get_tacho_max_speed( engine1, &max_speed );
+  set_tacho_speed_sp( engine1, max_speed / 2 );
+  set_tacho_ramp_up_sp( engine1, 0 );
+  set_tacho_ramp_down_sp( engine1, 0 );
+  set_tacho_position_sp( engine1, -90 );
+  set_tacho_command_inx( engine1, TACHO_RUN_TO_REL_POS );
   
   if ((final_absolute_angle - initial_absolute_angle) < 0)
   {
