@@ -36,10 +36,10 @@ identify_engines(uint8_t *right_engine, uint8_t *left_engine)
     printf("Gyro sensor not found...\n");
     return;
   }
-  
+
   get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
   printf("[GYRO] : Initial absolute value %d\n", initial_absolute_angle);
-  
+
   get_tacho_max_speed( engine1, &max_speed );
   set_tacho_speed_sp( engine1, max_speed / 2 );
   set_tacho_ramp_up_sp( engine1, 0 );
