@@ -31,6 +31,7 @@ static bool _check_pressed( uint8_t sn )
   return ( get_sensor_value( 0, sn, &val ) && ( val != 0 ));
 }
 
+extern char msg[255];
 
 int main( void )
 {

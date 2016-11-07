@@ -8,16 +8,18 @@
 
 #include "utilities.h"
 
-extern char msg[255];
+char msg[255];
 
 void
 log_to_file(char *msg)
 {
   FILE *file_ptr = fopen("log.txt", "a");
   fprintf(file_ptr, "%s", msg);
+  
 #ifdef DEBUG_TERMINAL
   printf("%s", msg);
 #endif
+  
   fclose(file_ptr);
 }
 
@@ -31,10 +33,13 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   int32_t initial_absolute_angle = 0;
   int32_t final_absolute_angle = 0;
   
+  sprintf(msg, "*** Start engine identification ***");
+  log_to_file(msg);
+  
   // Search the first engine
   if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine1, 0) )
   {
-    sprintf(msg, "No LEGO_EV3_L_MOTOR found...\n");
+    sprintf(msg, " --> No LEGO_EV3_L_MOTOR found\n\tAborting...\n");
     log_to_file(msg);
     return 0;
   }
@@ -42,7 +47,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   // Search the second engine
   if (! ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine2, engine1+1) )
   {
-    sprintf(msg, "No second LEGO_EV3_L_MOTOR found...\n");
+    sprintf(msg, " --> No second LEGO_EV3_L_MOTOR found\n\tAborting...\n");
     log_to_file(msg);
     return 0;
   }
@@ -50,7 +55,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   // Search the gyroscope
   if( !ev3_search_sensor(LEGO_EV3_GYRO, &gyro_sensor_id, 0) )
   {
-    sprintf(msg, "No LEGO_EV3_GYRO found...\n");
+    sprintf(msg, " --> No LEGO_EV3_GYRO found\n\tAborting...\n");
     log_to_file(msg);
     return 0;
   }

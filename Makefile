@@ -17,3 +17,4 @@ obj/%.o: robot/src/%.c
 clean:
 	rm -rf $(OBJ_DIR)
 	rm -f run
+	rm -f log.txt
