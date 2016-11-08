@@ -53,6 +53,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   set_tacho_ramp_down_sp(engine1, 0);
   set_tacho_position_sp(engine1, 180);
   set_tacho_command_inx(engine1, TACHO_RUN_TO_REL_POS );
+  set_tacho_command_inx(engine2, TACHO_BRAKE);
   
   msleep(5000);
   
@@ -89,19 +90,22 @@ turn_by_relative_angle(int8_t angle, engine_ptr right_engine, engine_ptr left_en
 {
   
   int max_speed;
+  int count_per_rot;
+  
   get_tacho_max_speed(right_engine, &max_speed);
+  get_tacho_count_per_rot(right_engine, &count_per_rot);
   
   set_tacho_speed_sp(right_engine, max_speed / 2);
   set_tacho_speed_sp(left_engine, max_speed / 2);
   
-  set_tacho_ramp_up_sp(right_engine, 0000);
-  set_tacho_ramp_up_sp(left_engine, 0000);
+  set_tacho_ramp_up_sp(right_engine, 500);
+  set_tacho_ramp_up_sp(left_engine, 500);
   
-  set_tacho_ramp_down_sp(right_engine, 0000);
-  set_tacho_ramp_down_sp(left_engine, 0000);
+  set_tacho_ramp_down_sp(right_engine, 500);
+  set_tacho_ramp_down_sp(left_engine, 500);
   
-  set_tacho_position_sp(right_engine, angle*2);
-  set_tacho_position_sp(left_engine, -angle*2);
+  set_tacho_position_sp(right_engine, angle*2*count_per_rot/360);
+  set_tacho_position_sp(left_engine, -angle*2*count_per_rot/360);
   
   set_tacho_command_inx(right_engine, TACHO_RUN_TO_REL_POS );
   set_tacho_command_inx(left_engine, TACHO_RUN_TO_REL_POS );
