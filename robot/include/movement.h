@@ -24,7 +24,7 @@
   * \param ID of the left engine
   */
 void
-turn_by_relative_angle(int8_t angle, engine_ptr right_engine, engine_ptr left_engine);
+turn_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_ptr left_engine);
 
 /**
  *  \details Identify the correct right and left engine

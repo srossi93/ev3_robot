@@ -86,7 +86,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
 }
 
 void
-turn_by_relative_angle(int8_t angle, engine_ptr right_engine, engine_ptr left_engine)
+turn_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_ptr left_engine)
 {
   
   int max_speed;
