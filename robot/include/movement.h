@@ -18,11 +18,13 @@
 
 #include "utilities.h"
 
-/** @param angle Relative angle
-  *
+/** \param angle[positive] Relative angle, turn left
+  * \param angle[negative] Relative angle, turn right
+  * \param ID of the right engine
+  * \param ID of the left engine
   */
 void
-turn_by_relative_angle(uint16_t angle);
+turn_by_relative_angle(uint8_t angle, engine_ptr right_engine, engine_ptr left_engine);
 
 /**
  *  \details Identify the correct right and left engine

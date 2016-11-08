@@ -35,25 +35,7 @@ int main( void )
 
   identify_engines(&r_eng, &l_eng);
   
-
-  int max_speed;
-  get_tacho_max_speed(r_eng, &max_speed);
-  
-  set_tacho_speed_sp(r_eng, max_speed / 16);
-  set_tacho_speed_sp(l_eng, max_speed / 16);
-  
-  set_tacho_ramp_up_sp(r_eng, 0);
-  set_tacho_ramp_up_sp(l_eng, 0);
-  
-  set_tacho_ramp_down_sp(r_eng, 0);
-  set_tacho_ramp_down_sp(l_eng, 0);
-  
-  set_tacho_position_sp(r_eng, 180);
-  set_tacho_position_sp(l_eng, -180);
-  
-  set_tacho_command_inx(r_eng, TACHO_RUN_TO_REL_POS );
-  set_tacho_command_inx(l_eng, TACHO_RUN_TO_REL_POS );
-  
+  turn_by_relative_angle(90, r_eng, l_eng);
   
   
   ev3_uninit();

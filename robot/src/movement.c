@@ -85,20 +85,25 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
 }
 
 void
-turn_by_relative_angle(uint16_t angle)
+turn_by_relative_angle(uint8_t angle, engine_ptr right_engine, engine_ptr left_engine)
 {
-  uint8_t gyro_sensor_id;
-  uint8_t right_motor_id;
-  uint8_t left_motor_id;
-  int32_t initial_absolute_angle = 0;
   
-  if( !ev3_search_sensor(LEGO_EV3_GYRO, &gyro_sensor_id, 0))
-  {
-    printf("Gyro sensor not found...\n");
-    return;
-  }
+  int max_speed;
+  get_tacho_max_speed(right_engine, &max_speed);
   
-  get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
-  printf("[GYRO] : Initial absolute value %d\n", initial_absolute_angle);
+  set_tacho_speed_sp(right_engine, max_speed / 16);
+  set_tacho_speed_sp(left_engine, max_speed / 16);
+  
+  set_tacho_ramp_up_sp(right_engine, 90);
+  set_tacho_ramp_up_sp(left_engine, 90);
+  
+  set_tacho_ramp_down_sp(right_engine, 0);
+  set_tacho_ramp_down_sp(left_engine, 0);
+  
+  set_tacho_position_sp(right_engine, angle*2);
+  set_tacho_position_sp(left_engine, -angle*2);
+  
+  set_tacho_command_inx(right_engine, TACHO_RUN_TO_REL_POS );
+  set_tacho_command_inx(left_engine, TACHO_RUN_TO_REL_POS );
   
 }
