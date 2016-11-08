@@ -85,20 +85,20 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
 }
 
 void
-turn_by_relative_angle(uint8_t angle, engine_ptr right_engine, engine_ptr left_engine)
+turn_by_relative_angle(int8_t angle, engine_ptr right_engine, engine_ptr left_engine)
 {
   
   int max_speed;
   get_tacho_max_speed(right_engine, &max_speed);
   
-  set_tacho_speed_sp(right_engine, max_speed / 16);
-  set_tacho_speed_sp(left_engine, max_speed / 16);
+  set_tacho_speed_sp(right_engine, max_speed / 2);
+  set_tacho_speed_sp(left_engine, max_speed / 2);
   
-  set_tacho_ramp_up_sp(right_engine, 90);
-  set_tacho_ramp_up_sp(left_engine, 90);
+  set_tacho_ramp_up_sp(right_engine, 0000);
+  set_tacho_ramp_up_sp(left_engine, 0000);
   
-  set_tacho_ramp_down_sp(right_engine, 0);
-  set_tacho_ramp_down_sp(left_engine, 0);
+  set_tacho_ramp_down_sp(right_engine, 0000);
+  set_tacho_ramp_down_sp(left_engine, 0000);
   
   set_tacho_position_sp(right_engine, angle*2);
   set_tacho_position_sp(left_engine, -angle*2);
