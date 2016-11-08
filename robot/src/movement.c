@@ -12,7 +12,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
 {
   int max_speed = 0;
   uint8_t gyro_sensor_id;
-  uint8_t engine1, engine2;
+  engine_ptr engine1, engine2;
   int32_t initial_absolute_angle = 0;
   int32_t final_absolute_angle = 0;
   
