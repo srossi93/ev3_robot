@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC3F063E1DD21A3800E8CDB2 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = FC3F063D1DD21A3800E8CDB2 /* init.c */; };
 		FC72AF9C1DCA08E400CC1908 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = FC72AF9B1DCA08E400CC1908 /* main.c */; settings = {COMPILER_FLAGS = "-Ofast"; }; };
 		FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC101DD0CCBB0007F935 /* movement.c */; };
 		FCA2FC141DD0D0690007F935 /* utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC131DD0D0690007F935 /* utilities.c */; };
@@ -25,6 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FC3F063D1DD21A3800E8CDB2 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = src/init.c; sourceTree = SOURCE_ROOT; };
 		FC72AF9B1DCA08E400CC1908 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = src/main.c; sourceTree = SOURCE_ROOT; };
 		FC72AF9D1DCA095900CC1908 /* movement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = movement.h; path = include/movement.h; sourceTree = SOURCE_ROOT; };
 		FC9FE0F41DCA020800227F94 /* robot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = robot; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +53,7 @@
 				FC72AF9B1DCA08E400CC1908 /* main.c */,
 				FCA2FC101DD0CCBB0007F935 /* movement.c */,
 				FCA2FC131DD0D0690007F935 /* utilities.c */,
+				FC3F063D1DD21A3800E8CDB2 /* init.c */,
 			);
 			name = src;
 			path = robot;
@@ -161,6 +164,7 @@
 				FCA2FC141DD0D0690007F935 /* utilities.c in Sources */,
 				FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */,
 				FC72AF9C1DCA08E400CC1908 /* main.c in Sources */,
+				FC3F063E1DD21A3800E8CDB2 /* init.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
