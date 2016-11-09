@@ -47,14 +47,18 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   sprintf(msg, "[GYRO] : Initial absolute value %d\n", initial_absolute_angle);
   log_to_file(msg);
   
+  set_tacho_command_inx(engine1, TACHO_RESET );
+  set_tacho_command_inx(engine2, TACHO_RESET );
+  
   get_tacho_max_speed(engine1, &max_speed);
   set_tacho_speed_sp(engine1, max_speed / 16);
+  set_tacho_speed_sp(engine2, max_speed / 16);
   set_tacho_ramp_up_sp(engine1, 0);
   set_tacho_ramp_down_sp(engine1, 0);
   set_tacho_position_sp(engine1, 180);
   msleep(1000);
   set_tacho_command_inx(engine1, TACHO_RUN_TO_REL_POS );
-  set_tacho_command_inx(engine2, TACHO_BRAKE);
+  set_tacho_command_inx(engine2, TACHO_STOP);
   
   msleep(5000);
   
@@ -95,7 +99,7 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   int count_to_rotate;
   int current_count;
 
-  get_tacho_full_travel_count(engine, &initial_count);
+  get_tacho_position(engine, &initial_count);
   
   get_tacho_max_speed(engine, &max_speed);
   
@@ -116,11 +120,11 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
           engine, angle, (int)(max_speed / speed_mod));
   log_to_file(msg);
   
-  //do {
+  do {
     msleep(500);
-    get_tacho_full_travel_count(engine, &current_count);
-    printf("%d %d",current_count, initial_count);
-  //} while ((current_count - initial_count) < count_to_rotate);
+    get_tacho_position(engine, &current_count);
+    printf("%d %d %d", engine, current_count, initial_count);
+  } while (abs(current_count - initial_count) < abs(count_to_rotate));
   
 
 }
