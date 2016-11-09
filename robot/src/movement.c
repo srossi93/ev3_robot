@@ -99,7 +99,9 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   int initial_count;
   int count_to_rotate;
   int current_count;
-
+  
+  FLAGS_T status;
+  
   get_tacho_position(engine, &initial_count);
   
   get_tacho_max_speed(engine, &max_speed);
@@ -120,6 +122,10 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   sprintf(msg, "Turn engine: Engine #%d --> %d deg @ speed %d\n",
           engine, angle, (int)(max_speed / speed_mod));
   log_to_file(msg);
+  
+  do {
+    get_tacho_state_flags(engine, &status);
+  } while (status);
   
 
 }
