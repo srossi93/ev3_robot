@@ -86,28 +86,61 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
 }
 
 void
-turn_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_ptr left_engine)
+turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
 {
-  
   int max_speed;
   int count_per_rot;
   
-  get_tacho_max_speed(right_engine, &max_speed);
-  get_tacho_count_per_rot(right_engine, &count_per_rot);
+  get_tacho_max_speed(engine, &max_speed);
   
-  set_tacho_speed_sp(right_engine, max_speed / 2);
-  set_tacho_speed_sp(left_engine, max_speed / 2);
+  get_tacho_count_per_rot(engine, &count_per_rot);
   
-  set_tacho_ramp_up_sp(right_engine, 500);
-  set_tacho_ramp_up_sp(left_engine, 500);
+  set_tacho_speed_sp(engine, max_speed / speed_mod);
+
+  set_tacho_ramp_up_sp(engine, 500);
   
-  set_tacho_ramp_down_sp(right_engine, 500);
-  set_tacho_ramp_down_sp(left_engine, 500);
+  set_tacho_ramp_down_sp(engine, 3500);
+
+  set_tacho_position_sp(engine, angle * count_per_rot / 360);
   
-  set_tacho_position_sp(right_engine, angle*2*count_per_rot/360);
-  set_tacho_position_sp(left_engine, -angle*2*count_per_rot/360);
+  set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
   
-  set_tacho_command_inx(right_engine, TACHO_RUN_TO_REL_POS );
-  set_tacho_command_inx(left_engine, TACHO_RUN_TO_REL_POS );
+  sprintf(msg, "Turn engine:\nEngine %d --> %d deg @ speed %.2f",
+          engine, angle, (1. * max_speed / speed_mod));
+  log_to_file(msg);
+
+}
+
+void*
+thread_turn_engine(void *arg)
+{
+  turn_engine_arg_struct* valid_args = (turn_engine_arg_struct*)&arg;
+  turn_engine(valid_args->angle, valid_args->engine, valid_args->speed_mod);
+  return NULL;
+}
+
+void
+turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_ptr left_engine)
+{
+  turn_engine_arg_struct *right_engine_args, *left_engine_args;
+  pthread_t right_tid, left_tid;
   
+  right_engine_args = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
+  left_engine_args  = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
+  
+  right_engine_args->angle=angle;
+  right_engine_args->engine=right_engine;
+  right_engine_args->speed_mod=16;
+
+  left_engine_args->angle=-angle;
+  right_engine_args->engine=left_engine;
+  right_engine_args->speed_mod=16;
+  
+  pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
+  pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
+  
+  pthread_join(right_tid, NULL);
+  pthread_join(left_tid, NULL);
+  
+  return;
 }
