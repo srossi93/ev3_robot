@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 #include "ev3.h"
 #include "ev3_port.h"
@@ -24,11 +25,11 @@ typedef struct
   int16_t angle;
   engine_ptr engine;
   uint8_t speed_mod;
-  pthread_mutex_t mutex_engine;
+  sem_t sem_engine;
 }turn_engine_arg_struct;
 
 
-pthread_mutex_t mutex_right_engine, mutex_left_engine;
+sem_t sem_right_engine, sem_left_engine;
 
 /**
  *  \details Turn one motor by a predefined angle

@@ -9,7 +9,7 @@
 #include "init.h"
 
 extern char msg[255];
-extern pthread_mutex_t mutex_right_engine, mutex_left_engine;
+extern sem_t sem_right_engine, sem_left_engine;
 
 int
 robot_init(void)
@@ -38,11 +38,8 @@ robot_init(void)
     return 0;
   }
   
-  pthread_mutex_init(&mutex_right_engine, NULL);
-  pthread_mutex_init(&mutex_left_engine, NULL);
-  
-  pthread_mutex_unlock(&mutex_right_engine);
-  pthread_mutex_unlock(&mutex_left_engine);
+  sem_init(&sem_right_engine, 0, 1);
+  sem_init(&sem_left_engine, 0, 1);
   
   return 1;
 }

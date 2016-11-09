@@ -135,10 +135,10 @@ thread_turn_engine(void *arg)
 {
   turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
   
-  pthread_mutex_lock(&valid_args.mutex_engine);
+  sem_wait(&valid_args.sem_engine);
   turn_engine(valid_args.angle, valid_args.engine, valid_args.speed_mod);
-  pthread_mutex_unlock(&valid_args.mutex_engine);
-
+  sem_post(&valid_args.sem_engine);
+  
   pthread_exit(NULL);
 }
 
@@ -152,12 +152,12 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   right_engine_args.angle = angle;
   right_engine_args.engine = right_engine;
   right_engine_args.speed_mod = 16;
-  right_engine_args.mutex_engine = mutex_right_engine;
+  right_engine_args.sem_engine = sem_right_engine;
   
   left_engine_args.angle = -angle;
   left_engine_args.engine = left_engine;
   left_engine_args.speed_mod = 16;
-  left_engine_args.mutex_engine = mutex_left_engine;
+  left_engine_args.sem_engine = sem_left_engine;
   
   pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
   pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
