@@ -90,6 +90,11 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
 {
   int max_speed;
   int count_per_rot;
+  int initial_count;
+  int count_to_rotate;
+  int current_travel;
+
+  get_tacho_full_travel_count(engine, &initial_count);
   
   get_tacho_max_speed(engine, &max_speed);
   
@@ -101,13 +106,20 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   set_tacho_ramp_down_sp(engine, 3500);
 
-  set_tacho_position_sp(engine, (int)(angle * 2 * count_per_rot / 360));
+  count_to_rotate = (int)(angle * 2 * count_per_rot / 360);
+  set_tacho_position_sp(engine, count_to_rotate);
   
   set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
   
   sprintf(msg, "Turn engine: Engine #%d --> %d deg @ speed %d\n",
           engine, angle, (int)(max_speed / speed_mod));
   log_to_file(msg);
+  
+  do {
+    msleep(100);
+    get_tacho_full_travel_count(engine, &current_travel);
+  } while ((current_travel - initial_count) < count_to_rotate);
+  
 
 }
 
