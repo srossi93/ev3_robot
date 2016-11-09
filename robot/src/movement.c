@@ -135,8 +135,8 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   right_engine_args.speed_mod = 16;
 
   left_engine_args.angle = -angle;
-  right_engine_args.engine = left_engine;
-  right_engine_args.speed_mod = 16;
+  left_engine_args.engine = left_engine;
+  left_engine_args.speed_mod = 16;
   
   pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
   pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
