@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <pthread.h>
 
 #include "ev3.h"
 #include "ev3_port.h"

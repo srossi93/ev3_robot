@@ -24,8 +24,11 @@ typedef struct
   int16_t angle;
   engine_ptr engine;
   uint8_t speed_mod;
+  pthread_mutex_t mutex_engine;
 }turn_engine_arg_struct;
 
+
+pthread_mutex_t mutex_right_engine, mutex_left_engine;
 
 /**
  *  \details Turn one motor by a predefined angle

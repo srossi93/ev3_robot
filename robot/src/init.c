@@ -9,6 +9,7 @@
 #include "init.h"
 
 extern char msg[255];
+extern pthread_mutex_t mutex_right_engine, mutex_left_engine;
 
 int
 robot_init(void)
@@ -36,6 +37,9 @@ robot_init(void)
     log_to_file(msg);
     return 0;
   }
+  
+  pthread_mutex_init(&mutex_right_engine, NULL);
+  pthread_mutex_init(&mutex_left_engine, NULL);
   
   return 1;
 }
