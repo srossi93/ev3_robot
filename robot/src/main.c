@@ -21,7 +21,7 @@ const char const *color[] = { "?", "BLACK", "BLUE", "GREEN", "YELLOW", "RED", "W
 #define COLOR_COUNT  (( int )( sizeof( color ) / sizeof( color[ 0 ])))
 
 // Global ID
-int left_motor_id = -1, right_motor_id = -1;
+int left_motor_id = 1, right_motor_id = 2;
 
 static bool _check_pressed( uint8_t sn )
 {
@@ -107,18 +107,33 @@ void MOVE(uint8_t motor_id, uint32_t time) {
 	set_tacho_ramp_down_sp( sn, 500 );
 	/* RUN with specified time */
 	set_tacho_command_inx( sn, TACHO_RUN_TIMED );
+#if 0
 	/* Wait tacho stop */
 	Sleep( 100 );
 	do {
 		get_tacho_state_flags( sn, &state );
 	} while ( state );
+#endif
+}
+
+void STOP(uint8_t motor_id) {
+	MOVE(motor_id, 0);
+}
+
+void STOP_ALL(void) {
+	STOP(left_motor_id);
+	STOP(right_motor_id);
 }
 
 void TURN_LEFT(void) {
+	//MOVE(left_motor_id, 0);
+	STOP(left_motor_id);
 	MOVE(right_motor_id, 600);
 }
 
 void TURN_RIGHT(void) {
+	//MOVE(right_motor_id, 0);
+	STOP(right_motor_id);
 	MOVE(left_motor_id, 600);
 }
 
@@ -128,13 +143,13 @@ void TURN_AROUND(void) {
 }
 
 void GO_STRAIGHT(uint32_t time) {
-#if 0
-	printf("Go straight for 30 seconds \n");
-	MOVE(right_motor_id, 30000);
-	MOVE(left_motor_id, 30000);
-#endif
-	int snr = 2; //right_motor_id;
-	int snl = 1; //left_motor_id;
+#if 1
+	printf("Go straight for %d miliseconds \n", time);
+	MOVE(right_motor_id, time);
+	MOVE(left_motor_id, time);
+#else
+	int snr = right_motor_id;
+	int snl = left_motor_id;
 	int max_speedr, max_speedl;
 	FLAGS_T statel, stater;
 
@@ -166,12 +181,15 @@ void GO_STRAIGHT(uint32_t time) {
 	/* RUN with specified time */
 	set_tacho_command_inx( snl, TACHO_RUN_TIMED );
 	set_tacho_command_inx( snr, TACHO_RUN_TIMED );
+#endif
+#if 0
 	/* Wait tacho stop */
 	Sleep( 100 );
 	do {
 		get_tacho_state_flags( snl, &statel );
 		get_tacho_state_flags( snr, &stater );
 	} while ( statel && stater );
+#endif
 }
 /* Mjolnir: End. */
 
@@ -181,10 +199,10 @@ int main( void )
 	int i;
 	uint8_t sn;
 	uint8_t sn_touch;
-	uint8_t sn_color;
-	uint8_t sn_compass;
+//	uint8_t sn_color;
+//	uint8_t sn_compass;
 	uint8_t sn_sonar;
-	uint8_t sn_mag;
+//	uint8_t sn_mag;
 	char s[ 256 ];
 	int val;
 	float value;
@@ -266,7 +284,7 @@ int main( void )
 	Sleep(1000);
 	TURN_AROUND();
 #endif
-	GO_STRAIGHT(30000);
+	GO_STRAIGHT(20000);
 
 //Run all sensors
 	ev3_sensor_init();
@@ -316,11 +334,20 @@ int main( void )
 				value = 0;
 			} else if ( value  < 200 ) {
 				printf( "                  It's too close: \r(%f) \n", value);
+				printf(" TURN LEFT!!\n");
+				//TURN_LEFT();
+				STOP_ALL();
+				Sleep(1000);
+#if 0
 				printf(" Stop the motor!!\n");
 				set_tacho_stop_action_inx( left_motor_id, TACHO_COAST );
+				set_tacho_speed_sp( left_motor_id, 0 );
 				set_tacho_stop_action_inx( right_motor_id, TACHO_COAST );
+				set_tacho_speed_sp( right_motor_id, 0 );
+#endif
 			} else if (value > 200 ) {
-				GO_STRAIGHT(30000);
+				GO_STRAIGHT(5000);
+				Sleep(500);
 			}
 			fflush( stdout );
 	    	}
@@ -341,7 +368,7 @@ int main( void )
 		if ( _check_pressed( sn_touch )) break;
 		Sleep( 200 );
 	}
-
+	STOP_ALL();
 	ev3_uninit();
 	printf( "*** ( EV3 ) Bye! ***\n" );
 
