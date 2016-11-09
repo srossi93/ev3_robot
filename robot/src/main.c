@@ -39,19 +39,19 @@ int main( void )
   sem_getvalue(&sem_right_engine, &sem_r);
   sem_getvalue(&sem_left_engine, &sem_l);
   
-  printf("Sem right: %d Sem left: %d", sem_r, sem_l);
+  printf("Sem right: %d Sem left: %d\n", sem_r, sem_l);
   turn_inplace_by_relative_angle(90, right_engine, left_engine);
   sleep(1);
-  printf("Sem right: %d Sem left: %d", sem_r, sem_l);
+  printf("Sem right: %d Sem left: %d\n", sem_r, sem_l);
   turn_inplace_by_relative_angle(-90, right_engine, left_engine);
   sleep(1);
-  printf("Sem right: %d Sem left: %d", sem_r, sem_l);
+  printf("Sem right: %d Sem left: %d\n", sem_r, sem_l);
   turn_inplace_by_relative_angle(180, right_engine, left_engine);
   sleep(1);
-  printf("Sem right: %d Sem left: %d", sem_r, sem_l);
+  printf("Sem right: %d Sem left: %d\n", sem_r, sem_l);
   turn_inplace_by_relative_angle(-180, right_engine, left_engine);
   sleep(1);
-  printf("Sem right: %d Sem left: %d", sem_r, sem_l);
+  printf("Sem right: %d Sem left: %d\n", sem_r, sem_l);
   
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
