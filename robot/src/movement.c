@@ -125,8 +125,9 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   do {
     msleep(500);
+    printf("STATUS: ");
     get_tacho_state_flags(engine, &status);
-    printf("STATUS: %d", status);
+    printf("%d\n", status);
   } while (status != 2);
   
   
