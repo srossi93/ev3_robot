@@ -35,26 +35,7 @@ int main( void )
 
   identify_engines(&right_engine, &left_engine);
   
-
-  turn_engine_arg_struct right_engine_args, left_engine_args;
-  pthread_t right_tid, left_tid;
-  
-
-  right_engine_args.angle = angle;
-  right_engine_args.engine = right_engine;
-  right_engine_args.speed_mod = 16;
-  
-  printf("MAIN : %d %d %d\n",right_engine_args.angle, right_engine_args.engine, right_engine_args.speed_mod);
-  
-  left_engine_args.angle = -angle;
-  left_engine_args.engine = left_engine;
-  left_engine_args.speed_mod = 16;
-  
-  pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
-  //pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
-  
-  pthread_join(right_tid, NULL);
-  //pthread_join(left_tid, NULL);
+  turn_inplace_by_relative_angle(angle, right_engine, left_engine);
   
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );

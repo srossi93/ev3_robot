@@ -126,19 +126,17 @@ thread_turn_engine(void *arg)
 void
 turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_ptr left_engine)
 {
-  turn_engine_arg_struct *right_engine_args, *left_engine_args;
+  turn_engine_arg_struct right_engine_args, left_engine_args;
   pthread_t right_tid, left_tid;
   
-  right_engine_args = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
-  left_engine_args  = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
   
-  right_engine_args->angle=angle;
-  right_engine_args->engine=right_engine;
-  right_engine_args->speed_mod=16;
+  right_engine_args.angle = angle;
+  right_engine_args.engine = right_engine;
+  right_engine_args.speed_mod = 16;
 
-  left_engine_args->angle=-angle;
-  right_engine_args->engine=left_engine;
-  right_engine_args->speed_mod=16;
+  left_engine_args.angle = -angle;
+  right_engine_args.engine = left_engine;
+  right_engine_args.speed_mod = 16;
   
   pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
   pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
