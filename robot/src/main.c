@@ -37,7 +37,7 @@ int main( void )
   
   turn_inplace_by_relative_angle(90, right_engine, left_engine);
 
-  //turn_inplace_by_relative_angle(-90, right_engine, left_engine);
+  turn_inplace_by_relative_angle(-90, right_engine, left_engine);
   
   //turn_inplace_by_relative_angle(180, right_engine, left_engine);
   

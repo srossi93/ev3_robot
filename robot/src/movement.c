@@ -123,7 +123,7 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   do {
     msleep(500);
     get_tacho_position(engine, &current_count);
-    printf("%d %d %d", engine, current_count, initial_count);
+    //printf("%d %d %d\n", engine, current_count, initial_count);
   } while (abs(current_count - initial_count) < abs(count_to_rotate));
   
 
