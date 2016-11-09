@@ -110,7 +110,7 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   set_tacho_speed_sp(engine, max_speed / speed_mod);
 
-  set_tacho_ramp_up_sp(engine, 500);
+  set_tacho_ramp_up_sp(engine, 1500);
   
   set_tacho_ramp_down_sp(engine, 3500);
 
@@ -151,12 +151,12 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   
   right_engine_args.angle = angle;
   right_engine_args.engine = right_engine;
-  right_engine_args.speed_mod = 16;
+  right_engine_args.speed_mod = 1;
   right_engine_args.sem_engine = sem_right_engine;
   
   left_engine_args.angle = -angle;
   left_engine_args.engine = left_engine;
-  left_engine_args.speed_mod = 16;
+  left_engine_args.speed_mod = 1;
   left_engine_args.sem_engine = sem_left_engine;
   
   pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
