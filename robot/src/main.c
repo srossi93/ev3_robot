@@ -1,27 +1,12 @@
 
-#include <stdio.h>
-#include "ev3.h"
-#include "ev3_port.h"
-#include "ev3_tacho.h"
-#include "ev3_sensor.h"
-// WIN32 /////////////////////////////////////////
-#ifdef __WIN32__
+#include "mjolnir.h"
+#include "mjolnir_tacho.h"
 
-#include <windows.h>
-
-// UNIX //////////////////////////////////////////
-#else
-
-#include <unistd.h>
-#define Sleep( msec ) usleep(( msec ) * 1000 )
-
-//////////////////////////////////////////////////
-#endif
 const char const *color[] = { "?", "BLACK", "BLUE", "GREEN", "YELLOW", "RED", "WHITE", "BROWN" };
 #define COLOR_COUNT  (( int )( sizeof( color ) / sizeof( color[ 0 ])))
 
 // Global ID
-int left_motor_id = 1, right_motor_id = 2;
+//int left_motor_id = 1, right_motor_id = 2;
 
 static bool _check_pressed( uint8_t sn )
 {
@@ -32,167 +17,6 @@ static bool _check_pressed( uint8_t sn )
 	}
 	return ( get_sensor_value( 0, sn, &val ) && ( val != 0 ));
 }
-
-/* Mjolnir: Start - Test motor function */
-void test_motor(uint8_t sn) {
-	int max_speed;
-	int i;
-	FLAGS_T state;
-	
-	/* get max speed of the motor */
-	get_tacho_max_speed( sn, &max_speed );
-	printf("  max_speed = %d\n", max_speed );
-	/* stop */
-	set_tacho_stop_action_inx( sn, TACHO_COAST );
-	/* set the speed */
-	set_tacho_speed_sp( sn, max_speed * 2 / 3 );
-	/* set duration of running */
-	set_tacho_time_sp( sn, 5000 );
-	/* set wtf? */
-	set_tacho_ramp_up_sp( sn, 2000 );
-	/* set wtf? */
-	set_tacho_ramp_down_sp( sn, 2000 );
-	/* RUN with specified time */
-	set_tacho_command_inx( sn, TACHO_RUN_TIMED );
-	/* Wait tacho stop */
-	Sleep( 100 );
-	do {
-		get_tacho_state_flags( sn, &state );
-	} while ( state );
-	printf( "run to relative position...\n" );
-	set_tacho_speed_sp( sn, max_speed / 2 );
-	set_tacho_ramp_up_sp( sn, 0 );
-	set_tacho_ramp_down_sp( sn, 0 );
-	/* set position for relative ning */
-	set_tacho_position_sp( sn, 90 );
-	for ( i = 0; i < 8; i++ ) {
-		set_tacho_command_inx( sn, TACHO_RUN_TO_REL_POS );
-		Sleep( 500 );
-	}
-}
-
-
-void MOVE(uint8_t motor_id, uint32_t time) {
-	int sn = motor_id;
-	int max_speed;
-	FLAGS_T state;
-#if 0
-	if (direction == LEFT) {
-		sn = right_motor_id;
-	} else if (direction == RIGHT) {
-		sn = left_motor_id;
-	} else {
-		printf("Wrong direction! Cannot turn!\n");
-		return;
-	}
-#endif
-	/* Check if motor available */
-	if (sn < 0) {
-		printf("Cannot move. No motor availale at specified ID.\n");
-		return;
-	}
-
-	/* get max speed of the motor */
-	get_tacho_max_speed( sn, &max_speed );
-	printf("  max_speed = %d\n", max_speed );
-	/* stop */
-	set_tacho_stop_action_inx( sn, TACHO_COAST );
-	/* set the speed */
-	set_tacho_speed_sp( sn, max_speed * 2 / 3 );
-	/* set duration of running */
-	set_tacho_time_sp( sn, time );
-	/* set wtf? */
-	set_tacho_ramp_up_sp( sn, 500 );
-	/* set wtf? */
-	set_tacho_ramp_down_sp( sn, 500 );
-	/* RUN with specified time */
-	set_tacho_command_inx( sn, TACHO_RUN_TIMED );
-#if 0
-	/* Wait tacho stop */
-	Sleep( 100 );
-	do {
-		get_tacho_state_flags( sn, &state );
-	} while ( state );
-#endif
-}
-
-void STOP(uint8_t motor_id) {
-	MOVE(motor_id, 0);
-}
-
-void STOP_ALL(void) {
-	STOP(left_motor_id);
-	STOP(right_motor_id);
-}
-
-void TURN_LEFT(void) {
-	//MOVE(left_motor_id, 0);
-	STOP(left_motor_id);
-	MOVE(right_motor_id, 600);
-}
-
-void TURN_RIGHT(void) {
-	//MOVE(right_motor_id, 0);
-	STOP(right_motor_id);
-	MOVE(left_motor_id, 600);
-}
-
-void TURN_AROUND(void) {
-	TURN_LEFT();
-	TURN_LEFT();
-}
-
-void GO_STRAIGHT(uint32_t time) {
-#if 1
-	printf("Go straight for %d miliseconds \n", time);
-	MOVE(right_motor_id, time);
-	MOVE(left_motor_id, time);
-#else
-	int snr = right_motor_id;
-	int snl = left_motor_id;
-	int max_speedr, max_speedl;
-	FLAGS_T statel, stater;
-
-	/* Check if motor available */
-	if ((snr < 0) || (snl < 0) ) {
-		printf("Cannot move. No motors availale at specified ID.\n");
-		return;
-	}
-
-	/* get max speed of the motor */
-	get_tacho_max_speed( snr, &max_speedr );
-	get_tacho_max_speed( snl, &max_speedl );
-	printf("  max_speed right = %d, left = %d\n", max_speedr, max_speedl );
-	/* stop */
-	set_tacho_stop_action_inx( snl, TACHO_COAST );
-	set_tacho_stop_action_inx( snr, TACHO_COAST );
-	/* set the speed */
-	set_tacho_speed_sp( snl, max_speedl * 2 / 3 );
-	set_tacho_speed_sp( snr, max_speedr * 2 / 3 );
-	/* set duration of running */
-	set_tacho_time_sp( snl, time );
-	set_tacho_time_sp( snr, time );
-	/* set wtf? */
-	set_tacho_ramp_up_sp( snl, 500 );
-	set_tacho_ramp_up_sp( snr, 500 );
-	/* set wtf? */
-	set_tacho_ramp_down_sp( snl, 500 );
-	set_tacho_ramp_down_sp( snr, 500 );
-	/* RUN with specified time */
-	set_tacho_command_inx( snl, TACHO_RUN_TIMED );
-	set_tacho_command_inx( snr, TACHO_RUN_TIMED );
-#endif
-#if 0
-	/* Wait tacho stop */
-	Sleep( 100 );
-	do {
-		get_tacho_state_flags( snl, &statel );
-		get_tacho_state_flags( snr, &stater );
-	} while ( statel && stater );
-#endif
-}
-/* Mjolnir: End. */
-
 
 int main( void )
 {
@@ -283,8 +107,8 @@ int main( void )
 	TURN_LEFT();
 	Sleep(1000);
 	TURN_AROUND();
+	GO_STRAIGHT(10000);
 #endif
-	GO_STRAIGHT(20000);
 
 //Run all sensors
 	ev3_sensor_init();
