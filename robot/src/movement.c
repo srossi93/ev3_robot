@@ -160,10 +160,10 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   left_engine_args.sem_engine = sem_left_engine;
   
   pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
+  pthread_detach(right_tid);
+ 
   pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
-  
-  pthread_join(right_tid, NULL);
-  pthread_join(left_tid, NULL);
+  pthread_detach(left_tid);
   
   return;
 }
