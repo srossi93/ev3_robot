@@ -25,15 +25,14 @@
 #include "movement.h"
 
 extern char msg[255];
-extern pthread_mutex_t mutex_engines;
+
 
 int main( void )
 {
   engine_ptr right_engine, left_engine;
-  int angle = 90;
+  
   if (!robot_init()) return 1;
   
-  pthread_mutex_init(&mutex_engines, NULL);
   identify_engines(&right_engine, &left_engine);
   
   turn_inplace_by_relative_angle(90, right_engine, left_engine);
