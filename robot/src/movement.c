@@ -131,7 +131,7 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
     printf("STATUS: ");
     printf("%d\n", status);
     
-  } while (!(status == 0 && speed == 0));
+  } while (!(status == 0));
   
   
 
