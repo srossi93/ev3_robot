@@ -28,23 +28,34 @@ extern char msg[255];
 
 int main( void )
 {
-  engine_ptr r_eng, l_eng;
-  
+  engine_ptr right_engine, left_engine;
+  int angle = 90;
   if (!robot_init()) return 1;
   
 
-  identify_engines(&r_eng, &l_eng);
+  identify_engines(&right_engine, &left_engine);
   
 
-  turn_engine(90, r_eng, 1);
-  turn_engine(-90, l_eng, 1);
+  turn_engine_arg_struct *right_engine_args, *left_engine_args;
+  pthread_t right_tid, left_tid;
   
-  //turn_inplace_by_relative_angle(360, r_eng, l_eng);
-  //msleep(10000);
-
-  //turn_inplace_by_relative_angle(-360, r_eng, l_eng);
-  //msleep(10000);
-
+  right_engine_args = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
+  left_engine_args  = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
+  
+  right_engine_args->angle=angle;
+  right_engine_args->engine=right_engine;
+  right_engine_args->speed_mod=16;
+  
+  left_engine_args->angle=-angle;
+  right_engine_args->engine=left_engine;
+  right_engine_args->speed_mod=16;
+  
+  pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
+  //pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
+  
+  pthread_join(right_tid, NULL);
+  //pthread_join(left_tid, NULL);
+  
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
   

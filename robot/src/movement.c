@@ -116,7 +116,8 @@ thread_turn_engine(void *arg)
 {
   turn_engine_arg_struct* valid_args = (turn_engine_arg_struct*)&arg;
   turn_engine(valid_args->angle, valid_args->engine, valid_args->speed_mod);
-  return NULL;
+  
+  pthread_exit(NULL);
 }
 
 void
