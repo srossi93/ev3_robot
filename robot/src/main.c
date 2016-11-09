@@ -36,11 +36,14 @@ int main( void )
   identify_engines(&r_eng, &l_eng);
   
 
-  turn_inplace_by_relative_angle(360, r_eng, l_eng);
-  msleep(10000);
+  turn_engine(90, r_eng, 1);
+  turn_engine(-90, l_eng, 1);
+  
+  //turn_inplace_by_relative_angle(360, r_eng, l_eng);
+  //msleep(10000);
 
-  turn_inplace_by_relative_angle(-360, r_eng, l_eng);
-  msleep(10000);
+  //turn_inplace_by_relative_angle(-360, r_eng, l_eng);
+  //msleep(10000);
 
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
