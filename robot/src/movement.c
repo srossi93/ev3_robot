@@ -106,7 +106,7 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
   
   sprintf(msg, "Turn engine:\nEngine %d --> %d deg @ speed %d\n",
-          engine, angle, (max_speed / speed_mod));
+          engine, angle, (int)(max_speed / speed_mod));
   log_to_file(msg);
 
 }
