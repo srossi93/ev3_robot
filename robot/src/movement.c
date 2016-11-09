@@ -52,8 +52,8 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   set_tacho_ramp_up_sp(engine1, 0);
   set_tacho_ramp_down_sp(engine1, 0);
   set_tacho_position_sp(engine1, 180);
-  set_tacho_command_inx(engine1, TACHO_RUN_TO_REL_POS );
   msleep(1000);
+  set_tacho_command_inx(engine1, TACHO_RUN_TO_REL_POS );
   set_tacho_command_inx(engine2, TACHO_BRAKE);
   
   msleep(5000);
