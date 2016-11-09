@@ -36,10 +36,10 @@ int main( void )
   identify_engines(&r_eng, &l_eng);
   
 
-  turn_inplace_by_relative_angle(90, r_eng, l_eng);
+  turn_inplace_by_relative_angle(360, r_eng, l_eng);
   msleep(10000);
 
-  turn_inplace_by_relative_angle(-90, r_eng, l_eng);
+  turn_inplace_by_relative_angle(-360, r_eng, l_eng);
   msleep(10000);
 
   ev3_uninit();
