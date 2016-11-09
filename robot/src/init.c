@@ -40,6 +40,8 @@ robot_init(void)
   
   pthread_mutex_init(&mutex_right_engine, NULL);
   pthread_mutex_init(&mutex_left_engine, NULL);
+  pthread_mutex_unlock(&mutex_right_engine);
+  pthread_mutex_unlock(&mutex_left_engine);
   
   return 1;
 }
