@@ -101,7 +101,7 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   set_tacho_ramp_down_sp(engine, 3500);
 
-  set_tacho_position_sp(engine, angle * count_per_rot / 360);
+  set_tacho_position_sp(engine, angle * 2 * count_per_rot / 360);
   
   set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
   
