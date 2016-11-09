@@ -116,11 +116,11 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
           engine, angle, (int)(max_speed / speed_mod));
   log_to_file(msg);
   
-  do {
+  //do {
     msleep(500);
     get_tacho_full_travel_count(engine, &current_count);
     printf("%d %d",current_count, initial_count);
-  } while ((current_count - initial_count) < count_to_rotate);
+  //} while ((current_count - initial_count) < count_to_rotate);
   
 
 }
