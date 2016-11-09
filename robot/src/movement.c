@@ -101,11 +101,11 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   set_tacho_ramp_down_sp(engine, 3500);
 
-  set_tacho_position_sp(engine, angle * 2 * count_per_rot / 360);
+  set_tacho_position_sp(engine, (int)(angle * 2 * count_per_rot / 360));
   
   set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
   
-  sprintf(msg, "Turn engine:\nEngine %d --> %d deg @ speed %d\n",
+  sprintf(msg, "Turn engine: Engine #%d --> %d deg @ speed %d\n",
           engine, angle, (int)(max_speed / speed_mod));
   log_to_file(msg);
 
@@ -116,7 +116,7 @@ thread_turn_engine(void *arg)
 {
   turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
   
-  printf("TH : %d %d %d\n",valid_args.angle, valid_args.engine, valid_args.speed_mod);
+  //printf("TH : %d %d %d\n",valid_args.angle, valid_args.engine, valid_args.speed_mod);
   
   turn_engine(valid_args.angle, valid_args.engine, valid_args.speed_mod);
   
