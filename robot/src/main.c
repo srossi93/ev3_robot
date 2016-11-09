@@ -42,13 +42,15 @@ int main( void )
   right_engine_args = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
   left_engine_args  = (turn_engine_arg_struct*)malloc(sizeof(turn_engine_arg_struct));
   
-  right_engine_args->angle=angle;
-  right_engine_args->engine=right_engine;
-  right_engine_args->speed_mod=16;
+  right_engine_args->angle = angle;
+  right_engine_args->engine = right_engine;
+  right_engine_args->speed_mod = 16;
   
-  left_engine_args->angle=-angle;
-  right_engine_args->engine=left_engine;
-  right_engine_args->speed_mod=16;
+  printf("MAIN : %d %d %d\n",right_engine_args->angle, right_engine_args->engine, right_engine_args->speed_mod);
+  
+  left_engine_args->angle = -angle;
+  left_engine_args->engine = left_engine;
+  left_engine_args->speed_mod = 16;
   
   pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
   //pthread_create(&left_tid,  NULL, thread_turn_engine, (void*)&left_engine_args);
