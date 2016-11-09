@@ -125,7 +125,6 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   do {
     msleep(500);
-      printf("dddd\n");
     get_tacho_state_flags(engine, &status);
     printf("%d", status);
   } while (status != 2);
@@ -155,12 +154,12 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   
   right_engine_args.angle = angle;
   right_engine_args.engine = right_engine;
-  right_engine_args.speed_mod = 1;
+  right_engine_args.speed_mod = 2;
   right_engine_args.sem_engine = sem_right_engine;
   
   left_engine_args.angle = -angle;
   left_engine_args.engine = left_engine;
-  left_engine_args.speed_mod = 1;
+  left_engine_args.speed_mod = 2;
   left_engine_args.sem_engine = sem_left_engine;
   
   pthread_create(&right_tid, NULL, thread_turn_engine, (void*)&right_engine_args);
