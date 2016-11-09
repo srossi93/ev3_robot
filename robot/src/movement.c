@@ -116,19 +116,19 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
 
   count_to_rotate = (int)(angle * 2 * count_per_rot / 360);
   set_tacho_position_sp(engine, count_to_rotate);
-    printf("dddd\n");
+
   set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
-    printf("dddd\n");
+
   sprintf(msg, "Turn engine: Engine #%d --> %d deg @ speed %d\n",
           engine, angle, (int)(max_speed / speed_mod));
   log_to_file(msg);
-  printf("dddd\n");
+  
   do {
-    sleep(1);
+    msleep(500);
       printf("dddd\n");
     get_tacho_state_flags(engine, &status);
-    printf("%hhu", status);
-  } while (status == 2);
+    printf("%d", status);
+  } while (status != 2);
   
   
 
