@@ -29,7 +29,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   }
   
   // Search the second engine
-  if (! ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine2, engine1+1) )
+  if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine2, engine1+1) )
   {
     sprintf(msg, " --> No second LEGO_EV3_L_MOTOR found\n\tAborting...\n");
     log_to_file(msg);
@@ -52,12 +52,12 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   set_tacho_command_inx(engine2, TACHO_RESET );
   
   get_tacho_max_speed(engine1, &max_speed);
-  set_tacho_speed_sp(engine1, max_speed / 16);
-  set_tacho_speed_sp(engine2, max_speed / 16);
+  set_tacho_speed_sp(engine1, max_speed / 20);
+  set_tacho_speed_sp(engine2, max_speed / 20);
   set_tacho_ramp_up_sp(engine1, 0);
   set_tacho_ramp_down_sp(engine1, 0);
   set_tacho_position_sp(engine1, 180);
-  msleep(1000);
+  //msleep(1000);
   set_tacho_command_inx(engine1, TACHO_RUN_TO_REL_POS );
   set_tacho_command_inx(engine2, TACHO_STOP);
   
@@ -115,9 +115,9 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
     
-  sprintf(msg, "Turn engine: Engine #%d --> %d deg @ speed %d\n",
-          engine, angle, (int)(max_speed / speed_mod));
-  log_to_file(msg);
+  //  sprintf(msg, "Turn Engine #%d --> %d deg @ speed %d\n",
+  //         engine, angle, (int)(max_speed / speed_mod));
+  //log_to_file(msg);
     
   set_tacho_command_inx(engine, TACHO_HOLD);
     
@@ -164,6 +164,10 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   get_sensor_value(0, gyro_sensor_id, &initial_orientation);
 
   int i = 0;
+  
+  sprintf(msg, "Turn %s %+d\n", (angle > 0 ? "right" : "left") , angle);
+  log_to_file(msg);
+  
   do {
   
     right_engine_args.angle = -error;
@@ -182,11 +186,12 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
     pthread_join(left_tid, NULL);
     pthread_join(right_tid, NULL);
 
-    //msleep(5000);
     get_sensor_value(0, gyro_sensor_id, &final_orientation);
     error = -(final_orientation - initial_orientation) + angle;
-    
-    printf("#%d Initial: %d Final: %d Error: %d\n", i, initial_orientation, final_orientation, error);
+
+    sprintf(msg, "\t Iter #%d -- Initial: %d\tTarget: %d\tActual: %d\tError: %d\n",
+            i, initial_orientation, angle, final_orientation, error);
+    log_to_file(msg);
     i++;
 } while (abs(error) > 0);
   
