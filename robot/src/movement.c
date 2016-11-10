@@ -163,14 +163,15 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   set_sensor_mode(gyro_sensor_id, "GYRO-ANG");
   get_sensor_value(0, gyro_sensor_id, &initial_orientation);
 
+  int i = 0;
   do {
   
-    right_engine_args.angle = error;
+    right_engine_args.angle = -error;
     right_engine_args.engine = right_engine;
     right_engine_args.speed_mod = 2;
     right_engine_args.sem_engine = sem_right_engine;
     
-    left_engine_args.angle = -error;
+    left_engine_args.angle = +error;
     left_engine_args.engine = left_engine;
     left_engine_args.speed_mod = 2;
     left_engine_args.sem_engine = sem_left_engine;
@@ -183,9 +184,10 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
 
     //msleep(5000);
     get_sensor_value(0, gyro_sensor_id, &final_orientation);
-    error = (final_orientation - initial_orientation) + angle;
+    error = -(final_orientation - initial_orientation) + angle;
     
-    //printf("#%d Initial: %d Final: %d Error: %d\n", i, initial_orientation, final_orientation, error);
+    printf("#%d Initial: %d Final: %d Error: %d\n", i, initial_orientation, final_orientation, error);
+    i++;
 } while (abs(error) > 0);
   
   return;

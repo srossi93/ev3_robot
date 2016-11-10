@@ -49,10 +49,10 @@ thread_turn_engine(void *arg);
 /**
  * \details Turn in place the robot by a fixed relative angle with respect
  *          to the head
- * \param angle[positive] Relative angle, turn left
- * \param angle[negative] Relative angle, turn right
- * \param ID of the right engine
- * \param ID of the left engine
+ * \param angle[positive] Relative angle, turn right
+ * \param angle[negative] Relative angle, turn left
+ * \param right_engine ID of the right engine
+ * \param left_engine ID of the left engine
  */
 void
 turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_ptr left_engine);

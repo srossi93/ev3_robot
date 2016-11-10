@@ -18,19 +18,29 @@ int test_turn_inplace_by_relative_angle() {
   for (i = 0; i < 8 ; i++)
   {
     turn_inplace_by_relative_angle(45, right_engine, left_engine);
-    turn_inplace_by_relative_angle(-45, right_engine, left_engine);
   }
   for (i = 0; i < 4 ; i++)
   {
     turn_inplace_by_relative_angle(90, right_engine, left_engine);
-    turn_inplace_by_relative_angle(-90, right_engine, left_engine);
   }
   for (i = 0; i < 2 ; i++)
   {
     turn_inplace_by_relative_angle(180, right_engine, left_engine);
-    turn_inplace_by_relative_angle(-180, right_engine, left_engine);
   }
   turn_inplace_by_relative_angle(360, right_engine, left_engine);
+ 
+  for (i = 0; i < 8 ; i++)
+  {
+    turn_inplace_by_relative_angle(-45, right_engine, left_engine);
+  }
+  for (i = 0; i < 4 ; i++)
+  {
+    turn_inplace_by_relative_angle(-90, right_engine, left_engine);
+  }
+  for (i = 0; i < 2 ; i++)
+  {
+    turn_inplace_by_relative_angle(-180, right_engine, left_engine);
+  }
   turn_inplace_by_relative_angle(-360, right_engine, left_engine);
   
   return 0;
