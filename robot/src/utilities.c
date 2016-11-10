@@ -27,10 +27,6 @@ log_to_file(char *msg)
 {
   FILE *file_ptr = fopen("log.txt", "a");
   char msg_to_file[255];
-  time_t ltime;
-  ltime=time(NULL);
-  struct tm *tm;
-  tm=localtime(&ltime);
   
   sprintf(msg_to_file, "%s : %s", time_stamp(), msg);
   fprintf(file_ptr, "%s", msg_to_file);
