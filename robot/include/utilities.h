@@ -22,6 +22,7 @@
 
 #define msleep(msec) usleep(msec*1000)
 typedef uint8_t engine_ptr;
+typedef uint8_t sensor_ptr;
 
 char msg[255];
 

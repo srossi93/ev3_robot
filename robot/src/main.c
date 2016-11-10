@@ -47,13 +47,13 @@ int main( void )
     //turn_inplace_by_relative_angle(-45, right_engine, left_engine);
     sleep(1);
   }
-  //for (i = 0; i < 2 ; i++)
-  //{
-    //turn_inplace_by_relative_angle(180, right_engine, left_engine);
-    ////turn_inplace_by_relative_angle(-45, right_engine, left_engine);
-    //sleep(1);
-  //}
-  //turn_inplace_by_relative_angle(360, right_engine, left_engine);
+  for (i = 0; i < 2 ; i++)
+  {
+    turn_inplace_by_relative_angle(180, right_engine, left_engine);
+    //turn_inplace_by_relative_angle(-45, right_engine, left_engine);
+    sleep(1);
+  }
+  turn_inplace_by_relative_angle(360, right_engine, left_engine);
 
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
