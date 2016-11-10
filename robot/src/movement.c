@@ -100,39 +100,33 @@ turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   
   FLAGS_T status;
 
+  get_tacho_max_speed(engine, &max_speed);
     
-    get_tacho_max_speed(engine, &max_speed);
+  get_tacho_count_per_rot(engine, &count_per_rot);
     
-    get_tacho_count_per_rot(engine, &count_per_rot);
+  set_tacho_speed_sp(engine, max_speed / speed_mod);
     
-    set_tacho_speed_sp(engine, max_speed / speed_mod);
+  set_tacho_ramp_up_sp(engine, 5000);
     
-    set_tacho_ramp_up_sp(engine, 5000);
+  set_tacho_ramp_down_sp(engine, 3500);
     
-    set_tacho_ramp_down_sp(engine, 3500);
-    
-    count_to_rotate = (int)((angle) * 2 * count_per_rot / 360);
-    set_tacho_position_sp(engine, count_to_rotate);
-    
-    set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
-    
-    sprintf(msg, "Turn engine: Engine #%d --> %d deg @ speed %d\n",
-            engine, angle, (int)(max_speed / speed_mod));
-    log_to_file(msg);
-    
-    set_tacho_command_inx(engine, TACHO_HOLD);
-    
-    do {
-      msleep(100);
-      //printf("STATUS: ");
-      get_tacho_state_flags(engine, &status);
-      //printf("%d\n", status);
-    } while (!(status == 2 || status == 0));
-    
-
+  count_to_rotate = (int)((angle) * 2 * count_per_rot / 360);
+  set_tacho_position_sp(engine, count_to_rotate);
   
-  
-  
+  set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
+    
+  sprintf(msg, "Turn engine: Engine #%d --> %d deg @ speed %d\n",
+          engine, angle, (int)(max_speed / speed_mod));
+  log_to_file(msg);
+    
+  set_tacho_command_inx(engine, TACHO_HOLD);
+    
+  do {
+    msleep(100);
+    //printf("STATUS: ");
+    get_tacho_state_flags(engine, &status);
+    //printf("%d\n", status);
+  } while (!(status == 2 || status == 0));
 
 }
 
@@ -168,7 +162,7 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
   set_sensor_poll_ms(gyro_sensor_id, 10);
   set_sensor_mode(gyro_sensor_id, "GYRO-ANG");
   get_sensor_value(0, gyro_sensor_id, &initial_orientation);
-  int i = 0;
+
   do {
   
     right_engine_args.angle = error;

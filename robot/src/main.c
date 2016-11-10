@@ -1,24 +1,10 @@
+#include <unistd.h>
 #include <stdio.h>
+
 #include "ev3.h"
 #include "ev3_port.h"
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
-// WIN32 /////////////////////////////////////////
-#ifdef __WIN32__
-
-#include <windows.h>
-
-// UNIX //////////////////////////////////////////
-#else
-
-#include <unistd.h>
-#define Sleep( msec ) usleep(( msec ) * 1000 )
-
-//////////////////////////////////////////////////
-
-#endif
-
-
 
 #include "utilities.h"
 #include "init.h"
@@ -38,22 +24,23 @@ int main( void )
   for (i = 0; i < 8 ; i++)
   {
     turn_inplace_by_relative_angle(45, right_engine, left_engine);
-    //turn_inplace_by_relative_angle(-45, right_engine, left_engine);
+    turn_inplace_by_relative_angle(-45, right_engine, left_engine);
     sleep(1);
   }
   for (i = 0; i < 4 ; i++)
   {
     turn_inplace_by_relative_angle(90, right_engine, left_engine);
-    //turn_inplace_by_relative_angle(-45, right_engine, left_engine);
+    turn_inplace_by_relative_angle(-90, right_engine, left_engine);
     sleep(1);
   }
   for (i = 0; i < 2 ; i++)
   {
     turn_inplace_by_relative_angle(180, right_engine, left_engine);
-    //turn_inplace_by_relative_angle(-45, right_engine, left_engine);
+    turn_inplace_by_relative_angle(-180, right_engine, left_engine);
     sleep(1);
   }
   turn_inplace_by_relative_angle(360, right_engine, left_engine);
+  turn_inplace_by_relative_angle(-360, right_engine, left_engine);
 
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
