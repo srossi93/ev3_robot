@@ -68,7 +68,7 @@ int main( void )
 		//test_motor(sn);
 		/* assign LEFT motor */
 		//left_motor_id = sn;
-		printf("LEFT motor ID is: %d\n", left_motor_id);
+		//printf("LEFT motor ID is: %d\n", left_motor_id);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 1 is NOT found\n" );
 	}
@@ -77,7 +77,7 @@ int main( void )
 		//test_motor(sn);
 		/* assign RIGHT motor */
 		//right_motor_id = sn;
-		printf("RIGHT motor ID is: %d\n", right_motor_id);
+		//printf("RIGHT motor ID is: %d\n", right_motor_id);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 2 is NOT found\n" );
 	}
