@@ -16,14 +16,65 @@ extern sem_t sem_right_engine, sem_left_engine;
 
 int main( void )
 {
-  //engine_ptr right_engine, left_engine;
+  engine_ptr right_engine, left_engine;
   
   if (!robot_init()) return 1;
   
-  //if (!identify_engines(&right_engine, &left_engine)) return 1;
+  if (!identify_engines(&right_engine, &left_engine)) return 1;
   
-  test_turn_inplace_by_relative_angle();
+  //test_turn_inplace_by_relative_angle();
+  
+  //  go_straight(5000,right_engine, left_engine);
+ 
+  int time = 30000;
+  
+  
+  go_straight(time, 500, right_engine, left_engine);
+  
+  /*set_tacho_stop_action_inx(right_engine, TACHO_COAST);
+  set_tacho_stop_action_inx(left_engine, TACHO_COAST);
+  
+  get_tacho_max_speed(right_engine, &max_speed);
+  
+  set_tacho_ramp_up_sp(right_engine, 0);
+  set_tacho_ramp_up_sp(left_engine, 0);
+  
+  set_tacho_ramp_down_sp(right_engine, 0);
+  set_tacho_ramp_down_sp(left_engine, 0);
+  
+  int i = 0;
+  for (i = 0; i < max_speed; i+=100) {
+    
+    set_tacho_time_sp(right_engine, time);
+    set_tacho_time_sp(left_engine, time);
+    
+    set_tacho_speed_sp(right_engine, 400);
+    set_tacho_speed_sp(left_engine,  400);
+    
+    set_tacho_command_inx(right_engine, TACHO_RUN_TIMED);
+    set_tacho_command_inx(left_engine, TACHO_RUN_TIMED);
+     msleep(1000);
+    set_tacho_command_inx(right_engine, TACHO_STOP);
+    set_tacho_command_inx(left_engine, TACHO_STOP);
+    printf("%d\n", i);
+   
+    
+  }
+  */
+ /*
+  msleep(3000);
+  set_tacho_stop_action_inx(right_engine, TACHO_COAST);
+  set_tacho_stop_action_inx(right_engine, TACHO_COAST);
 
+  set_tacho_command_inx(right_engine, TACHO_STOP);
+  set_tacho_command_inx(left_engine, TACHO_STOP);
+  
+  set_tacho_speed_sp(right_engine, max_speed);
+  set_tacho_speed_sp(left_engine, max_speed);
+  
+  set_tacho_command_inx(right_engine, TACHO_RUN_TIMED);
+  set_tacho_command_inx(left_engine, TACHO_RUN_TIMED);
+  */
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
   

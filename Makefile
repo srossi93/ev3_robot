@@ -5,7 +5,7 @@ OBJ_FILES = $(addprefix $(OBJ_DIR),$(notdir $(C_FILES:.c=.o)))
 
 
 CFLAGS = $(INC_DIR) -Wall -O0 -g -D DEBUG_TERMINAL
-LDFLAGS = -lm -lbluetooth -pthread
+LDFLAGS = -lm -pthread
 
 robot: $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o run $^ lib_ev3/lib/libev3dev-c.a $(LDFLAGS)

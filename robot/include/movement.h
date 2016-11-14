@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <sys/time.h>
 
 #include "ev3.h"
 #include "ev3_port.h"
@@ -20,9 +21,12 @@
 
 #include "utilities.h"
 
+#define AZIMUT_ERROR 1
+
 typedef struct
 {
   int16_t angle;
+  uint16_t time;
   engine_ptr engine;
   uint8_t speed_mod;
   sem_t sem_engine;
@@ -30,6 +34,7 @@ typedef struct
 
 
 sem_t sem_right_engine, sem_left_engine;
+int8_t FLAG_adjust;  //pos: ... neg: ...
 
 /**
  *  \details Turn one motor by a predefined angle
@@ -37,14 +42,29 @@ sem_t sem_right_engine, sem_left_engine;
  *  \param engine Motor ID
  *  \param speed_mod Speed modification parameter (speed = max / speed_mod)
  */
-void
-turn_engine(int16_t angle, engine_ptr engine, uint8_t speed_mod);
+inline void
+turn_engine_by_angle(int16_t angle, engine_ptr engine, uint8_t speed_mod);
+
+/**
+ *  \details Turn one motor for a predefined time
+ *  \param angle Time (milliseconds)
+ *  \param engine Motor ID
+ *  \param speed_mod Speed modification parameter (speed = max / speed_mod)
+ */
+inline void
+turn_engine_by_time(uint16_t time, engine_ptr engine, uint8_t speed);
 
 /**
  *  \details Threaded version of \ref turn_engine function
  */
 void*
-thread_turn_engine(void *arg);
+thread_turn_engine_by_angle(void *arg);
+
+/**
+ *  \details Threaded version of \ref turn_engine function
+ */
+void*
+thread_turn_engine_by_time(void *arg);
 
 /**
  * \details Turn in place the robot by a fixed relative angle with respect
@@ -66,6 +86,10 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
 int
 identify_engines(engine_ptr *right_engine, engine_ptr *left_engine);
 
+void
+go_straight(uint16_t time, uint16_t speed, engine_ptr right_engine, engine_ptr left_engine);
+
+void* thread_check_azimut();
 
 
 #endif /* movement_h */
