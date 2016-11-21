@@ -20,16 +20,16 @@ int main( void )
   
   if (!robot_init()) return 1;
   
-  if (!identify_engines(&right_engine, &left_engine)) return 1;
+  //if (!identify_engines(&right_engine, &left_engine)) return 1;
   
-  //test_turn_inplace_by_relative_angle();
+  test_turn_inplace_by_relative_angle();
   
   //  go_straight(5000,right_engine, left_engine);
  
-  int time = 30000;
+  //int time = 5000;
   
-  
-  go_straight(time, 500, right_engine, left_engine);
+  //test_turn_inplace_by_relative_angle();
+  //go_straight(time, 500, right_engine, left_engine);
   
   /*set_tacho_stop_action_inx(right_engine, TACHO_COAST);
   set_tacho_stop_action_inx(left_engine, TACHO_COAST);
@@ -75,6 +75,23 @@ int main( void )
   set_tacho_command_inx(right_engine, TACHO_RUN_TIMED);
   set_tacho_command_inx(left_engine, TACHO_RUN_TIMED);
   */
+  
+  
+  
+  //engine_ptr arm;
+  
+  //// Search the first engine
+  //if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &arm, 2) )
+  //{
+    //sprintf(msg, " --> No LEGO_EV3_L_MOTOR found\n\tAborting...\n");
+    //log_to_file(msg);
+    //return 0;
+  //}
+  
+  //set_tacho_stop_action_inx(arm, TACHO_HOLD);
+  //turn_engine_by_angle(30, arm, 10);
+  //set_tacho_command_inx(arm, TACHO_STOP);
+  
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
   

@@ -118,15 +118,16 @@ turn_engine_by_angle(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   //  sprintf(msg, "Turn Engine #%d --> %d deg @ speed %d\n",
   //         engine, angle, (int)(max_speed / speed_mod));
   //log_to_file(msg);
-    
-  set_tacho_command_inx(engine, TACHO_HOLD);
+  
+  set_tacho_stop_action_inx(engine, TACHO_HOLD);
+  set_tacho_command_inx(engine, TACHO_STOP);
     
   do {
     msleep(100);
     //printf("STATUS: ");
     get_tacho_state_flags(engine, &status);
     //printf("%d\n", status);
-  } while (!(status == 2 || status == 0));
+  } while (!(status == 2 || status == 0 || status == 4));
 
 }
 
