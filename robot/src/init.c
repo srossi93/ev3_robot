@@ -37,7 +37,7 @@ robot_init(void)
     log_to_file(msg);
     return 0;
   }
-  
+
   sem_init(&sem_right_engine, 0, 1);
   sem_init(&sem_left_engine, 0, 1);
   

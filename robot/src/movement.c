@@ -16,6 +16,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   engine_ptr engine1, engine2;
   int32_t initial_absolute_angle = 0;
   int32_t final_absolute_angle = 0;
+
   
   sprintf(msg, "*** Start engine identification ***\n");
   log_to_file(msg);
@@ -118,7 +119,7 @@ turn_engine_by_angle(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   //  sprintf(msg, "Turn Engine #%d --> %d deg @ speed %d\n",
   //         engine, angle, (int)(max_speed / speed_mod));
   //log_to_file(msg);
-    
+
   do {
     msleep(100);
     //printf("STATUS: ");
