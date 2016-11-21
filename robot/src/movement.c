@@ -29,7 +29,7 @@ identify_engines(engine_ptr *right_engine, engine_ptr *left_engine)
   }
   
   // Search the second engine
-  if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine2, engine1+1) )
+  if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine2, engine1 + 1) )
   {
     sprintf(msg, " --> No second LEGO_EV3_L_MOTOR found\n\tAborting...\n");
     log_to_file(msg);
@@ -118,17 +118,22 @@ turn_engine_by_angle(int16_t angle, engine_ptr engine, uint8_t speed_mod)
   //  sprintf(msg, "Turn Engine #%d --> %d deg @ speed %d\n",
   //         engine, angle, (int)(max_speed / speed_mod));
   //log_to_file(msg);
-  
-  set_tacho_stop_action_inx(engine, TACHO_HOLD);
-  set_tacho_command_inx(engine, TACHO_STOP);
     
   do {
     msleep(100);
     //printf("STATUS: ");
     get_tacho_state_flags(engine, &status);
     //printf("%d\n", status);
-  } while (!(status == 2 || status == 0 || status == 4));
+    
+    //char status_c[100];
+    //get_tacho_state(engine, status_c, 100);
+    //printf("%s\n", status_c);
+    
+  } while ((status % 2) == 1);
 
+  set_tacho_stop_action_inx(engine, TACHO_HOLD);
+  set_tacho_command_inx(engine, TACHO_STOP);
+  
 }
 
 
@@ -297,7 +302,7 @@ go_straight(uint16_t time, uint16_t speed, engine_ptr right_engine, engine_ptr l
     printf("Iter #%d - Initial orientation: %d - Final orientation: %d - Error: %d\n",
            i, initial_orientation, current_orientation, current_error);
     
-    if ( abs(current_error) > 2) {
+    if (abs(current_error) > 2) {
       set_tacho_command_inx(right_engine, TACHO_STOP);
       set_tacho_command_inx(left_engine, TACHO_STOP);
       turn_inplace_by_relative_angle(-2 * current_error - 1.1 * previous_error,
@@ -305,10 +310,13 @@ go_straight(uint16_t time, uint16_t speed, engine_ptr right_engine, engine_ptr l
       previous_error = current_error;
       set_tacho_time_sp(right_engine, time - i);
       set_tacho_time_sp(left_engine, time - i);
+      
       set_tacho_stop_action_inx(right_engine, TACHO_COAST);
       set_tacho_stop_action_inx(left_engine, TACHO_COAST);
+      
       set_tacho_speed_sp(right_engine, speed);
       set_tacho_speed_sp(left_engine, speed);
+      
       set_tacho_ramp_up_sp(right_engine, 0);
       set_tacho_ramp_up_sp(left_engine, 0);
       set_tacho_ramp_down_sp(right_engine, 0);
