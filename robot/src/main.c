@@ -1,12 +1,9 @@
 
 #include "mjolnir.h"
-#include "mjolnir_tacho.h"
+#include "mod_movement.h"
 
 const char const *color[] = { "?", "BLACK", "BLUE", "GREEN", "YELLOW", "RED", "WHITE", "BROWN" };
 #define COLOR_COUNT  (( int )( sizeof( color ) / sizeof( color[ 0 ])))
-
-// Global ID
-//int left_motor_id = 1, right_motor_id = 2;
 
 static bool _check_pressed( uint8_t sn )
 {
@@ -31,6 +28,8 @@ int main( void )
 	int val;
 	float value;
 	uint32_t n, ii;
+	bool running = false;
+
 #ifndef __ARM_ARCH_4T__
 	/* Disable auto-detection of the brick (you have to set the correct address below) */
 	ev3_brick_addr = "192.168.0.204";
@@ -58,37 +57,37 @@ int main( void )
 	}
 	//Note that you may need to change this code depending on the order and type of your motors
 	if ( ev3_search_tacho( LEGO_EV3_M_MOTOR, &sn, 0 )) {
-		printf( "LEGO_EV3_M_MOTOR 1 is found ...\n" );
+		printf( "LEGO_EV3_M_MOTOR 1 is found . ID = %d...\n", sn );
 		//test_motor(sn);
 	} else {
 		printf( "LEGO_EV3_M_MOTOR 1 is NOT found\n" );
 	}
 	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, 0 )) {
-		printf( "LEGO_EV3_L_MOTOR 1 is found ...\n" );
+		printf( "LEGO_EV3_L_MOTOR 1 is found . ID = %d ..\n", sn );
 		//test_motor(sn);
 		/* assign LEFT motor */
-		//left_motor_id = sn;
+		left_motor_id = sn;
 		//printf("LEFT motor ID is: %d\n", left_motor_id);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 1 is NOT found\n" );
 	}
-	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, 1 )) {
-		printf( "LEGO_EV3_L_MOTOR 2 is found ...\n" );
+	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, sn + 1 )) {
+		printf( "LEGO_EV3_L_MOTOR 2 is found . ID = %d..\n", sn );
 		//test_motor(sn);
 		/* assign RIGHT motor */
-		//right_motor_id = sn;
+		right_motor_id = sn;
 		//printf("RIGHT motor ID is: %d\n", right_motor_id);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 2 is NOT found\n" );
 	}
-	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, 2 )) {
-		printf( "LEGO_EV3_L_MOTOR 3 is found, run for 5 sec...\n" );
+	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, sn + 1 )) {
+		printf( "LEGO_EV3_L_MOTOR 3 is found. ID = %d..\n", sn );
 		//test_motor(sn);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 3 is NOT found\n" );
 	}
-	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, 3 )) {
-		printf( "LEGO_EV3_L_MOTOR 4 is found, run for 5 sec...\n" );
+	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, sn + 1 )) {
+		printf( "LEGO_EV3_L_MOTOR 4 is found. ID = %d ...\n", sn );
 		//test_motor(sn);
 	} else {
 		printf( "LEGO_EV3_L_MOTOR 4 is NOT found\n" );
@@ -156,11 +155,12 @@ int main( void )
 			printf("SONAR found, reading sonar...\n");
 			if ( !get_sensor_value0(sn_sonar, &value )) {
 				value = 0;
-			} else if ( value  < 200 ) {
+			} else if ( value  < 200 && running == true ) {
 				printf( "                  It's too close: \r(%f) \n", value);
 				printf(" TURN LEFT!!\n");
 				//TURN_LEFT();
 				STOP_ALL();
+				running = false;
 				Sleep(1000);
 #if 0
 				printf(" Stop the motor!!\n");
@@ -169,7 +169,8 @@ int main( void )
 				set_tacho_stop_action_inx( right_motor_id, TACHO_COAST );
 				set_tacho_speed_sp( right_motor_id, 0 );
 #endif
-			} else if (value > 200 ) {
+			} else if (value > 200 && running == false ) {
+				running = true;
 				GO_STRAIGHT(5000);
 				Sleep(500);
 			}

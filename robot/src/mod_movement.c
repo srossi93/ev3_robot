@@ -2,9 +2,6 @@
 #include "mjolnir.h"
 #include "mod_movement.h"
 
-// Global ID
-int left_motor_id = 1, right_motor_id = 2;
-
 void test_motor(uint8_t sn) {
 	int max_speed;
 	int i;
@@ -46,7 +43,7 @@ void test_motor(uint8_t sn) {
 void MOVE(uint8_t motor_id, uint32_t time) {
 	int sn = motor_id;
 	int max_speed;
-	FLAGS_T state;
+	//FLAGS_T state;
 
 	/* Check if motor available */
 	if (sn < 0) {
@@ -64,9 +61,9 @@ void MOVE(uint8_t motor_id, uint32_t time) {
 	/* set duration of running */
 	set_tacho_time_sp( sn, time );
 	/* set wtf? */
-	set_tacho_ramp_up_sp( sn, 500 );
+	set_tacho_ramp_up_sp( sn, 0 );
 	/* set wtf? */
-	set_tacho_ramp_down_sp( sn, 500 );
+	set_tacho_ramp_down_sp( sn, 0 );
 	/* RUN with specified time */
 	set_tacho_command_inx( sn, TACHO_RUN_TIMED );
 }
