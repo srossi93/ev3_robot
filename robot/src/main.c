@@ -22,20 +22,26 @@ int main( void )
   
   if (!identify_engines(&right_engine, &left_engine)) return 1;
 
-  char status[100];
-  get_tacho_state(right_engine, status, 100);
-  printf("%s\n", status);
-  printf("%d, %d, %d, %d, %d\n", TACHO_RUNNING, TACHO_RAMPING, TACHO_HOLDING, TACHO_OVERLOADED, TACHO_STALLED);
+  //char status[100];
+  //get_tacho_state(right_engine, status, 100);
+  //printf("%s\n", status);
+  //printf("%d, %d, %d, %d, %d\n", TACHO_RUNNING, TACHO_RAMPING, TACHO_HOLDING, TACHO_OVERLOADED, TACHO_STALLED);
   
   
-  test_turn_inplace_by_relative_angle();
+  //test_turn_inplace_by_relative_angle();
   
   
-  int time = 5000;
+  //int time = 5000;
   
-  go_straight(time, 500, right_engine, left_engine);
+  //go_straight(time, 500, right_engine, left_engine);
   
  
+  while (1)
+  {
+    go_straight(3000, 400, right_engine, left_engine);
+    turn_inplace_by_relative_angle(90, right_engine, left_engine);
+  }
+  
   
   //engine_ptr arm;
   
