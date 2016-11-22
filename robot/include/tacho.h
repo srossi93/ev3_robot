@@ -18,12 +18,9 @@
 #include "ev3_port.h"
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
-
 #include "utilities.h"
-#include "tacho.h"
-#include "movement.h"
-#include "test.h"
 
+typedef uint8_t engine_ptr;
 
 enum {L, R, ARM};
 

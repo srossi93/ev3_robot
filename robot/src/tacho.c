@@ -171,91 +171,91 @@ inline void update_command           (engine* engine, int value)
 inline void update_duty_cycle_sp     (engine* engine, int value)
 {
   engine->duty_cycle_sp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_polarity          (engine* engine, char* value)
 {
   engine->polarity = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_position          (engine* engine, int value)
 {
   engine->position = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_hold_pid_Kd       (engine* engine, int value)
 {
   engine->hold_pid_Kd = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_hold_pid_Ki       (engine* engine, int value)
 {
   engine->hold_pid_Ki = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_hold_pid_Kp       (engine* engine, int value)
 {
   engine->hold_pid_Kp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_position_sp       (engine* engine, int value)
 {
   engine->position_sp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_speed_sp          (engine* engine, int value)
 {
   engine->speed_sp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_ramp_up_sp        (engine* engine, int value)
 {
   engine->ramp_up_sp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_ramp_down_sp      (engine* engine, int value)
 {
   engine->ramp_down_sp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_speed_pid_Kd      (engine* engine, int value)
 {
   engine->speed_pid_Kd = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_speed_pid_Ki      (engine* engine, int value)
 {
   engine->speed_pid_Ki = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_speed_pid_Kp      (engine* engine, int value)
 {
   engine->speed_pid_Kp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_stop_action       (engine* engine, int value)
 {
   engine->stop_action = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 inline void update_time_sp           (engine* engine, int value)
 {
   engine->time_sp = value;
-  engine->dirty = 1;
+  //engine->dirty = 1;
 }
 
 
@@ -419,6 +419,8 @@ void write_to_tacho  (engine* engine)
   // write_time_sp      (tacho, engine->time_sp      ); 
   // write_command      (tacho, engine->command      );
   
+  printf("--Write\n");
+  fflush(stdout);
   
   set_tacho_duty_cycle_sp    (tacho, engine->duty_cycle_sp);
   set_tacho_position         (tacho, engine->position     );
@@ -452,13 +454,15 @@ void* tacho_manager (void* engines)
 
   while (1)
   {
+    printf("Update\n");
+    fflush(stdout);
     write_to_tacho(&((engine*)engines)[L]);
     write_to_tacho(&((engine*)engines)[R]);
     
     read_from_tacho(&((engine*)engines)[L]);
     read_from_tacho(&((engine*)engines)[R]);
 
-    msleep(50);
+    msleep(1);
   }
 
   

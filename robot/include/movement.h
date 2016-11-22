@@ -20,7 +20,6 @@
 #include "ev3_sensor.h"
 
 #include "utilities.h"
-
 #include "tacho.h"
 
 #define AZIMUT_ERROR 1
@@ -40,12 +39,9 @@ int8_t FLAG_adjust;  //pos: ... neg: ...
 
 /**
  *  \details Turn one motor by a predefined angle
- *  \param angle Relative angle to move
- *  \param engine Motor ID
- *  \param speed_mod Speed modification parameter (speed = max / speed_mod)
  */
 inline void
-turn_engine_by_angle(int16_t angle, engine_ptr engine, uint8_t speed_mod);
+turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed);
 
 /**
  *  \details Turn one motor for a predefined time

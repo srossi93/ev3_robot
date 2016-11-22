@@ -10,47 +10,29 @@
 
 
 inline void
-turn_engine_by_angle(engine tacho, int16_t angle, uint16_t speed)
+turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed)
 {
-  int max_speed;
-  int count_per_rot;
-  int count_to_rotate;
-  
-  FLAGS_T status;
 
-  get_tacho_max_speed(engine, &max_speed);
+  int count_to_rotate;
     
-  get_tacho_count_per_rot(engine, &count_per_rot);
+  update_speed_sp(tacho, speed);
+  update_ramp_up_sp(tacho, 5000);
+  update_ramp_down_sp(tacho, 3500);
     
-  set_tacho_speed_sp(engine, max_speed / speed_mod);
-    
-  set_tacho_ramp_up_sp(engine, 5000);
-    
-  set_tacho_ramp_down_sp(engine, 3500);
-    
-  count_to_rotate = (int)((angle) * 2 * count_per_rot / 360);
-  set_tacho_position_sp(engine, count_to_rotate);
+  count_to_rotate = (int)((angle) * 2 * tacho->count_per_rot / 360);
+  update_position_sp(tacho, count_to_rotate);
   
-  set_tacho_command_inx(engine, TACHO_RUN_TO_REL_POS);
-    
-  //  sprintf(msg, "Turn Engine #%d --> %d deg @ speed %d\n",
-  //         engine, angle, (int)(max_speed / speed_mod));
-  //log_to_file(msg);
+  update_command(tacho, TACHO_RUN_TO_REL_POS);
 
   do {
     msleep(100);
-    //printf("STATUS: ");
-    get_tacho_state_flags(engine, &status);
-    //printf("%d\n", status);
+    printf("STATUS: %d\n", tacho->state);
+    fflush(stdout);
     
-    //char status_c[100];
-    //get_tacho_state(engine, status_c, 100);
-    //printf("%s\n", status_c);
-    
-  } while ((status % 2) == 1);
+  } while (((tacho->state % 2) == 1) || tacho->speed != 0);
 
-  set_tacho_stop_action_inx(engine, TACHO_HOLD);
-  set_tacho_command_inx(engine, TACHO_STOP);
+  update_stop_action(tacho, TACHO_HOLD);
+  update_command(tacho, TACHO_STOP);
   
 }
 
@@ -93,7 +75,7 @@ thread_turn_engine_by_angle(void *arg)
   turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
   
   sem_wait(&valid_args.sem_engine);
-  turn_engine_by_angle(valid_args.angle, valid_args.engine, valid_args.speed_mod);
+  //turn_engine_by_angle(valid_args.angle, valid_args.engine, valid_args.speed_mod);
   sem_post(&valid_args.sem_engine);
   
   pthread_exit(NULL);

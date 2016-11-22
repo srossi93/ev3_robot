@@ -1,13 +1,20 @@
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <sys/time.h>
 
 #include "ev3.h"
 #include "ev3_port.h"
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
 
-#include "include.h"
-
+#include "utilities.h"
+#include "tacho.h"
+#include "movement.h"
+#include "init.h"
+#include "test.h"
 
 
 int main( void )
@@ -15,12 +22,13 @@ int main( void )
   if (!robot_init()) return 1;
   
   msleep(1000);
-  printf("Max speed(L): %d\n", engines[L].max_speed);
-  printf("Max speed(R): %d\n", engines[R].max_speed);
+  printf("Address(L): %d\n", engines[L].address);
+  printf("Address(R): %d\n", engines[R].address);
   
-  update_time_sp(&engines[L], 1000);
-  update_speed_sp(&engines[L], 500);
-  update_command(&engines[L], TACHO_RUN_TIMED);
+  
+  turn_engine_by_angle(&(engines[R]), 90, 500);
+  msleep(1000);
+  turn_engine_by_angle(&(engines[R]), -90, 500);
   
   msleep(5000);
   
