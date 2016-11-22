@@ -41,5 +41,6 @@ robot_init(void)
   sem_init(&sem_right_engine, 0, 1);
   sem_init(&sem_left_engine, 0, 1);
   
+  
   return 1;
 }

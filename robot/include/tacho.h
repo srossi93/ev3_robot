@@ -13,6 +13,9 @@
 enum {L, R, ARM};
 
 typedef struct {
+  
+  engine_ptr address;
+  
   /** (write-only) Sends a command to the motor controller.  */
   int command;
 
@@ -119,6 +122,9 @@ typedef struct {
    * negative.*/
   int time_sp;
 
+  
+  
+  int dirty;
 }engine;
 
 inline int   read_count_per_rot     (engine_ptr tacho);
@@ -144,6 +150,26 @@ inline int   read_state             (engine_ptr tacho);
 inline int   read_stop_action       (engine_ptr tacho);
 inline int   read_time_sp           (engine_ptr tacho);
 
+inline void update_command           (engine* engine, int value);
+inline void update_duty_cycle_sp     (engine* engine, int value);
+inline void update_polarity          (engine* engine, char* value);
+inline void update_position          (engine* engine, int value);
+inline void update_hold_pid_Kd       (engine* engine, int value);
+inline void update_hold_pid_Ki       (engine* engine, int value);
+inline void update_hold_pid_Kp       (engine* engine, int value);
+inline void update_position_sp       (engine* engine, int value);
+inline void update_speed_sp          (engine* engine, int value);
+inline void update_ramp_up_sp        (engine* engine, int value);
+inline void update_ramp_down_sp      (engine* engine, int value);
+inline void update_speed_pid_Kd      (engine* engine, int value);
+inline void update_speed_pid_Ki      (engine* engine, int value);
+inline void update_speed_pid_Kp      (engine* engine, int value);
+inline void update_stop_action       (engine* engine, int value);
+inline void update_time_sp           (engine* engine, int value);
+
+
+
+
 inline void write_command           (engine_ptr tacho, int value);
 inline void write_duty_cycle_sp     (engine_ptr tacho, int value);
 inline void write_polarity          (engine_ptr tacho, char* value);
@@ -161,7 +187,7 @@ inline void write_speed_pid_Kp      (engine_ptr tacho, int value);
 inline void write_stop_action       (engine_ptr tacho, int value);
 inline void write_time_sp           (engine_ptr tacho, int value);
 
-void read_from_tacho (engine_ptr tacho);
-void write_to_tacho  (engine_ptr tacho);
+void read_from_tacho (engine* engine);
+void write_to_tacho  (engine* engine);
 
 #endif /* tacho_h */

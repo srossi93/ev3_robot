@@ -24,6 +24,10 @@
 #include "utilities.h"
 
 
+#include "tacho.h"
+
+engine engines[4];
+
 /**
  *  \details Performs robot initialization (both motors and sensors)
  *  \return 1 if successfull, 0 if errors occured
