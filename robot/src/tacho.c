@@ -388,6 +388,12 @@ void read_from_tacho (engine* engine)
 
   engine->dirty = 0;
 }
+void* __read_from_tacho (void*arg)
+{
+  read_from_tacho((engine*)arg);
+  pthread_exit(NULL);
+}
+
 
 
 void write_to_tacho  (engine* engine)
@@ -415,4 +421,26 @@ void write_to_tacho  (engine* engine)
 
   engine->dirty = 0;
 
+}
+void* __write_to_tacho (void*arg)
+{
+  write_to_tacho((engine*)arg);
+  pthread_exit(NULL);
+}
+
+
+
+void* tacho_manager (void* engines)
+{
+  while (1)
+  {
+    msleep(50);
+    write_to_tacho((engine*)&engines[L]);
+    write_to_tacho((engine*)&engines[R]);
+    
+    read_from_tacho((engine*)&engines[L]);
+    read_from_tacho((engine*)&engines[R]);
+  }
+
+  
 }

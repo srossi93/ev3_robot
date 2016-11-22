@@ -28,11 +28,18 @@
 
 engine engines[4];
 
+pthread_t engine_manager_tid;
+
 /**
  *  \details Performs robot initialization (both motors and sensors)
  *  \return 1 if successfull, 0 if errors occured
  */
 int
 robot_init(void);
+
+
+int engines_init(void);
+
+void robot_deinit(void);
 
 #endif /* init_h */
