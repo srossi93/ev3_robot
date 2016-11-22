@@ -8,8 +8,7 @@
 
 #include "include.h"
 
-//extern char msg[255];
-//extern sem_t sem_right_engine, sem_left_engine;
+
 
 int main( void )
 {
@@ -18,6 +17,12 @@ int main( void )
   msleep(1000);
   printf("Max speed(L): %d\n", engines[L].max_speed);
   printf("Max speed(R): %d\n", engines[R].max_speed);
+  
+  update_time_sp(&engines[L], 1000);
+  update_speed_sp(&engines[L], 500);
+  update_command(&engines[L], TACHO_RUN_TIMED);
+  
+  msleep(5000);
   
   robot_deinit();
   ev3_uninit();

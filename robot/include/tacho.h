@@ -141,7 +141,6 @@ struct foo {
   
   int dirty;
 };
-
 typedef struct foo engine;
 
 inline int   read_count_per_rot     (engine_ptr tacho);
@@ -166,6 +165,9 @@ inline int   read_speed_pid_Kp      (engine_ptr tacho);
 inline int   read_state             (engine_ptr tacho);
 inline int   read_stop_action       (engine_ptr tacho);
 inline int   read_time_sp           (engine_ptr tacho);
+
+
+
 
 inline void update_command           (engine* engine, int value);
 inline void update_duty_cycle_sp     (engine* engine, int value);

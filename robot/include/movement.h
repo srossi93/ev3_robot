@@ -21,6 +21,8 @@
 
 #include "utilities.h"
 
+#include "tacho.h"
+
 #define AZIMUT_ERROR 1
 
 typedef struct

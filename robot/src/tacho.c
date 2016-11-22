@@ -398,27 +398,44 @@ void* __read_from_tacho (void*arg)
 
 void write_to_tacho  (engine* engine)
 {
+
   engine_ptr tacho = engine->address;
   
-  if (!engine->dirty) return;
+  if (engine->dirty == 0) return;
   
-  write_command      (tacho, engine->command      ); 
-  write_duty_cycle_sp(tacho, engine->duty_cycle_sp); 
-  //write_polarity     (tacho, engine->polarity     );
-  write_position     (tacho, engine->position     ); 
-  write_hold_pid_Kd  (tacho, engine->hold_pid_Kd  ); 
-  write_hold_pid_Ki  (tacho, engine->hold_pid_Ki  ); 
-  write_hold_pid_Kp  (tacho, engine->hold_pid_Kp  ); 
-  write_position_sp  (tacho, engine->position_sp  ); 
-  write_speed_sp     (tacho, engine->speed_sp     ); 
-  write_ramp_up_sp   (tacho, engine->ramp_up_sp   ); 
-  write_ramp_down_sp (tacho, engine->ramp_down_sp ); 
-  write_speed_pid_Kd (tacho, engine->speed_pid_Kd ); 
-  write_speed_pid_Ki (tacho, engine->speed_pid_Ki ); 
-  write_speed_pid_Kp (tacho, engine->speed_pid_Kp ); 
-  write_stop_action  (tacho, engine->stop_action  ); 
-  write_time_sp      (tacho, engine->time_sp      ); 
-
+  // write_duty_cycle_sp(tacho, engine->duty_cycle_sp); 
+  // write_position     (tacho, engine->position     ); 
+  // write_hold_pid_Kd  (tacho, engine->hold_pid_Kd  ); 
+  // write_hold_pid_Ki  (tacho, engine->hold_pid_Ki  ); 
+  // write_hold_pid_Kp  (tacho, engine->hold_pid_Kp  ); 
+  // write_position_sp  (tacho, engine->position_sp  ); 
+  // write_speed_sp     (tacho, engine->speed_sp     ); 
+  // write_ramp_up_sp   (tacho, engine->ramp_up_sp   ); 
+  // write_ramp_down_sp (tacho, engine->ramp_down_sp ); 
+  // write_speed_pid_Kd (tacho, engine->speed_pid_Kd ); 
+  // write_speed_pid_Ki (tacho, engine->speed_pid_Ki ); 
+  // write_speed_pid_Kp (tacho, engine->speed_pid_Kp ); 
+  // write_stop_action  (tacho, engine->stop_action  ); 
+  // write_time_sp      (tacho, engine->time_sp      ); 
+  // write_command      (tacho, engine->command      );
+  
+  
+  set_tacho_duty_cycle_sp    (tacho, engine->duty_cycle_sp);
+  set_tacho_position         (tacho, engine->position     );
+  set_tacho_hold_pid_Kd      (tacho, engine->hold_pid_Kd  );
+  set_tacho_hold_pid_Ki      (tacho, engine->hold_pid_Ki  );
+  set_tacho_hold_pid_Kp      (tacho, engine->hold_pid_Kp  );
+  set_tacho_position_sp      (tacho, engine->position_sp  );
+  set_tacho_speed_sp         (tacho, engine->speed_sp     );
+  set_tacho_ramp_up_sp       (tacho, engine->ramp_up_sp   );
+  set_tacho_ramp_down_sp     (tacho, engine->ramp_down_sp );                    
+  set_tacho_speed_pid_Kd     (tacho, engine->speed_pid_Kd );
+  set_tacho_speed_pid_Ki     (tacho, engine->speed_pid_Ki );
+  set_tacho_speed_pid_Kp     (tacho, engine->speed_pid_Kp );
+  set_tacho_stop_action_inx  (tacho, engine->stop_action  );
+  set_tacho_time_sp          (tacho, engine->time_sp      );
+  set_tacho_command_inx      (tacho, engine->command      );
+  
   engine->dirty = 0;
 
 }
@@ -435,12 +452,13 @@ void* tacho_manager (void* engines)
 
   while (1)
   {
-    msleep(50);
     write_to_tacho(&((engine*)engines)[L]);
     write_to_tacho(&((engine*)engines)[R]);
     
     read_from_tacho(&((engine*)engines)[L]);
     read_from_tacho(&((engine*)engines)[R]);
+
+    msleep(50);
   }
 
   

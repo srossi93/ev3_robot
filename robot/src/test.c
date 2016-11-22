@@ -12,7 +12,7 @@ int test_turn_inplace_by_relative_angle() {
   
   engine_ptr right_engine, left_engine;
   
-  if (!identify_engines(&right_engine, &left_engine)) return 1;
+  //  if (!identify_engines(&right_engine, &left_engine)) return 1;
   
   int i = 0;
   for (i = 0; i < 8 ; i++)
