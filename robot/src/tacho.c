@@ -144,7 +144,7 @@ inline int   read_speed_pid_Kp      (engine_ptr tacho)
 inline int   read_state             (engine_ptr tacho)
 {
   int tmp;
-  get_tacho_state_flags(tacho, &tmp);
+  get_tacho_state_flags(tacho, (FLAGS_T*)&tmp);
   return tmp;
 }
 
@@ -368,7 +368,7 @@ void read_from_tacho (engine* engine)
   engine->full_travel_count =  read_full_travel_count (tacho);
   engine->duty_cycle        =  read_duty_cycle        (tacho);
   engine->duty_cycle_sp     =  read_duty_cycle_sp     (tacho);
-  engine->polarity          =  read_polarity          (tacho);
+  //engine->polarity          =  read_polarity          (tacho);
   engine->position          =  read_position          (tacho);
   engine->hold_pid_Kd       =  read_hold_pid_Kd       (tacho);
   engine->hold_pid_Ki       =  read_hold_pid_Ki       (tacho);
@@ -404,7 +404,7 @@ void write_to_tacho  (engine* engine)
   
   write_command      (tacho, engine->command      ); 
   write_duty_cycle_sp(tacho, engine->duty_cycle_sp); 
-  write_polarity     (tacho, engine->polarity     ); 
+  //write_polarity     (tacho, engine->polarity     );
   write_position     (tacho, engine->position     ); 
   write_hold_pid_Kd  (tacho, engine->hold_pid_Kd  ); 
   write_hold_pid_Ki  (tacho, engine->hold_pid_Ki  ); 
@@ -432,14 +432,15 @@ void* __write_to_tacho (void*arg)
 
 void* tacho_manager (void* engines)
 {
+
   while (1)
   {
     msleep(50);
-    write_to_tacho((engine*)&engines[L]);
-    write_to_tacho((engine*)&engines[R]);
+    write_to_tacho(&((engine*)engines)[L]);
+    write_to_tacho(&((engine*)engines)[R]);
     
-    read_from_tacho((engine*)&engines[L]);
-    read_from_tacho((engine*)&engines[R]);
+    read_from_tacho(&((engine*)engines)[L]);
+    read_from_tacho(&((engine*)engines)[R]);
   }
 
   

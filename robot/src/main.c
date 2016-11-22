@@ -15,8 +15,9 @@ int main( void )
 {
   if (!robot_init()) return 1;
   
+  msleep(1000);
   printf("Max speed(L): %d\n", engines[L].max_speed);
-
+  printf("Max speed(R): %d\n", engines[R].max_speed);
   
   robot_deinit();
   ev3_uninit();

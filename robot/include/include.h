@@ -21,10 +21,11 @@
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
 
-#include "movement.h"
 #include "utilities.h"
+#include "tacho.h"
+#include "movement.h"
 #include "init.h"
 #include "test.h"
-#include "tacho.h"
+
 
 #endif /* include_h */

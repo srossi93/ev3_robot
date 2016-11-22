@@ -10,20 +10,7 @@
 #define init_h
 
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <pthread.h>
-#include <semaphore.h>
-
-#include "ev3.h"
-#include "ev3_port.h"
-#include "ev3_tacho.h"
-#include "ev3_sensor.h"
-
-#include "utilities.h"
-
-
+#include "include.h"
 #include "tacho.h"
 
 engine engines[4];
