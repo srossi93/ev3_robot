@@ -30,9 +30,14 @@ int main( void )
   msleep(1000);
   turn_engine_by_angle(&(engines[R]), -90, 500);
   
+  turn_engine_by_angle(&(engines[L]), 90, 500);
+  msleep(1000);
+  turn_engine_by_angle(&(engines[L]), -90, 500);
+  
   msleep(5000);
   
-  robot_deinit();
+  threads_deinit();
+  
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
   

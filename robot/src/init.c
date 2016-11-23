@@ -9,7 +9,7 @@
 #include "init.h"
 
 extern char msg[255];
-extern sem_t sem_right_engine, sem_left_engine;
+//extern sem_t sem_right_engine, sem_left_engine;
 
 int
 robot_init(void)
@@ -42,6 +42,7 @@ robot_init(void)
   sem_init(&sem_left_engine, 0, 1);
   
   engines_init();
+  threads_init();
 
   return 1;
 }
@@ -130,14 +131,17 @@ int engines_init(void)
   set_tacho_command_inx(engine1, TACHO_RESET);
   set_tacho_command_inx(engine2, TACHO_RESET);
   
-  pthread_create(&engine_manager_tid, NULL, tacho_manager, (void*)engines);
   
   return 1;
 }
 
+void threads_init(){
+  pthread_create(&engine_manager_tid, NULL, __tacho_status_reader, (void*)engines);
+}
 
 
-void robot_deinit()
+
+void threads_deinit()
 {
   pthread_cancel(engine_manager_tid);
 }

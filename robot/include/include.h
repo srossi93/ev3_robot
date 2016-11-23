@@ -27,5 +27,7 @@
 #include "init.h"
 #include "test.h"
 
+#include "globals.h"
+
 
 #endif /* include_h */

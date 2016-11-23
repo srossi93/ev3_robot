@@ -20,6 +20,8 @@
 #include "ev3_sensor.h"
 #include "utilities.h"
 
+
+
 typedef uint8_t engine_ptr;
 
 enum {L, R, ARM};
@@ -204,11 +206,11 @@ inline void write_stop_action       (engine_ptr tacho, int value);
 inline void write_time_sp           (engine_ptr tacho, int value);
 
 void read_from_tacho (engine* engine);
-void* __read_from_tacho (void*arg);
+//void* __read_from_tacho (void*arg);
 
 void write_to_tacho  (engine* engine);
-void* __write_to_tacho (void*arg);
+//void* __write_to_tacho (void*arg);
 
-void* tacho_manager (void* engines);
+void* __tacho_status_reader (void* engines);
 
 #endif /* tacho_h */

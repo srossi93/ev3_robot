@@ -26,6 +26,7 @@
 #include "movement.h"
 #include "init.h"
 
+#include "globals.h"
 
 int test_turn_inplace_by_relative_angle();
 

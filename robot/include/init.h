@@ -25,9 +25,7 @@
 #include "tacho.h"
 #include "utilities.h"
 
-engine engines[4];
-
-pthread_t engine_manager_tid;
+#include "globals.h"
 
 /**
  *  \details Performs robot initialization (both motors and sensors)
@@ -39,6 +37,8 @@ robot_init(void);
 
 int engines_init(void);
 
-void robot_deinit(void);
+void threads_init();
+
+void threads_deinit(void);
 
 #endif /* init_h */

@@ -20,9 +20,11 @@
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
 
+
+
 #define msleep(msec) usleep(msec*1000)
 
-typedef uint8_t sensor_ptr;
+
 
 char msg[255];
 

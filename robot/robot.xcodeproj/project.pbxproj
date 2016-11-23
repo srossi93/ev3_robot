@@ -33,6 +33,8 @@
 		FC12FB8D1DE3A133002F214B /* tacho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tacho.h; path = include/tacho.h; sourceTree = SOURCE_ROOT; };
 		FC12FB8E1DE3A154002F214B /* tacho.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tacho.c; path = src/tacho.c; sourceTree = SOURCE_ROOT; };
 		FC12FB911DE3A194002F214B /* include.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = include.h; path = include/include.h; sourceTree = SOURCE_ROOT; };
+		FC2AC4331DE5B10A0016C0B6 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = include/globals.h; sourceTree = SOURCE_ROOT; };
+		FC2AC4341DE5B4580016C0B6 /* gyro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gyro.h; path = include/gyro.h; sourceTree = SOURCE_ROOT; };
 		FC3F063D1DD21A3800E8CDB2 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = src/init.c; sourceTree = SOURCE_ROOT; };
 		FC72AF9B1DCA08E400CC1908 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = src/main.c; sourceTree = SOURCE_ROOT; };
 		FC72AF9D1DCA095900CC1908 /* movement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = movement.h; path = include/movement.h; sourceTree = SOURCE_ROOT; };
@@ -94,6 +96,8 @@
 				FC07959A1DD4B376005F0A16 /* test.h */,
 				FC12FB8D1DE3A133002F214B /* tacho.h */,
 				FC12FB911DE3A194002F214B /* include.h */,
+				FC2AC4331DE5B10A0016C0B6 /* globals.h */,
+				FC2AC4341DE5B4580016C0B6 /* gyro.h */,
 			);
 			name = include;
 			path = robot;

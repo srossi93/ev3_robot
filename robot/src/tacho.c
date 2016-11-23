@@ -449,20 +449,20 @@ void* __write_to_tacho (void*arg)
 
 
 
-void* tacho_manager (void* engines)
+void* __tacho_status_reader (void* engines)
 {
 
   while (1)
   {
-    printf("Update\n");
-    fflush(stdout);
-    write_to_tacho(&((engine*)engines)[L]);
-    write_to_tacho(&((engine*)engines)[R]);
+    //printf("Update\n");
+    //fflush(stdout);
+    //write_to_tacho(&((engine*)engines)[L]);
+    //write_to_tacho(&((engine*)engines)[R]);
     
     read_from_tacho(&((engine*)engines)[L]);
     read_from_tacho(&((engine*)engines)[R]);
 
-    msleep(1);
+    msleep(10);
   }
 
   

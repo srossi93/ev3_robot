@@ -7,95 +7,80 @@
 #include "movement.h"
 
 
-
-
 inline void
 turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed)
 {
 
   int count_to_rotate;
     
-  update_speed_sp(tacho, speed);
-  update_ramp_up_sp(tacho, 5000);
-  update_ramp_down_sp(tacho, 3500);
+  write_speed_sp(tacho->address, speed);
+  write_ramp_up_sp(tacho->address, 5000);
+  write_ramp_down_sp(tacho->address, 3500);
     
   count_to_rotate = (int)((angle) * 2 * tacho->count_per_rot / 360);
-  update_position_sp(tacho, count_to_rotate);
+  write_position_sp(tacho->address, count_to_rotate);
   
-  update_command(tacho, TACHO_RUN_TO_REL_POS);
+  write_command(tacho->address, TACHO_RUN_TO_REL_POS);
 
   do {
     msleep(100);
-    printf("STATUS: %d\n", tacho->state);
-    fflush(stdout);
+    //printf("STATUS: %d\n", tacho->state);
+    //fflush(stdout);
     
   } while (((tacho->state % 2) == 1) || tacho->speed != 0);
 
-  update_stop_action(tacho, TACHO_HOLD);
-  update_command(tacho, TACHO_STOP);
+  write_stop_action(tacho->address, TACHO_HOLD);
+  write_command(tacho->address, TACHO_STOP);
   
 }
 
 
 inline void
-turn_engine_by_time(uint16_t time, engine_ptr engine, uint8_t speed)
+turn_engine_by_time(engine* tacho, uint16_t time, uint8_t speed)
 {
-
-  FLAGS_T status;
   
-  set_tacho_stop_action_inx(engine, TACHO_COAST);
-  
-  set_tacho_time_sp(engine, time);
-  
-  set_tacho_speed_sp(engine, speed);
-  
-  set_tacho_ramp_up_sp(engine, 0);
-  
-  set_tacho_ramp_down_sp(engine, 0);
-  
-  set_tacho_command_inx(engine, TACHO_RUN_TIMED);
-
-  //  sprintf(msg, "Turn Engine #%d --> %d deg @ speed %d\n",
-  //         engine, angle, (int)(max_speed / speed_mod));
-  //log_to_file(msg);
-  
-  //set_tacho_command_inx(engine, TACHO_HOLD);
+  write_stop_action(tacho->address, TACHO_COAST);
+  write_time_sp(tacho->address, time);
+  write_speed_sp(tacho->address, speed);
+  write_ramp_up_sp(tacho->address, 2000);
+  write_ramp_down_sp(tacho->address, 2000);
+  write_command(tacho->address, TACHO_RUN_TIMED);
   
   do {
     msleep(100);
-    //printf("STATUS: ");
-    get_tacho_state_flags(engine, &status);
-    //printf("%d\n", status);
-  } while (!(status == 2 || status == 0));
+  } while (((tacho->state % 2) == 1) || tacho->speed != 0);
 }
 
 void*
-thread_turn_engine_by_angle(void *arg)
+__turn_engine_by_angle(void *arg)
 {
   turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
   
   sem_wait(&valid_args.sem_engine);
-  //turn_engine_by_angle(valid_args.angle, valid_args.engine, valid_args.speed_mod);
+    turn_engine_by_angle(valid_args.tacho, valid_args.angle, valid_args.speed);
   sem_post(&valid_args.sem_engine);
   
   pthread_exit(NULL);
 }
 
 void*
-thread_turn_engine_by_time(void *arg)
+__turn_engine_by_time(void *arg)
 {
   turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
   
   sem_wait(&valid_args.sem_engine);
-  turn_engine_by_time(valid_args.time, valid_args.engine, valid_args.speed_mod);
+    turn_engine_by_time(valid_args.tacho, valid_args.time, valid_args.speed);
   sem_post(&valid_args.sem_engine);
   
   pthread_exit(NULL);
 }
 
 void
-turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_ptr left_engine)
+turn_inplace_by_relative_angle(int16_t angle)
 {
+  engine_ptr right_engine = engines[R].address;
+  engine_ptr left_engine  = engines[L].address;
+  
   turn_engine_arg_struct right_engine_args, left_engine_args;
   pthread_t right_tid, left_tid;
   
@@ -131,8 +116,8 @@ turn_inplace_by_relative_angle(int16_t angle, engine_ptr right_engine, engine_pt
     left_engine_args.speed_mod = 2;
     left_engine_args.sem_engine = sem_left_engine;
   
-    pthread_create(&right_tid, NULL, thread_turn_engine_by_angle, (void*)&right_engine_args);
-    pthread_create(&left_tid,  NULL, thread_turn_engine_by_angle, (void*)&left_engine_args);
+    pthread_create(&right_tid, NULL, __turn_engine_by_angle, (void*)&right_engine_args);
+    pthread_create(&left_tid,  NULL, __turn_engine_by_angle, (void*)&left_engine_args);
   
     pthread_join(left_tid, NULL);
     pthread_join(right_tid, NULL);
@@ -265,31 +250,31 @@ go_straight(uint16_t time, uint16_t speed, engine_ptr right_engine, engine_ptr l
   return;
 }
 
-void *thread_check_azimut() {
-  int initial_orientation,final_orientation;
-  sensor_ptr compass_sensor_id;
+//void *thread_check_azimut() {
+  //int initial_orientation,final_orientation;
+  //sensor_ptr compass_sensor_id;
   
-  // Search the gyroscope
-  if( !ev3_search_sensor(HT_NXT_COMPASS, &compass_sensor_id, 0) )
-  {
-    sprintf(msg, " --> No HT_NXT_COMPASS found\n\tAborting...\n");
-    log_to_file(msg);
-    pthread_exit(NULL);
-  }
-  set_sensor_poll_ms(compass_sensor_id, 10);
-  get_sensor_value(0, compass_sensor_id, &initial_orientation);
-  FLAG_adjust = 0;
+  //// Search the gyroscope
+  //if( !ev3_search_sensor(HT_NXT_COMPASS, &compass_sensor_id, 0) )
+  //{
+    //sprintf(msg, " --> No HT_NXT_COMPASS found\n\tAborting...\n");
+    //log_to_file(msg);
+    //pthread_exit(NULL);
+  //}
+  //set_sensor_poll_ms(compass_sensor_id, 10);
+  //get_sensor_value(0, compass_sensor_id, &initial_orientation);
+  //FLAG_adjust = 0;
 
-  while (1) {
-    msleep(100);
-    get_sensor_value(0, compass_sensor_id, &final_orientation);
-    int error = (final_orientation - initial_orientation);
+  //while (1) {
+    //msleep(100);
+    //get_sensor_value(0, compass_sensor_id, &final_orientation);
+    //int error = (final_orientation - initial_orientation);
     
-    if ( abs(error) > AZIMUT_ERROR) {
-      FLAG_adjust = error;
-    }
-  }
+    //if ( abs(error) > AZIMUT_ERROR) {
+      //FLAG_adjust = error;
+    //}
+  //}
   
-  //pthread_exit(NULL);
+  ////pthread_exit(NULL);
 
-}
+//}
