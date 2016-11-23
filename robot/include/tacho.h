@@ -57,11 +57,6 @@ struct foo {
    * reverse. */
   int duty_cycle_sp;
 
-  /** (read/write) Sets the polarity of the motor. Valid values are: normal: A positive duty cycle
-   * will cause the motor to rotate clockwise.  inversed: A positive duty cycle will cause the motor
-   * to rotate counter-clockwise. */
-  char *polarity;
-
   /** (read/write) Returns the current position of the motor in pulses of the rotary encoder. When
    * the motor rotates clockwise, the position will increase. Likewise, rotating counter-clockwise
    * causes the position to decrease. Writing will set the position to that value. The range is
@@ -142,74 +137,68 @@ struct foo {
 };
 typedef struct foo engine;
 
-inline int   read_count_per_rot     (engine_ptr tacho);
-inline int   read_count_per_m       (engine_ptr tacho);
-inline int   read_full_travel_count (engine_ptr tacho);
-inline int   read_duty_cycle        (engine_ptr tacho);
-inline int   read_duty_cycle_sp     (engine_ptr tacho);
-inline char* read_polarity          (engine_ptr tacho);
-inline int   read_position          (engine_ptr tacho);
-inline int   read_hold_pid_Kd       (engine_ptr tacho);
-inline int   read_hold_pid_Ki       (engine_ptr tacho);
-inline int   read_hold_pid_Kp       (engine_ptr tacho);
-inline int   read_max_speed         (engine_ptr tacho);
-inline int   read_position_sp       (engine_ptr tacho);
-inline int   read_speed             (engine_ptr tacho);
-inline int   read_speed_sp          (engine_ptr tacho);
-inline int   read_ramp_up_sp        (engine_ptr tacho);
-inline int   read_ramp_down_sp      (engine_ptr tacho);
-inline int   read_speed_pid_Kd      (engine_ptr tacho);
-inline int   read_speed_pid_Ki      (engine_ptr tacho);
-inline int   read_speed_pid_Kp      (engine_ptr tacho);
-inline int   read_state             (engine_ptr tacho);
-inline int   read_stop_action       (engine_ptr tacho);
-inline int   read_time_sp           (engine_ptr tacho);
+inline int   read_count_per_rot     (engine* tacho);
+inline int   read_count_per_m       (engine* tacho);
+inline int   read_full_travel_count (engine* tacho);
+inline int   read_duty_cycle        (engine* tacho);
+inline int   read_duty_cycle_sp     (engine* tacho);
+inline int   read_position          (engine* tacho);
+inline int   read_hold_pid_Kd       (engine* tacho);
+inline int   read_hold_pid_Ki       (engine* tacho);
+inline int   read_hold_pid_Kp       (engine* tacho);
+inline int   read_max_speed         (engine* tacho);
+inline int   read_position_sp       (engine* tacho);
+inline int   read_speed             (engine* tacho);
+inline int   read_speed_sp          (engine* tacho);
+inline int   read_ramp_up_sp        (engine* tacho);
+inline int   read_ramp_down_sp      (engine* tacho);
+inline int   read_speed_pid_Kd      (engine* tacho);
+inline int   read_speed_pid_Ki      (engine* tacho);
+inline int   read_speed_pid_Kp      (engine* tacho);
+inline int   read_state             (engine* tacho);
+inline int   read_stop_action       (engine* tacho);
+inline int   read_time_sp           (engine* tacho);
 
 
 
 
-inline void update_command           (engine* engine, int value);
-inline void update_duty_cycle_sp     (engine* engine, int value);
-inline void update_polarity          (engine* engine, char* value);
-inline void update_position          (engine* engine, int value);
-inline void update_hold_pid_Kd       (engine* engine, int value);
-inline void update_hold_pid_Ki       (engine* engine, int value);
-inline void update_hold_pid_Kp       (engine* engine, int value);
-inline void update_position_sp       (engine* engine, int value);
-inline void update_speed_sp          (engine* engine, int value);
-inline void update_ramp_up_sp        (engine* engine, int value);
-inline void update_ramp_down_sp      (engine* engine, int value);
-inline void update_speed_pid_Kd      (engine* engine, int value);
-inline void update_speed_pid_Ki      (engine* engine, int value);
-inline void update_speed_pid_Kp      (engine* engine, int value);
-inline void update_stop_action       (engine* engine, int value);
-inline void update_time_sp           (engine* engine, int value);
+//inline void update_command           (engine* engine, int value);
+//inline void update_duty_cycle_sp     (engine* engine, int value);
+//inline void update_polarity          (engine* engine, char* value);
+//inline void update_position          (engine* engine, int value);
+//inline void update_hold_pid_Kd       (engine* engine, int value);
+//inline void update_hold_pid_Ki       (engine* engine, int value);
+//inline void update_hold_pid_Kp       (engine* engine, int value);
+//inline void update_position_sp       (engine* engine, int value);
+//inline void update_speed_sp          (engine* engine, int value);
+//inline void update_ramp_up_sp        (engine* engine, int value);
+//inline void update_ramp_down_sp      (engine* engine, int value);
+//inline void update_speed_pid_Kd      (engine* engine, int value);
+//inline void update_speed_pid_Ki      (engine* engine, int value);
+//inline void update_speed_pid_Kp      (engine* engine, int value);
+//inline void update_stop_action       (engine* engine, int value);
+//inline void update_time_sp           (engine* engine, int value);
 
 
 
 
-inline void write_command           (engine_ptr tacho, int value);
-inline void write_duty_cycle_sp     (engine_ptr tacho, int value);
-inline void write_polarity          (engine_ptr tacho, char* value);
-inline void write_position          (engine_ptr tacho, int value);
-inline void write_hold_pid_Kd       (engine_ptr tacho, int value);
-inline void write_hold_pid_Ki       (engine_ptr tacho, int value);
-inline void write_hold_pid_Kp       (engine_ptr tacho, int value);
-inline void write_position_sp       (engine_ptr tacho, int value);
-inline void write_speed_sp          (engine_ptr tacho, int value);
-inline void write_ramp_up_sp        (engine_ptr tacho, int value);
-inline void write_ramp_down_sp      (engine_ptr tacho, int value);
-inline void write_speed_pid_Kd      (engine_ptr tacho, int value);
-inline void write_speed_pid_Ki      (engine_ptr tacho, int value);
-inline void write_speed_pid_Kp      (engine_ptr tacho, int value);
-inline void write_stop_action       (engine_ptr tacho, int value);
-inline void write_time_sp           (engine_ptr tacho, int value);
+inline void write_command           (engine* tacho, int value);
+inline void write_duty_cycle_sp     (engine* tacho, int value);
+inline void write_position          (engine* tacho, int value);
+inline void write_hold_pid_Kd       (engine* tacho, int value);
+inline void write_hold_pid_Ki       (engine* tacho, int value);
+inline void write_hold_pid_Kp       (engine* tacho, int value);
+inline void write_position_sp       (engine* tacho, int value);
+inline void write_speed_sp          (engine* tacho, int value);
+inline void write_ramp_up_sp        (engine* tacho, int value);
+inline void write_ramp_down_sp      (engine* tacho, int value);
+inline void write_speed_pid_Kd      (engine* tacho, int value);
+inline void write_speed_pid_Ki      (engine* tacho, int value);
+inline void write_speed_pid_Kp      (engine* tacho, int value);
+inline void write_stop_action       (engine* tacho, int value);
+inline void write_time_sp           (engine* tacho, int value);
 
 void read_from_tacho (engine* engine);
-//void* __read_from_tacho (void*arg);
-
-void write_to_tacho  (engine* engine);
-//void* __write_to_tacho (void*arg);
 
 void* __tacho_status_reader (void* engines);
 
