@@ -29,8 +29,7 @@ int main( void )
   sleep(2);
   
   test_square();
-  //test_turn_inplace_by_relative_angle();
-
+  
   threads_deinit();
   
   ev3_uninit();
