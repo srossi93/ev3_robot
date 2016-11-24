@@ -168,14 +168,14 @@ go_straight(uint16_t time, uint16_t speed)
   
   initial_orientation = gyro->angle;
   
-  for (i = 0; i < time; i += 500)
+  for (i = 0; i < time; i += 250)
   {
     current_orientation = gyro->angle;
     current_error = (current_orientation - initial_orientation);
     printf("Iter #%d - Initial orientation: %d - Final orientation: %d - Error: %d\n",
            i, initial_orientation, current_orientation, current_error);
     
-    if (abs(current_error) > 5) {
+    if (abs(current_error) > 3) {
       write_command(&engines[R], TACHO_STOP);
       write_command(&engines[L], TACHO_STOP);
       turn_inplace_by_relative_angle(-2 * current_error - 1.1 * previous_error, 200);
@@ -199,12 +199,14 @@ go_straight(uint16_t time, uint16_t speed)
       write_command(&engines[R], TACHO_RUN_TIMED);
       write_command(&engines[L], TACHO_RUN_TIMED);
     }
-    msleep(500);
+    msleep(250);
   }
   
+  current_orientation = gyro->angle;
   
-  turn_inplace_by_relative_angle(gyro->angle - initial_orientation, 200);
-  
+  if ((current_orientation - initial_orientation) != 0) {
+    turn_inplace_by_relative_angle(-(gyro->angle - initial_orientation), 200);
+  }
   
   
   //right_engine_args.time = time;

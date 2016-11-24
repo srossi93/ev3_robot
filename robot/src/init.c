@@ -44,6 +44,8 @@ robot_init(void)
   engines_init();
   sensor_init();
   threads_init();
+  
+  sleep(2);
 
   return 1;
 }
@@ -155,5 +157,7 @@ void threads_init(){
 void threads_deinit()
 {
   pthread_cancel(engines_status_reader_tid);
+  log_to_file("TACHO STATUS READER -> THREAD -- Terminated\n");
   pthread_cancel(gyro_status_reader_tid);
+  log_to_file("GYRO STATUS READER -> THREAD -- Terminated\n");
 }
