@@ -15,30 +15,38 @@ void test_turn_inplace_by_relative_angle() {
   for (i = 0; i < 8 ; i++)
   {
     turn_inplace_by_relative_angle(45, 700);
+    msleep(500);
   }
   for (i = 0; i < 4 ; i++)
   {
     turn_inplace_by_relative_angle(90, 700);
+        msleep(500);
   }
   for (i = 0; i < 2 ; i++)
   {
     turn_inplace_by_relative_angle(180, 700);
+        msleep(500);
   }
   turn_inplace_by_relative_angle(360, 700);
+      msleep(500);
  
   for (i = 0; i < 8 ; i++)
   {
     turn_inplace_by_relative_angle(-45, 700);
+        msleep(500);
   }
   for (i = 0; i < 4 ; i++)
   {
     turn_inplace_by_relative_angle(-90, 700);
+        msleep(500);
   }
   for (i = 0; i < 2 ; i++)
   {
     turn_inplace_by_relative_angle(-180, 700);
+        msleep(500);
   }
   turn_inplace_by_relative_angle(-360, 700);
+      msleep(500);
   
 }
 
