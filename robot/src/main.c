@@ -21,20 +21,15 @@ int main( void )
 {
   if (!robot_init()) return 1;
   
-  msleep(1000);
-  printf("Address(L): %d\n", engines[L].address);
-  printf("Address(R): %d\n", engines[R].address);
+  //while (1)
+  //{
+    //msleep(1000);
+    //printf("%d %d\n", gyro->angle, gyro->rot_speed);
+  //}
+  sleep(2);
   
-  
-  turn_engine_by_angle(&(engines[R]), 90, 500);
-  msleep(1000);
-  turn_engine_by_angle(&(engines[R]), -90, 500);
-  
-  turn_engine_by_angle(&(engines[L]), 90, 500);
-  msleep(1000);
-  turn_engine_by_angle(&(engines[L]), -90, 500);
-  
-  msleep(5000);
+  test_turn_inplace_by_relative_angle();
+  test_square();
   
   threads_deinit();
   

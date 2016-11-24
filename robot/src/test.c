@@ -8,40 +8,44 @@
 
 #include <test.h>
 
-int test_turn_inplace_by_relative_angle() {
+void test_turn_inplace_by_relative_angle() {
   
-  engine_ptr right_engine, left_engine;
-  
-  //  if (!identify_engines(&right_engine, &left_engine)) return 1;
   
   int i = 0;
   for (i = 0; i < 8 ; i++)
   {
-    turn_inplace_by_relative_angle(45, right_engine, left_engine);
+    turn_inplace_by_relative_angle(45, 700);
   }
   for (i = 0; i < 4 ; i++)
   {
-    turn_inplace_by_relative_angle(90, right_engine, left_engine);
+    turn_inplace_by_relative_angle(90, 700);
   }
   for (i = 0; i < 2 ; i++)
   {
-    turn_inplace_by_relative_angle(180, right_engine, left_engine);
+    turn_inplace_by_relative_angle(180, 700);
   }
-  turn_inplace_by_relative_angle(360, right_engine, left_engine);
+  turn_inplace_by_relative_angle(360, 700);
  
   for (i = 0; i < 8 ; i++)
   {
-    turn_inplace_by_relative_angle(-45, right_engine, left_engine);
+    turn_inplace_by_relative_angle(-45, 700);
   }
   for (i = 0; i < 4 ; i++)
   {
-    turn_inplace_by_relative_angle(-90, right_engine, left_engine);
+    turn_inplace_by_relative_angle(-90, 700);
   }
   for (i = 0; i < 2 ; i++)
   {
-    turn_inplace_by_relative_angle(-180, right_engine, left_engine);
+    turn_inplace_by_relative_angle(-180, 700);
   }
-  turn_inplace_by_relative_angle(-360, right_engine, left_engine);
+  turn_inplace_by_relative_angle(-360, 700);
   
-  return 0;
+}
+
+void test_square(){
+  int i;
+  for (i = 0; i < 4*5; i++) {
+    go_straight(3000, 400);
+    turn_inplace_by_relative_angle(90, 300);
+  }
 }

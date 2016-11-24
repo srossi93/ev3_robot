@@ -20,8 +20,11 @@
 #include "ev3_sensor.h"
 
 #include "utilities.h"
-#include "tacho.h"
+
 #include "globals.h"
+
+#include "tacho.h"
+#include "gyro.h"
 
 #define AZIMUT_ERROR 1
 
@@ -72,7 +75,7 @@ __turn_engine_by_time(void *arg);
  * \param angle[negative] Relative angle, turn left
  */
 void
-turn_inplace_by_relative_angle(int16_t angle);
+turn_inplace_by_relative_angle(int16_t angle, uint16_t speed);
 
 /**
  *  \details Identify the correct right and left engine
@@ -84,7 +87,7 @@ int
 identify_engines(engine_ptr *right_engine, engine_ptr *left_engine);
 
 void
-go_straight(uint16_t time, uint16_t speed, engine_ptr right_engine, engine_ptr left_engine);
+go_straight(uint16_t time, uint16_t speed);
 
 void* thread_check_azimut();
 

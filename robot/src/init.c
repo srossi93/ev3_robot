@@ -42,6 +42,7 @@ robot_init(void)
   sem_init(&sem_left_engine, 0, 1);
   
   engines_init();
+  sensor_init();
   threads_init();
 
   return 1;
@@ -135,13 +136,24 @@ int engines_init(void)
   return 1;
 }
 
+void sensor_init(){
+  // Search the gyroscope
+  if( !ev3_search_sensor(LEGO_EV3_GYRO, &(gyro->address), 0) )
+  {
+    log_to_file(" --> No LEGO_EV3_GYRO found\n\tAborting...\n");
+  }
+  set_sensor_mode(gyro->address, "GYRO-G&A");
+}
+
 void threads_init(){
-  pthread_create(&engine_manager_tid, NULL, __tacho_status_reader, (void*)engines);
+  pthread_create(&engines_status_reader_tid, NULL, __tacho_status_reader, (void*)engines);
+  pthread_create(&gyro_status_reader_tid, NULL, __gyro_status_reader, (void*)gyro);
 }
 
 
 
 void threads_deinit()
 {
-  pthread_cancel(engine_manager_tid);
+  pthread_cancel(engines_status_reader_tid);
+  pthread_cancel(gyro_status_reader_tid);
 }

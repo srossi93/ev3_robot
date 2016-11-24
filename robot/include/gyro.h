@@ -33,12 +33,13 @@ typedef struct {
   int angle;
   /**  Rotational Speed in deg/s(-440 to 440) */
   int rot_speed;
+  
 }gyro_sensor;
 
-int read_gyro_angle(gyro_sensor gyro);
-int read_gyro_speed(gyro_sensor gyro);
+int read_gyro_angle(gyro_sensor* gyro);
+int read_gyro_speed(gyro_sensor* gyro);
 
-int read_gyro_status(gyro_sensor gyro);
+void read_gyro_status(gyro_sensor* gyro);
 
 void* __gyro_status_reader(void* gyro);
 

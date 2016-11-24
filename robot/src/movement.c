@@ -13,24 +13,24 @@ turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed)
 
   int count_to_rotate;
     
-  write_speed_sp(tacho->address, speed);
-  write_ramp_up_sp(tacho->address, 5000);
-  write_ramp_down_sp(tacho->address, 3500);
+  write_speed_sp(tacho, speed);
+  write_ramp_up_sp(tacho, 5000);
+  write_ramp_down_sp(tacho, 3500);
     
   count_to_rotate = (int)((angle) * 2 * tacho->count_per_rot / 360);
-  write_position_sp(tacho->address, count_to_rotate);
+  write_position_sp(tacho, count_to_rotate);
   
-  write_command(tacho->address, TACHO_RUN_TO_REL_POS);
+  write_command(tacho, TACHO_RUN_TO_REL_POS);
 
   do {
-    msleep(100);
+    msleep(500);
     //printf("STATUS: %d\n", tacho->state);
     //fflush(stdout);
     
   } while (((tacho->state % 2) == 1) || tacho->speed != 0);
-
-  write_stop_action(tacho->address, TACHO_HOLD);
-  write_command(tacho->address, TACHO_STOP);
+  
+  write_stop_action(tacho, TACHO_BRAKE);
+  write_command(tacho, TACHO_STOP);
   
 }
 
@@ -39,12 +39,12 @@ inline void
 turn_engine_by_time(engine* tacho, uint16_t time, uint8_t speed)
 {
   
-  write_stop_action(tacho->address, TACHO_COAST);
-  write_time_sp(tacho->address, time);
-  write_speed_sp(tacho->address, speed);
-  write_ramp_up_sp(tacho->address, 2000);
-  write_ramp_down_sp(tacho->address, 2000);
-  write_command(tacho->address, TACHO_RUN_TIMED);
+  write_stop_action(tacho, TACHO_COAST);
+  write_time_sp(tacho, time);
+  write_speed_sp(tacho, speed);
+  write_ramp_up_sp(tacho, 2000);
+  write_ramp_down_sp(tacho, 2000);
+  write_command(tacho, TACHO_RUN_TIMED);
   
   do {
     msleep(100);
@@ -76,11 +76,8 @@ __turn_engine_by_time(void *arg)
 }
 
 void
-turn_inplace_by_relative_angle(int16_t angle)
+turn_inplace_by_relative_angle(int16_t angle, uint16_t speed)
 {
-  engine_ptr right_engine = engines[R].address;
-  engine_ptr left_engine  = engines[L].address;
-  
   turn_engine_arg_struct right_engine_args, left_engine_args;
   pthread_t right_tid, left_tid;
   
@@ -95,9 +92,7 @@ turn_inplace_by_relative_angle(int16_t angle)
     log_to_file(msg);
     return;
   }
-  set_sensor_poll_ms(gyro_sensor_id, 10);
-  set_sensor_mode(gyro_sensor_id, "GYRO-ANG");
-  get_sensor_value(0, gyro_sensor_id, &initial_orientation);
+  initial_orientation = gyro->angle;
 
   int i = 0;
   
@@ -107,13 +102,13 @@ turn_inplace_by_relative_angle(int16_t angle)
   do {
   
     right_engine_args.angle = -error;
-    right_engine_args.engine = right_engine;
-    right_engine_args.speed_mod = 2;
+    right_engine_args.tacho = &engines[R];
+    right_engine_args.speed = speed;
     right_engine_args.sem_engine = sem_right_engine;
     
     left_engine_args.angle = +error;
-    left_engine_args.engine = left_engine;
-    left_engine_args.speed_mod = 2;
+    left_engine_args.tacho = &engines[L];
+    left_engine_args.speed = speed;
     left_engine_args.sem_engine = sem_left_engine;
   
     pthread_create(&right_tid, NULL, __turn_engine_by_angle, (void*)&right_engine_args);
@@ -122,7 +117,8 @@ turn_inplace_by_relative_angle(int16_t angle)
     pthread_join(left_tid, NULL);
     pthread_join(right_tid, NULL);
 
-    get_sensor_value(0, gyro_sensor_id, &final_orientation);
+    final_orientation = gyro->angle;
+    //get_sensor_value(0, gyro_sensor_id, &final_orientation);
     error = -(final_orientation - initial_orientation) + angle;
 
     sprintf(msg, "\t Iter #%d -- Initial: %d\tTarget: %d\tActual: %d\tError: %d\n",
@@ -136,7 +132,7 @@ turn_inplace_by_relative_angle(int16_t angle)
 
 
 void
-go_straight(uint16_t time, uint16_t speed, engine_ptr right_engine, engine_ptr left_engine)
+go_straight(uint16_t time, uint16_t speed)
 {
   //turn_engine_arg_struct right_engine_args, left_engine_args;
   //pthread_t right_tid, left_tid, error_tid;
@@ -144,76 +140,70 @@ go_straight(uint16_t time, uint16_t speed, engine_ptr right_engine, engine_ptr l
   //uint16_t remaining_time;
   int previous_error, current_error;
   int initial_orientation,current_orientation;
-  sensor_ptr compass_sensor_id;
-  
-  // Search the gyroscope
-  if( !ev3_search_sensor(LEGO_EV3_GYRO, &compass_sensor_id, 0) )
-  {
-    sprintf(msg, " --> No HT_NXT_COMPASS found\n\tAborting...\n");
-    log_to_file(msg);
-    return;
-  }
-  set_sensor_poll_ms(compass_sensor_id, 10);
 
   
-  set_tacho_stop_action_inx(right_engine, TACHO_COAST);
-  set_tacho_stop_action_inx(left_engine, TACHO_COAST);
-  
-  set_tacho_speed_sp(right_engine, speed);
-  set_tacho_speed_sp(left_engine, speed);
-  
-  set_tacho_ramp_up_sp(right_engine, 0);
-  set_tacho_ramp_up_sp(left_engine, 0);
-  
-  set_tacho_ramp_down_sp(right_engine, 0);
-  set_tacho_ramp_down_sp(left_engine, 0);
+  write_stop_action(&engines[R], TACHO_COAST);
+  write_stop_action(&engines[L], TACHO_COAST);
 
-  set_tacho_time_sp(right_engine, time);
-  set_tacho_time_sp(left_engine, time);
   
-  set_tacho_command_inx(right_engine, TACHO_RUN_TIMED);
-  set_tacho_command_inx(left_engine, TACHO_RUN_TIMED);
+  write_speed_sp(&engines[R], speed);
+  write_speed_sp(&engines[L], speed);
+  
+  write_ramp_up_sp(&engines[R], 0);
+  write_ramp_up_sp(&engines[L], 0);
+  
+  write_ramp_down_sp(&engines[R], 0);
+  write_ramp_down_sp(&engines[L], 0);
+  
+  write_time_sp(&engines[R], time);
+  write_time_sp(&engines[L], time);
+  
+  write_command(&engines[R], TACHO_RUN_TIMED);
+  write_command(&engines[L], TACHO_RUN_TIMED);
   
   //set_tacho_command_inx(right_engine, TACHO_STOP);
   //set_tacho_command_inx(left_engine, TACHO_STOP);
   int i;
   previous_error = 0;
-  get_sensor_value(0, compass_sensor_id, &initial_orientation);
+  
+  initial_orientation = gyro->angle;
   
   for (i = 0; i < time; i += 500)
   {
-    get_sensor_value(0, compass_sensor_id, &current_orientation);
+    current_orientation = gyro->angle;
     current_error = (current_orientation - initial_orientation);
     printf("Iter #%d - Initial orientation: %d - Final orientation: %d - Error: %d\n",
            i, initial_orientation, current_orientation, current_error);
     
-    if (abs(current_error) > 2) {
-      set_tacho_command_inx(right_engine, TACHO_STOP);
-      set_tacho_command_inx(left_engine, TACHO_STOP);
-      turn_inplace_by_relative_angle(-2 * current_error - 1.1 * previous_error,
-                                     right_engine, left_engine);
+    if (abs(current_error) > 5) {
+      write_command(&engines[R], TACHO_STOP);
+      write_command(&engines[L], TACHO_STOP);
+      turn_inplace_by_relative_angle(-2 * current_error - 1.1 * previous_error, 200);
       previous_error = current_error;
-      set_tacho_time_sp(right_engine, time - i);
-      set_tacho_time_sp(left_engine, time - i);
       
-      set_tacho_stop_action_inx(right_engine, TACHO_COAST);
-      set_tacho_stop_action_inx(left_engine, TACHO_COAST);
+      write_time_sp(&engines[R], time - i);
+      write_time_sp(&engines[L], time - i);
+
+      write_stop_action(&engines[R], TACHO_COAST);
+      write_stop_action(&engines[L], TACHO_COAST);
       
-      set_tacho_speed_sp(right_engine, speed);
-      set_tacho_speed_sp(left_engine, speed);
+      write_speed_sp(&engines[R], speed);
+      write_speed_sp(&engines[L], speed);
       
-      set_tacho_ramp_up_sp(right_engine, 0);
-      set_tacho_ramp_up_sp(left_engine, 0);
-      set_tacho_ramp_down_sp(right_engine, 0);
-      set_tacho_ramp_down_sp(left_engine, 0);
-      set_tacho_command_inx(right_engine, TACHO_RUN_TIMED);
-      set_tacho_command_inx(left_engine, TACHO_RUN_TIMED);
+      write_ramp_up_sp(&engines[R], 0);
+      write_ramp_up_sp(&engines[L], 0);
+      
+      write_ramp_down_sp(&engines[R], 0);
+      write_ramp_down_sp(&engines[L], 0);
+      
+      write_command(&engines[R], TACHO_RUN_TIMED);
+      write_command(&engines[L], TACHO_RUN_TIMED);
     }
     msleep(500);
   }
   
   
-  
+  turn_inplace_by_relative_angle(gyro->angle - initial_orientation, 200);
   
   
   

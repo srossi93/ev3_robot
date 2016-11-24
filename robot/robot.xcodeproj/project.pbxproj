@@ -10,6 +10,7 @@
 		FC07959C1DD4B38C005F0A16 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = FC07959B1DD4B38C005F0A16 /* test.c */; };
 		FC12FB8F1DE3A154002F214B /* tacho.c in Sources */ = {isa = PBXBuildFile; fileRef = FC12FB8E1DE3A154002F214B /* tacho.c */; };
 		FC3F063E1DD21A3800E8CDB2 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = FC3F063D1DD21A3800E8CDB2 /* init.c */; };
+		FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */ = {isa = PBXBuildFile; fileRef = FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */; };
 		FC72AF9C1DCA08E400CC1908 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = FC72AF9B1DCA08E400CC1908 /* main.c */; settings = {COMPILER_FLAGS = "-Ofast"; }; };
 		FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC101DD0CCBB0007F935 /* movement.c */; };
 		FCA2FC141DD0D0690007F935 /* utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC131DD0D0690007F935 /* utilities.c */; };
@@ -36,6 +37,7 @@
 		FC2AC4331DE5B10A0016C0B6 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = include/globals.h; sourceTree = SOURCE_ROOT; };
 		FC2AC4341DE5B4580016C0B6 /* gyro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gyro.h; path = include/gyro.h; sourceTree = SOURCE_ROOT; };
 		FC3F063D1DD21A3800E8CDB2 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = src/init.c; sourceTree = SOURCE_ROOT; };
+		FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gyro.c; path = src/gyro.c; sourceTree = SOURCE_ROOT; };
 		FC72AF9B1DCA08E400CC1908 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = src/main.c; sourceTree = SOURCE_ROOT; };
 		FC72AF9D1DCA095900CC1908 /* movement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = movement.h; path = include/movement.h; sourceTree = SOURCE_ROOT; };
 		FC9FE0F41DCA020800227F94 /* robot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = robot; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +67,7 @@
 				FC3F063D1DD21A3800E8CDB2 /* init.c */,
 				FC07959B1DD4B38C005F0A16 /* test.c */,
 				FC12FB8E1DE3A154002F214B /* tacho.c */,
+				FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */,
 			);
 			name = src;
 			path = robot;
@@ -177,6 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */,
 				FC07959C1DD4B38C005F0A16 /* test.c in Sources */,
 				FCA2FC141DD0D0690007F935 /* utilities.c in Sources */,
 				FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */,

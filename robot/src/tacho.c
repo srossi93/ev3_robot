@@ -373,11 +373,11 @@ void read_from_tacho (engine* tacho)
 
   tacho->dirty = 0;
 }
-void* __read_from_tacho (void*arg)
-{
-  read_from_tacho((engine*)arg);
-  pthread_exit(NULL);
-}
+//void* __read_from_tacho (void*arg)
+//{
+  //read_from_tacho((engine*)arg);
+  //pthread_exit(NULL);
+//}
 
 
 void* __tacho_status_reader (void* engines) {

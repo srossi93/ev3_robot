@@ -37,6 +37,8 @@ robot_init(void);
 
 int engines_init(void);
 
+void sensor_init();
+
 void threads_init();
 
 void threads_deinit(void);

@@ -28,6 +28,6 @@
 
 #include "globals.h"
 
-int test_turn_inplace_by_relative_angle();
-
+void test_turn_inplace_by_relative_angle();
+void test_square();
 #endif /* test_h */
