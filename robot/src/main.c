@@ -5,6 +5,8 @@
 const char const *color[] = { "?", "BLACK", "BLUE", "GREEN", "YELLOW", "RED", "WHITE", "BROWN" };
 #define COLOR_COUNT  (( int )( sizeof( color ) / sizeof( color[ 0 ])))
 
+#define COLISION_DISTANCE	250	/* milimets */
+
 static bool _check_pressed( uint8_t sn )
 {
 	int val;
@@ -28,7 +30,7 @@ int main( void )
 	int val;
 	float value;
 	uint32_t n, ii;
-	bool running = false;
+//	bool running = false;
 
 #ifndef __ARM_ARCH_4T__
 	/* Disable auto-detection of the brick (you have to set the correct address below) */
@@ -107,7 +109,7 @@ int main( void )
 	}
 #endif
 // Some demo
-#if 0
+#if 1
 	printf("Demo: turning left now...");
 	TURN_LEFT();
 	Sleep(2000);
@@ -168,7 +170,9 @@ int main( void )
 			printf("SONAR found, reading sonar...\n");
 			if ( !get_sensor_value0(sn_sonar, &value )) {
 				value = 0;
-			} else if ( value  < 300 ) {
+				/* it's better to temporarily stop the motors */
+				STOP_ALL();
+			} else if ( value  < COLISION_DISTANCE ) {
 				printf( "                  It's too close: \r(%f) \n", value);
 				printf(" TURN LEFT!!\n");
 				TURN_LEFT();
@@ -182,10 +186,10 @@ int main( void )
 				set_tacho_stop_action_inx( right_motor_id, TACHO_COAST );
 				set_tacho_speed_sp( right_motor_id, 0 );
 #endif
-			} else if (value > 300 && running == false ) {
+			} else if (value >= COLISION_DISTANCE ) {
 				//running = true;
 				GO_STRAIGHT(50);
-				Sleep(500);
+				//Sleep(500);
 			}
 			fflush( stdout );
 	    	}
