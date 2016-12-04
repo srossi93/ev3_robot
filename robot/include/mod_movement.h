@@ -16,10 +16,14 @@
  * ENUM DECLERATION
  */
 
+#define RIGHT_MOTOR_PORT "outC"
+#define LEFT_MOTOR_PORT "outB"
+#define ARM_MOTOR_PORT "outD"
+
 /**
  * GLOBAL VARIABLES
  */
-int left_motor_id, right_motor_id;
+int left_motor_id, right_motor_id, arm_motor_id;
 
 /**
  * FUNCTIONS DECLERATIONS
@@ -72,7 +76,7 @@ void mod_mov_align_with_borders(void);
  */
 void test_motor(uint8_t sn);
 
-void MOVE(uint8_t motor_id, uint32_t time);
+void MOVE(uint8_t motor_id, int32_t value);
 
 void STOP(uint8_t motor_id);
 
@@ -84,6 +88,6 @@ void TURN_RIGHT(void);
 
 void TURN_AROUND(void);
 
-void GO_STRAIGHT(uint32_t time); 
+void GO_STRAIGHT(uint32_t distance); 
 
 #endif /* MJOLNIR_MOD_MOV_H */

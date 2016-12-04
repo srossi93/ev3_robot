@@ -40,7 +40,7 @@ void test_motor(uint8_t sn) {
 }
 
 
-void MOVE(uint8_t motor_id, uint32_t time) {
+void MOVE(uint8_t motor_id, int32_t value) {
 	int sn = motor_id;
 	int max_speed;
 	//FLAGS_T state;
@@ -57,15 +57,21 @@ void MOVE(uint8_t motor_id, uint32_t time) {
 	/* stop */
 	set_tacho_stop_action_inx( sn, TACHO_BRAKE );
 	/* set the speed */
-	set_tacho_speed_sp( sn, max_speed * 2 / 3 );
+	set_tacho_speed_sp( sn, max_speed * 1 / 8 );
 	/* set duration of running */
-	set_tacho_time_sp( sn, time );
+	//set_tacho_time_sp( sn, time );
 	/* set wtf? */
 	set_tacho_ramp_up_sp( sn, 0 );
 	/* set wtf? */
 	set_tacho_ramp_down_sp( sn, 0 );
-	/* RUN with specified time */
-	set_tacho_command_inx( sn, TACHO_RUN_TIMED );
+	/* set position */
+#ifdef REVERSE
+	set_tacho_position_sp(sn, (-1)*value);
+#else
+	set_tacho_position_sp(sn, value);
+#endif
+	/* RUN with specified position */
+	set_tacho_command_inx( sn, TACHO_RUN_TO_REL_POS);
 }
 
 void STOP(uint8_t motor_id) {
@@ -78,15 +84,15 @@ void STOP_ALL(void) {
 }
 
 void TURN_LEFT(void) {
-	//MOVE(left_motor_id, 0);
-	STOP(left_motor_id);
-	MOVE(right_motor_id, 600);
+	MOVE(left_motor_id, -180);
+	//STOP(left_motor_id);
+	MOVE(right_motor_id, 180);
 }
 
 void TURN_RIGHT(void) {
-	//MOVE(right_motor_id, 0);
-	STOP(right_motor_id);
-	MOVE(left_motor_id, 600);
+	MOVE(right_motor_id, -180);
+	//STOP(right_motor_id);
+	MOVE(left_motor_id, 180);
 }
 
 void TURN_AROUND(void) {
@@ -94,9 +100,12 @@ void TURN_AROUND(void) {
 	TURN_LEFT();
 }
 
-void GO_STRAIGHT(uint32_t time) {
-	printf("Go straight for %d miliseconds \n", time);
-	MOVE(right_motor_id, time);
-	MOVE(left_motor_id, time);
+void GO_STRAIGHT(uint32_t distance) {
+	int pos = (distance / 15 ) * 360;
+
+	printf("Go straight for %d centimets \n", distance);
+
+	MOVE(right_motor_id, pos);
+	MOVE(left_motor_id, pos);
 }
 

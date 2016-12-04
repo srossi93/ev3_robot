@@ -10,6 +10,7 @@
 #define MJOLNIR_H
 
 #include <stdio.h>
+#include <string.h>
 #include "ev3.h"
 #include "ev3_port.h"
 
