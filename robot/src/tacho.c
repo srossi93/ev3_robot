@@ -299,7 +299,7 @@ inline void write_position_sp       (engine* tacho, int value)
 
 inline void write_speed_sp          (engine* tacho, int value)
 {
-  set_tacho_speed_sp(tacho->address, value);
+  set_tacho_speed_sp(tacho->address, -value);
   return;
 }
 

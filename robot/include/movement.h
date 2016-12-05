@@ -32,7 +32,7 @@ typedef struct
 {
   int16_t angle;
   uint16_t time;
-  uint16_t speed;
+  int16_t speed;
   engine* tacho;
   sem_t sem_engine;
 }turn_engine_arg_struct;

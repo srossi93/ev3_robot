@@ -175,10 +175,10 @@ go_straight(uint16_t time, uint16_t speed)
     printf("Iter #%d - Initial orientation: %d - Final orientation: %d - Error: %d\n",
            i, initial_orientation, current_orientation, current_error);
     
-    if (abs(current_error) > 3) {
+    if (abs(current_error) > 2) {
       write_command(&engines[R], TACHO_STOP);
       write_command(&engines[L], TACHO_STOP);
-      turn_inplace_by_relative_angle(-2 * current_error - 1.1 * previous_error, 200);
+      turn_inplace_by_relative_angle(-current_error, 200);
       previous_error = current_error;
       
       write_time_sp(&engines[R], time - i);
