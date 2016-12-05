@@ -3,19 +3,15 @@
 
 # Site settings
 
-title: Mjolnir Robot
+title: Mjolnir
 description: |
-  Project website for the competition
-
-  on Real Time Operating Systems
-
-  (EURECOM Fall 2016)
+  Just another mythological robot
 
 owner: Simone Rossi # or company name
 first_published: 2016 # if migrating another site, the year of your first publish
 email: rossi@eurecom.fr
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "http://srossi93.github.io/ev3_robot" # the base hostname & protocol for your site
 social:
   twitter: https://twitter.com/<username>
   github: https://github.com/srossi93/ev3_robot
