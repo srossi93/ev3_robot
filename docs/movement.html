@@ -1,18 +1,39 @@
 ---
 layout: page
-title: Prova
+title: Movement
+subtitle: How can we make the robot move? How can we be sure about its accuracy?
 ---
 			<section>
-				<h4>Text</h4>
-				<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-				This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-				This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
+				<h2>Movement</h2>
+        <p>The robot embeds two <em><a href="http://www.ev3dev.org/docs/drivers/tacho-motor-class/">tacho class engines</a></em>,
+          which can be programmed using commands to the relative drivers. </p>
+        <p>The issue with engines and movement in general is the big statistical variance
+          of results of the same command performed on different environments. For instance,
+          turning around on a carpet or in perfectly smooth floor has different effects due
+          to the inertia attenuation of the two materials. So, the question we asked ourselves
+          is: how can we be sure to obtain the expected result?
+        </p>
 				<hr />
 				<header>
-					<h4>Heading with a Subtitle</h4>
-					<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
+					<h3>Digital controller</h3>
+					<p>A little of math behind control theory</p>
 				</header>
-				<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+				<p>The simplest model to describe the dynamic behaviour of the position of
+          the robot is presented in the following formula:</p>
+          <div class="box alt">
+            <div class="row uniform 50%">
+          <div class="7u"><span class="image fit"><img src="images/dc_engine.jpg" alt="" /></span></div>
+          <div class="5u"><span class="image fit"> $$ T(s) = \dfrac{1}{s^2+2s+1} $$
+            <p>Of course, this is a simplistic rappresentation which does not take into account a lot
+              of parameters and features of the real system under test: it's in just the basic
+              model used to evaluate different control strategies.</p><p> The plot on the left shows the
+              response of the model to a constant input (which in our case rappresents the evolution of
+              the position over time)
+             </p>
+           </span></div>
+          </div></div>
+
+
 				<header>
 					<h5>Heading with a Subtitle</h5>
 					<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
