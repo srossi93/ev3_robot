@@ -109,7 +109,11 @@ int main( void )
 	}
 #endif
 // Some demo
-#if 1
+mod_grab_put_down();
+Sleep(5);
+mod_grab_pick_up();
+
+#if 0
 	printf("Demo: turning left now...");
 	TURN_LEFT();
 	Sleep(2000);
@@ -175,7 +179,7 @@ int main( void )
 			} else if ( value  < COLISION_DISTANCE ) {
 				printf( "                  It's too close: \r(%f) \n", value);
 				printf(" TURN LEFT!!\n");
-				TURN_LEFT();
+				//TURN_LEFT();
 				//STOP_ALL();
 				//running = false;
 				Sleep(1000);
@@ -188,7 +192,7 @@ int main( void )
 #endif
 			} else if (value >= COLISION_DISTANCE ) {
 				//running = true;
-				GO_STRAIGHT(50);
+				//GO_STRAIGHT(50);
 				//Sleep(500);
 			}
 			fflush( stdout );
