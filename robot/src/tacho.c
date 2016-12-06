@@ -385,7 +385,7 @@ void* __tacho_status_reader (void* engines) {
   while (1) {
     read_from_tacho(&((engine*)engines)[L]);
     read_from_tacho(&((engine*)engines)[R]);
-
+    read_from_tacho(&((engine*)engines)[ARM]);
     msleep(10);
   }
 }

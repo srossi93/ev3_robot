@@ -23,6 +23,9 @@
 #include "ev3_sensor.h"
 
 #include "tacho.h"
+#include "gyro.h" //----
+#include "us_sensor.h"
+
 #include "utilities.h"
 
 #include "globals.h"

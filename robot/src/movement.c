@@ -82,16 +82,16 @@ turn_inplace_by_relative_angle(int16_t angle, uint16_t speed)
   pthread_t right_tid, left_tid;
   
   int initial_orientation, final_orientation;
-  sensor_ptr gyro_sensor_id;
+  //sensor_ptr gyro_sensor_id;
   int16_t error = angle;
   
   // Search the gyroscope
-  if( !ev3_search_sensor(LEGO_EV3_GYRO, &gyro_sensor_id, 0) )
-  {
-    sprintf(msg, " --> No LEGO_EV3_GYRO found\n\tAborting...\n");
-    log_to_file(msg);
-    return;
-  }
+  //if( !ev3_search_sensor(LEGO_EV3_GYRO, &gyro_sensor_id, 0) )
+  //{
+    //sprintf(msg, " --> No LEGO_EV3_GYRO found\n\tAborting...\n");
+    //log_to_file(msg);
+    //return;
+  //}
   initial_orientation = gyro->angle;
 
   int i = 0;
@@ -117,7 +117,10 @@ turn_inplace_by_relative_angle(int16_t angle, uint16_t speed)
     pthread_join(left_tid, NULL);
     pthread_join(right_tid, NULL);
 
+    pthread_mutex_lock(&gyro_mutex);
     final_orientation = gyro->angle;
+    pthread_mutex_unlock(&gyro_mutex);
+    
     //get_sensor_value(0, gyro_sensor_id, &final_orientation);
     error = -(final_orientation - initial_orientation) + angle;
 
@@ -208,65 +211,7 @@ go_straight(uint16_t time, uint16_t speed)
     turn_inplace_by_relative_angle(-(gyro->angle - initial_orientation), 200);
   }
   
-  
-  //right_engine_args.time = time;
-  //right_engine_args.engine = right_engine;
-  //right_engine_args.speed_mod = speed;
-  //right_engine_args.sem_engine = sem_right_engine;
-  
-  //left_engine_args.time = time;
-  //left_engine_args.engine = left_engine;
-  //left_engine_args.speed_mod = speed;
-  //left_engine_args.sem_engine = sem_left_engine;
-  
-
-  //gettimeofday(&start_time, NULL);
-  
-  //pthread_create(&right_tid, NULL, thread_turn_engine_by_time, (void*)&right_engine_args);
-  //pthread_create(&left_tid,  NULL, thread_turn_engine_by_time, (void*)&left_engine_args);
-  //pthread_create(&error_tid, NULL, thread_check_azimut, NULL);
-
-  
-  //gettimeofday(&current_time, NULL);
-  
-  //timersub(&current_time, &start_time, &diff_time);
-  
-  //printf("Time elapsed: %ld.%06ld\n", (long int)diff_time.tv_sec, (long int)diff_time.tv_usec);
-  //remaining_time = diff_time.tv_sec * 1000 + diff_time.tv_usec;
-  
-  //pthread_join(left_tid, NULL);
-  //pthread_join(right_tid, NULL);
-  
-  
 
   return;
 }
 
-//void *thread_check_azimut() {
-  //int initial_orientation,final_orientation;
-  //sensor_ptr compass_sensor_id;
-  
-  //// Search the gyroscope
-  //if( !ev3_search_sensor(HT_NXT_COMPASS, &compass_sensor_id, 0) )
-  //{
-    //sprintf(msg, " --> No HT_NXT_COMPASS found\n\tAborting...\n");
-    //log_to_file(msg);
-    //pthread_exit(NULL);
-  //}
-  //set_sensor_poll_ms(compass_sensor_id, 10);
-  //get_sensor_value(0, compass_sensor_id, &initial_orientation);
-  //FLAG_adjust = 0;
-
-  //while (1) {
-    //msleep(100);
-    //get_sensor_value(0, compass_sensor_id, &final_orientation);
-    //int error = (final_orientation - initial_orientation);
-    
-    //if ( abs(error) > AZIMUT_ERROR) {
-      //FLAG_adjust = error;
-    //}
-  //}
-  
-  ////pthread_exit(NULL);
-
-//}

@@ -131,9 +131,16 @@ int engines_init(void)
   engines[R].dirty = 0;
   engines[L].dirty = 0;
   
+  
+  ev3_search_tacho_plugged_in(68, 0, &(engines[ARM].address), 0);
+  
   set_tacho_command_inx(engine1, TACHO_RESET);
   set_tacho_command_inx(engine2, TACHO_RESET);
+  set_tacho_command_inx(engines[ARM].address, TACHO_RESET);
   
+  set_tacho_command_inx(engines[L].address, TACHO_RESET );
+  set_tacho_command_inx(engines[R].address, TACHO_RESET );
+  set_tacho_command_inx(engines[ARM].address, TACHO_RESET );
   
   return 1;
 }
@@ -143,8 +150,20 @@ void sensor_init(){
   if( !ev3_search_sensor(LEGO_EV3_GYRO, &(gyro->address), 0) )
   {
     log_to_file(" --> No LEGO_EV3_GYRO found\n\tAborting...\n");
+    return;
   }
   set_sensor_mode(gyro->address, "GYRO-G&A");
+  pthread_mutex_init(&gyro_mutex, NULL);
+  
+  
+  if( !ev3_search_sensor(LEGO_EV3_US, &(us->address), 0) )
+  {
+    log_to_file(" --> No LEGO_EV3_US found\n\tAborting...\n");
+    return;
+  }
+  set_sensor_mode(gyro->address, "US-DIST-CM");
+  pthread_mutex_init(&us_mutex, NULL);
+  
 }
 
 void threads_init(){

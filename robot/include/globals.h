@@ -11,9 +11,11 @@
 
 #include "tacho.h"
 #include "gyro.h"
+#include "us_sensor.h"
 
 engine engines[4];
 gyro_sensor gyro[1];
+us_sensor us[1];
 
 pthread_t engines_status_reader_tid;
 pthread_t gyro_status_reader_tid;

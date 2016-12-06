@@ -1,13 +1,14 @@
 //
-//  gyro.h
+//  us_sensor.h
 //  robot
 //
-//  Created by Simone Rossi on 23/11/16.
+//  Created by Simone Rossi on 06/12/16.
 //  Copyright © 2016 Simone Rossi. All rights reserved.
 //
 
-#ifndef gyro_h
-#define gyro_h
+#ifndef us_sensor_h
+#define us_sensor_h
+
 
 #include <stdio.h>
 #include <unistd.h>
@@ -28,24 +29,22 @@
 typedef uint8_t sensor_ptr;
 #endif
 
-pthread_mutex_t gyro_mutex;
+pthread_mutex_t us_mutex;
 
 typedef struct {
   
   sensor_ptr address;
   
-  /**  Angle in deg (-32768 to 32767) */
-  int angle;
-  /**  Rotational Speed in deg/s(-440 to 440) */
-  int rot_speed;
+  /** Distance in cm */
+  int distance;
+
   
-}gyro_sensor;
+}us_sensor;
 
-int read_gyro_angle(gyro_sensor* gyro);
-int read_gyro_speed(gyro_sensor* gyro);
+int read_us_distance(us_sensor* us);
 
-void read_gyro_status(gyro_sensor* gyro);
+void read_us_status(us_sensor* us);
 
-void* __gyro_status_reader(void* gyro);
+void* __us_status_reader(void* us);
 
 #endif /* gyro_h */
