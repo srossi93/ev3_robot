@@ -16,6 +16,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/time.h>
+#include <string.h>
 
 #include "ev3.h"
 #include "ev3_port.h"

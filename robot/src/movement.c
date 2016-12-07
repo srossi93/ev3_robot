@@ -1,14 +1,14 @@
-//
+/**
 //  movement.c
 //  robot
 //
-//
+*/
 
 #include "movement.h"
 
 
 inline void
-turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed)
+turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed)
 {
 
   int count_to_rotate;
@@ -36,7 +36,7 @@ turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed)
 
 
 inline void
-turn_engine_by_time(engine* tacho, uint16_t time, uint8_t speed)
+turn_engine_by_time(engine* tacho, uint16_t time, int16_t speed)
 {
   
   write_stop_action(tacho, TACHO_COAST);
@@ -76,7 +76,7 @@ __turn_engine_by_time(void *arg)
 }
 
 void
-turn_inplace_by_relative_angle(int16_t angle, uint16_t speed)
+turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
 {
   turn_engine_arg_struct right_engine_args, left_engine_args;
   pthread_t right_tid, left_tid;
@@ -137,7 +137,7 @@ turn_inplace_by_relative_angle(int16_t angle, uint16_t speed)
 
 
 void
-go_straight(uint16_t time, uint16_t speed)
+go_straight(uint16_t time, int16_t speed)
 {
   //turn_engine_arg_struct right_engine_args, left_engine_args;
   //pthread_t right_tid, left_tid, error_tid;
@@ -154,11 +154,11 @@ go_straight(uint16_t time, uint16_t speed)
   write_speed_sp(&engines[R], speed);
   write_speed_sp(&engines[L], speed);
   
-  write_ramp_up_sp(&engines[R], 0);
-  write_ramp_up_sp(&engines[L], 0);
+  write_ramp_up_sp(&engines[R], 1500);
+  write_ramp_up_sp(&engines[L], 1500);
   
-  write_ramp_down_sp(&engines[R], 0);
-  write_ramp_down_sp(&engines[L], 0);
+  write_ramp_down_sp(&engines[R], 500);
+  write_ramp_down_sp(&engines[L], 500);
   
   write_time_sp(&engines[R], time);
   write_time_sp(&engines[L], time);
@@ -186,8 +186,8 @@ go_straight(uint16_t time, uint16_t speed)
            i, initial_orientation, current_orientation, current_error);
     log_to_file(msg);
 
-    write_ramp_up_sp(&engines[R], 250);
-    write_ramp_up_sp(&engines[L], 250);
+    write_ramp_up_sp(&engines[R], 1000);
+    write_ramp_up_sp(&engines[L], 1000);
     
     if (abs(current_error) > 5) {
       write_command(&engines[R], TACHO_STOP);
@@ -226,8 +226,18 @@ go_straight(uint16_t time, uint16_t speed)
     turn_inplace_by_relative_angle(-(gyro_angle - initial_orientation), 200);
     
   }
-  
-
   return;
 }
+
+
+void *
+__go_straight(void* arg){
+  
+  turn_engine_arg_struct args = *(turn_engine_arg_struct*) arg;
+  
+  go_straight(args.time, args.speed);
+  
+  pthread_exit(NULL);
+}
+
 

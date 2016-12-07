@@ -47,7 +47,7 @@ typedef struct
  *  \details Turn one motor by a predefined angle
  */
 inline void
-turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed);
+turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed);
 
 /**
  *  \details Turn one motor for a predefined time
@@ -56,7 +56,7 @@ turn_engine_by_angle(engine* tacho, int16_t angle, uint16_t speed);
  *  \param speed_mod Speed modification parameter (speed = max / speed_mod)
  */
 inline void
-turn_engine_by_time(engine* tacho, uint16_t time, uint8_t speed);
+turn_engine_by_time(engine* tacho, uint16_t time, int16_t speed);
 
 /**
  *  \details Threaded version of \ref turn_engine function
@@ -77,7 +77,7 @@ __turn_engine_by_time(void *arg);
  * \param angle[negative] Relative angle, turn left
  */
 void
-turn_inplace_by_relative_angle(int16_t angle, uint16_t speed);
+turn_inplace_by_relative_angle(int16_t angle, int16_t speed);
 
 /**
  *  \details Identify the correct right and left engine
@@ -89,9 +89,13 @@ int
 identify_engines(engine_ptr *right_engine, engine_ptr *left_engine);
 
 void
-go_straight(uint16_t time, uint16_t speed);
+go_straight(uint16_t time, int16_t speed);
 
-void* thread_check_azimut();
+
+void *
+__go_straight(void* arg);
+
+//void* thread_check_azimut();
 
 
 #endif /* movement_h */

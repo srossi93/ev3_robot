@@ -20,9 +20,18 @@ typedef enum {
 
 ARM_STATUS arm_status;
 
-void deploy_arm(engine* engine);
-void open_arm(engine* engine);
-void close_arm(engine* engine);
-void undeploy_arm(engine* engine);
+FLAGS_T ball_found;
+
+void deploy_arm(engine* arm);
+void open_arm(engine* arm);
+void close_arm(engine* arm);
+void undeploy_arm(engine* arm);
+
+
+void grab_ball(engine* arm);
+
+
+void* __check_ball();
+
 #define _grabber_h
 #endif /* grabber_h */

@@ -151,23 +151,55 @@ int engines_init(void)
 }
 
 void sensor_init(){
-  // Search the gyroscope
-  if( !ev3_search_sensor(LEGO_EV3_GYRO, &(gyro->address), 0) )
-  {
-    log_to_file(" --> No LEGO_EV3_GYRO found\n\tAborting...\n");
-    return;
+  
+  int i;
+  for ( i = 0; i < DESC_LIMIT; i++ ) {
+    if ( ev3_sensor[ i ].type_inx != SENSOR_TYPE__NONE_ ) {
+      if ( !strcmp(ev3_sensor_type( ev3_sensor[ i ].type_inx ), "lego-ev3-color") )
+        color->address=i;
+      
+      if ( !strcmp(ev3_sensor_type( ev3_sensor[ i ].type_inx ), "lego-ev3-gyro") )
+        gyro->address=i;
+      
+      if ( !strcmp(ev3_sensor_type( ev3_sensor[ i ].type_inx ), "lego-ev3-us") )
+        gyro->address=i;
+      
+    }
   }
+
+  
+  
+  
+  
+  
+  
+  // Search the gyroscope
+  //if( !ev3_search_sensor(LEGO_EV3_GYRO, &(gyro->address), 0) )
+  //{
+    //log_to_file(" --> No LEGO_EV3_GYRO found\n\tAborting...\n");
+    //return;
+  //}
   set_sensor_mode(gyro->address, "GYRO-G&A");
   pthread_mutex_init(&gyro_mutex, NULL);
   
   
-  if( !ev3_search_sensor(LEGO_EV3_US, &(us->address), 0) )
-  {
-    log_to_file(" --> No LEGO_EV3_US found\n\tAborting...\n");
-    return;
-  }
+  //if( !ev3_search_sensor(LEGO_EV3_US, &(us->address), 0) )
+  //{
+    //log_to_file(" --> No LEGO_EV3_US found\n\tAborting...\n");
+    //return;
+  //}
   set_sensor_mode(gyro->address, "US-DIST-CM");
   pthread_mutex_init(&us_mutex, NULL);
+  
+  
+  //if( !ev3_search_sensor(LEGO_EV3_COLOR, &(color->address), 0) )
+  //{
+    //log_to_file(" --> No LEGO_EV3_COLOR found\n\tAborting...\n");
+    //return;
+  //}
+  set_sensor_mode(color->address, "COL-REFLECT");
+  pthread_mutex_init(&color_mutex, NULL);
+  
   
 }
 
@@ -178,6 +210,8 @@ void threads_init(){
   log_to_file("GYRO STATUS READER -> THREAD -- Created\n");
   pthread_create(&us_status_reader_tid, NULL, __us_status_reader, (void*)us);
   log_to_file("US STATUS READER -> THREAD -- Created\n");
+  pthread_create(&color_status_reader_tid, NULL, __color_status_reader, (void*)color);
+  log_to_file("COLOR STATUS READER -> THREAD -- Created\n");
 }
 
 

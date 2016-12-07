@@ -16,6 +16,7 @@
 		FCA2FC141DD0D0690007F935 /* utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC131DD0D0690007F935 /* utilities.c */; };
 		FCABB1091DF6E84400B74E58 /* us_sensor.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB1081DF6E84400B74E58 /* us_sensor.c */; };
 		FCABB10C1DF81DD600B74E58 /* grabber.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB10B1DF81DD600B74E58 /* grabber.c */; };
+		FCABB10F1DF8638400B74E58 /* color_sensor.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB10E1DF8638400B74E58 /* color_sensor.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +52,8 @@
 		FCABB1081DF6E84400B74E58 /* us_sensor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = us_sensor.c; path = src/us_sensor.c; sourceTree = SOURCE_ROOT; };
 		FCABB10A1DF81BEC00B74E58 /* grabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = grabber.h; path = include/grabber.h; sourceTree = SOURCE_ROOT; };
 		FCABB10B1DF81DD600B74E58 /* grabber.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = grabber.c; path = src/grabber.c; sourceTree = SOURCE_ROOT; };
+		FCABB10D1DF860F300B74E58 /* color_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = color_sensor.h; path = include/color_sensor.h; sourceTree = SOURCE_ROOT; };
+		FCABB10E1DF8638400B74E58 /* color_sensor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = color_sensor.c; path = src/color_sensor.c; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +79,7 @@
 				FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */,
 				FCABB1081DF6E84400B74E58 /* us_sensor.c */,
 				FCABB10B1DF81DD600B74E58 /* grabber.c */,
+				FCABB10E1DF8638400B74E58 /* color_sensor.c */,
 			);
 			name = src;
 			path = robot;
@@ -111,6 +115,7 @@
 				FC2AC4341DE5B4580016C0B6 /* gyro.h */,
 				FCABB1071DF6E7C800B74E58 /* us_sensor.h */,
 				FCABB10A1DF81BEC00B74E58 /* grabber.h */,
+				FCABB10D1DF860F300B74E58 /* color_sensor.h */,
 			);
 			name = include;
 			path = robot;
@@ -191,6 +196,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */,
+				FCABB10F1DF8638400B74E58 /* color_sensor.c in Sources */,
 				FC07959C1DD4B38C005F0A16 /* test.c in Sources */,
 				FCA2FC141DD0D0690007F935 /* utilities.c in Sources */,
 				FCABB10C1DF81DD600B74E58 /* grabber.c in Sources */,
