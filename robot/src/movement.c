@@ -92,8 +92,10 @@ turn_inplace_by_relative_angle(int16_t angle, uint16_t speed)
     //log_to_file(msg);
     //return;
   //}
+  pthread_mutex_lock(&gyro_mutex);
   initial_orientation = gyro->angle;
-
+  pthread_mutex_unlock(&gyro_mutex);
+  
   int i = 0;
   
   sprintf(msg, "Turn %s %+d\n", (angle > 0 ? "right" : "left") , angle);
@@ -169,16 +171,25 @@ go_straight(uint16_t time, uint16_t speed)
   int i;
   previous_error = 0;
   
+  pthread_mutex_lock(&gyro_mutex);
   initial_orientation = gyro->angle;
+  pthread_mutex_unlock(&gyro_mutex);
   
   for (i = 0; i < time; i += 250)
   {
+    pthread_mutex_lock(&gyro_mutex);
     current_orientation = gyro->angle;
-    current_error = (current_orientation - initial_orientation);
-    printf("Iter #%d - Initial orientation: %d - Final orientation: %d - Error: %d\n",
-           i, initial_orientation, current_orientation, current_error);
+    pthread_mutex_unlock(&gyro_mutex);
     
-    if (abs(current_error) > 2) {
+    current_error = (current_orientation - initial_orientation);
+    sprintf(msg, "Iter #%d - Initial orientation: %d - Final orientation: %d - Error: %d\n",
+           i, initial_orientation, current_orientation, current_error);
+    log_to_file(msg);
+
+    write_ramp_up_sp(&engines[R], 250);
+    write_ramp_up_sp(&engines[L], 250);
+    
+    if (abs(current_error) > 5) {
       write_command(&engines[R], TACHO_STOP);
       write_command(&engines[L], TACHO_STOP);
       turn_inplace_by_relative_angle(-current_error, 200);
@@ -193,8 +204,8 @@ go_straight(uint16_t time, uint16_t speed)
       write_speed_sp(&engines[R], speed);
       write_speed_sp(&engines[L], speed);
       
-      write_ramp_up_sp(&engines[R], 0);
-      write_ramp_up_sp(&engines[L], 0);
+      write_ramp_up_sp(&engines[R], 250);
+      write_ramp_up_sp(&engines[L], 250);
       
       write_ramp_down_sp(&engines[R], 0);
       write_ramp_down_sp(&engines[L], 0);
@@ -204,11 +215,16 @@ go_straight(uint16_t time, uint16_t speed)
     }
     msleep(250);
   }
-  
+  pthread_mutex_lock(&gyro_mutex);
   current_orientation = gyro->angle;
+  pthread_mutex_unlock(&gyro_mutex);
   
   if ((current_orientation - initial_orientation) != 0) {
-    turn_inplace_by_relative_angle(-(gyro->angle - initial_orientation), 200);
+    pthread_mutex_lock(&gyro_mutex);
+    int gyro_angle = gyro->angle;
+    pthread_mutex_unlock(&gyro_mutex);
+    turn_inplace_by_relative_angle(-(gyro_angle - initial_orientation), 200);
+    
   }
   
 

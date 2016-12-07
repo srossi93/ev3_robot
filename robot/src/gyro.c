@@ -28,9 +28,10 @@ void read_gyro_status(gyro_sensor* gyro){
 }
 
 void* __gyro_status_reader(void* gyro){
-  log_to_file("GYRO STATUS READER -> THREAD -- Created\n");
   while (1) {
+    pthread_mutex_lock(&gyro_mutex);
     read_gyro_status((gyro_sensor*)gyro);
+    pthread_mutex_unlock(&gyro_mutex);
     msleep(10);
   }
 }

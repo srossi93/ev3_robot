@@ -381,7 +381,6 @@ void read_from_tacho (engine* tacho)
 
 
 void* __tacho_status_reader (void* engines) {
-    log_to_file("TACHO STATUS READER -> THREAD -- Created\n");
   while (1) {
     read_from_tacho(&((engine*)engines)[L]);
     read_from_tacho(&((engine*)engines)[R]);

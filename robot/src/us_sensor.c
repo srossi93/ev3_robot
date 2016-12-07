@@ -8,6 +8,7 @@
 
 #include "us_sensor.h"
 
+
 int read_us_distance(us_sensor* us){
   int tmp;
   get_sensor_value(0, us->address, &tmp);
@@ -19,7 +20,6 @@ void read_us_status(us_sensor* us){
 }
 
 void* __us_status_reader(void* us){
-  log_to_file("US STATUS READER -> THREAD -- Created\n");
   while (1) {
     pthread_mutex_lock(&us_mutex);
       read_us_status((us_sensor*)us);

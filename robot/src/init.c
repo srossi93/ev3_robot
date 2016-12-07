@@ -63,7 +63,7 @@ int engines_init(void)
   log_to_file(msg);
   
   // Search the first engine
-  if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine1, 0) )
+  if ( !ev3_search_tacho_plugged_in(65, 0, &engine1, 0) )
   {
     sprintf(msg, " --> No LEGO_EV3_L_MOTOR found\n\tAborting...\n");
     log_to_file(msg);
@@ -71,12 +71,15 @@ int engines_init(void)
   }
   
   // Search the second engine
-  if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &engine2, engine1 + 1) )
+  if ( !ev3_search_tacho_plugged_in(66, 0, &engine2, 0) )
   {
     sprintf(msg, " --> No second LEGO_EV3_L_MOTOR found\n\tAborting...\n");
     log_to_file(msg);
     return 0;
   }
+  
+  ev3_search_tacho_plugged_in(68, 0, &(engines[ARM].address), 0);
+  set_tacho_command_inx(engines[ARM].address, TACHO_RESET);
   
   // Search the gyroscope
   if( !ev3_search_sensor(LEGO_EV3_GYRO, &gyro_sensor_id, 0) )
@@ -132,7 +135,7 @@ int engines_init(void)
   engines[L].dirty = 0;
   
   
-  ev3_search_tacho_plugged_in(68, 0, &(engines[ARM].address), 0);
+
   
   set_tacho_command_inx(engine1, TACHO_RESET);
   set_tacho_command_inx(engine2, TACHO_RESET);
@@ -141,6 +144,8 @@ int engines_init(void)
   set_tacho_command_inx(engines[L].address, TACHO_RESET );
   set_tacho_command_inx(engines[R].address, TACHO_RESET );
   set_tacho_command_inx(engines[ARM].address, TACHO_RESET );
+
+  arm_status = ARM_UP;
   
   return 1;
 }
@@ -168,7 +173,11 @@ void sensor_init(){
 
 void threads_init(){
   pthread_create(&engines_status_reader_tid, NULL, __tacho_status_reader, (void*)engines);
+  log_to_file("TACHO STATUS READER -> THREAD -- Created\n");
   pthread_create(&gyro_status_reader_tid, NULL, __gyro_status_reader, (void*)gyro);
+  log_to_file("GYRO STATUS READER -> THREAD -- Created\n");
+  pthread_create(&us_status_reader_tid, NULL, __us_status_reader, (void*)us);
+  log_to_file("US STATUS READER -> THREAD -- Created\n");
 }
 
 
@@ -179,4 +188,6 @@ void threads_deinit()
   log_to_file("TACHO STATUS READER -> THREAD -- Terminated\n");
   pthread_cancel(gyro_status_reader_tid);
   log_to_file("GYRO STATUS READER -> THREAD -- Terminated\n");
+  pthread_cancel(us_status_reader_tid);
+  log_to_file("US STATUS READER -> THREAD -- Terminated\n");
 }

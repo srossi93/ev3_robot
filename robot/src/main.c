@@ -15,7 +15,7 @@
 #include "movement.h"
 #include "init.h"
 #include "test.h"
-
+#include "grabber.h"
 
 int main( void )
 {
@@ -27,10 +27,24 @@ int main( void )
     //printf("%d %d\n", gyro->angle, gyro->rot_speed);
   //}
   sleep(2);
+ 
+  
+  deploy_arm(&engines[ARM]);
+  
+  open_arm(&engines[ARM]);
+  
+  close_arm(&engines[ARM]);
+  
+  open_arm(&engines[ARM]);
+  
+  close_arm(&engines[ARM]);
+  
+  undeploy_arm(&engines[ARM]);
+  
   
   //test_square();
   
-  //threads_deinit();
+ 
   
   
   //if ( !ev3_search_tacho(LEGO_EV3_L_MOTOR, &(engines[ARM].address), (engines[L].address>engines[R].address ? engines[L].address : engines[R].address) ))
@@ -40,38 +54,43 @@ int main( void )
     //return 0;
   //}
   
-  int i;
-  char s[255];
-  printf( "Found tacho motors:\n" );
-  for ( i = 0; i < DESC_LIMIT; i++ ) {
-    if ( ev3_tacho[ i ].type_inx != TACHO_TYPE__NONE_ ) {
-      printf( "  type = %s\n", ev3_tacho_type( ev3_tacho[ i ].type_inx ));
-      printf( "  port = %s\n", ev3_tacho_port_name( i, s ));
-    }
-  }
+  //int i;
+  //char s[255];
+  //printf( "Found tacho motors:\n" );
+  //for ( i = 0; i < DESC_LIMIT; i++ ) {
+    //if ( ev3_tacho[ i ].type_inx != TACHO_TYPE__NONE_ ) {
+      //printf( "  type = %s\n", ev3_tacho_type( ev3_tacho[ i ].type_inx ));
+      //printf( "  port = %s\n", ev3_tacho_port_name( i, s ));
+    //}
+  //}
   
-  //ev3_search_tacho_plugged_in(68, 0, &(engines[ARM].address), 0);
   
-  printf("UP and CLOSED");
-  turn_engine_by_angle(&(engines[ARM]), -250, 200);
-  printf("DOWN and CLOSED");
+ 
   
-  msleep(1000);
+  //printf("UP and CLOSED\n");
+  //turn_engine_by_angle(&(engines[ARM]), -250, 200);
+  //printf("DOWN and CLOSED\n");
   
-  turn_engine_by_angle(&(engines[ARM]), -250, 50);
-  printf("DOWN and OPEN");
+  //msleep(1000);
   
-  msleep(1000);
+  //turn_engine_by_angle(&(engines[ARM]), -250, 50);
+  //printf("DOWN and OPEN\n");
   
-  turn_engine_by_angle(&(engines[ARM]), +250, 50);
-  printf("DOWN and CLOSED");
+  //msleep(1000);
   
-  msleep(1000);
+  //turn_engine_by_angle(&(engines[ARM]), +250, 50);
+  //printf("DOWN and CLOSED\n");
   
-  turn_engine_by_angle(&(engines[ARM]), +250, 200);
-  printf("UP and CLOSED");
+  //msleep(1000);
+  
+  //turn_engine_by_angle(&(engines[ARM]), +250, 200);
+  //printf("UP and CLOSED\n");
 
   
+
+
+  
+  threads_deinit();
   ev3_uninit();
   printf( "*** ( EV3 ) Bye! ***\n" );
   

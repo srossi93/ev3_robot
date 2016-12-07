@@ -26,6 +26,8 @@
 #include "tacho.h"
 #include "gyro.h"
 
+//#include "globals.h"
+
 #define AZIMUT_ERROR 1
 
 typedef struct

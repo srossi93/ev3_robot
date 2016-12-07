@@ -15,6 +15,7 @@
 		FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC101DD0CCBB0007F935 /* movement.c */; };
 		FCA2FC141DD0D0690007F935 /* utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC131DD0D0690007F935 /* utilities.c */; };
 		FCABB1091DF6E84400B74E58 /* us_sensor.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB1081DF6E84400B74E58 /* us_sensor.c */; };
+		FCABB10C1DF81DD600B74E58 /* grabber.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB10B1DF81DD600B74E58 /* grabber.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +49,8 @@
 		FCA2FC151DD13FC20007F935 /* init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = init.h; path = include/init.h; sourceTree = SOURCE_ROOT; };
 		FCABB1071DF6E7C800B74E58 /* us_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = us_sensor.h; path = include/us_sensor.h; sourceTree = SOURCE_ROOT; };
 		FCABB1081DF6E84400B74E58 /* us_sensor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = us_sensor.c; path = src/us_sensor.c; sourceTree = SOURCE_ROOT; };
+		FCABB10A1DF81BEC00B74E58 /* grabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = grabber.h; path = include/grabber.h; sourceTree = SOURCE_ROOT; };
+		FCABB10B1DF81DD600B74E58 /* grabber.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = grabber.c; path = src/grabber.c; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +75,7 @@
 				FC12FB8E1DE3A154002F214B /* tacho.c */,
 				FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */,
 				FCABB1081DF6E84400B74E58 /* us_sensor.c */,
+				FCABB10B1DF81DD600B74E58 /* grabber.c */,
 			);
 			name = src;
 			path = robot;
@@ -106,6 +110,7 @@
 				FC2AC4331DE5B10A0016C0B6 /* globals.h */,
 				FC2AC4341DE5B4580016C0B6 /* gyro.h */,
 				FCABB1071DF6E7C800B74E58 /* us_sensor.h */,
+				FCABB10A1DF81BEC00B74E58 /* grabber.h */,
 			);
 			name = include;
 			path = robot;
@@ -188,6 +193,7 @@
 				FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */,
 				FC07959C1DD4B38C005F0A16 /* test.c in Sources */,
 				FCA2FC141DD0D0690007F935 /* utilities.c in Sources */,
+				FCABB10C1DF81DD600B74E58 /* grabber.c in Sources */,
 				FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */,
 				FC12FB8F1DE3A154002F214B /* tacho.c in Sources */,
 				FCABB1091DF6E84400B74E58 /* us_sensor.c in Sources */,

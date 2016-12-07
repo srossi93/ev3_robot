@@ -30,6 +30,7 @@
 
 #include "globals.h"
 
+
 /**
  *  \details Performs robot initialization (both motors and sensors)
  *  \return 1 if successfull, 0 if errors occured

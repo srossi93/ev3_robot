@@ -52,7 +52,7 @@ void test_turn_inplace_by_relative_angle() {
 
 void test_square(){
   int i;
-  for (i = 0; i < 4*3; i++) {
+  for (i = 0; i < 4*2; i++) {
     go_straight(3000, 400);
     turn_inplace_by_relative_angle(90, 300);
   }
