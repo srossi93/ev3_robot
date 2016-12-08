@@ -28,6 +28,8 @@ void detect_obstacles(void)
 			stop_engines();
 			return;
 		}
+		msleep(100);
+		printf("state left = %d, state right = %d\n", engines[L].state, engines[R].state);
 	}
 }
 
@@ -47,10 +49,11 @@ int main( int argc, char* argv[] )
 
   /* Go straight */
 	printf("Go straight for 10 seconds\n");
-	//printf("Go straight for 130 centimets\n");
-	//go_straight_dist(1300);
+	//printf("Go straight for 500 centimets\n");
+	//go_straight_dist(1, 300);
 	___go_straight(10000, 100);
 	/* continuously check if there a obstacles */
+#if 1
 	printf("Detecting obstacles...\n");
 	detect_obstacles();
 	//sleep(1);
@@ -79,7 +82,7 @@ int main( int argc, char* argv[] )
 	/* continuously check if there a obstacles */
 	detect_obstacles();
   /*  */
-  
+#endif
   /*  */
   
   /*  */
