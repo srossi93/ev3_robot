@@ -264,7 +264,7 @@ stop_engines(void){
 void
 go_straight_dist(int16_t position, int16_t speed){
   uint16_t time;
-  time = abs(position/(speed/count_per_m)) * 1000;
+  time = abs(position/(speed/engines[R].count_per_m)) * 1000;
   if (position < 0) 
     speed = -speed;
   go_straight(time, speed);
