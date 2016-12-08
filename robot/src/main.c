@@ -49,7 +49,7 @@ int main( int argc, char* argv[] )
 	printf("Go straight for 10 seconds\n");
 	//printf("Go straight for 130 centimets\n");
 	//go_straight_dist(1300);
-	go_straight(10000, 100);
+	___go_straight(10000, 100);
 	/* continuously check if there a obstacles */
 	printf("Detecting obstacles...\n");
 	detect_obstacles();
@@ -65,7 +65,7 @@ int main( int argc, char* argv[] )
   /* Go straight for 100 centimets*/
   	//go_straight_dist(1000);
 	printf("Go straight for 5 seconds\n");
-	go_straight(5000, 100);
+	___go_straight(5000, 100);
 	/* continuously check if there a obstacles */
 	printf("Detecting obstacles...\n");
 	detect_obstacles();
@@ -75,7 +75,7 @@ int main( int argc, char* argv[] )
   /* Go straight for 50 centimets */
   	//go_straight_dist(500);
 	printf("Go straight for 10 seconds\n");
-	go_straight(10000, 100);
+	___go_straight(10000, 100);
 	/* continuously check if there a obstacles */
 	detect_obstacles();
   /*  */

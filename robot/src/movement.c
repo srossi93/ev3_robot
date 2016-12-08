@@ -252,3 +252,10 @@ ___go_straight(uint16_t time, int16_t speed){
   pthread_create(&tid, NULL, __go_straight, (void*)&arg);
   return tid;
 }
+void 
+stop_engines(void){
+//function to stop all the motors at the same time
+	write_command(&engines[R],TACHO_STOP);
+	write_command(&engines[L],TACHO_STOP);
+	write_command(&engines[ARM],TACHO_STOP);
+}
