@@ -1,0 +1,2 @@
+rsync -vut robot/src/*.c robot@192.168.2.3:~/ev3_robot/robot/src/
+rsync -vut robot/include/*.h robot@192.168.2.3:~/ev3_robot/robot/include/

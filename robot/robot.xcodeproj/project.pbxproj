@@ -7,7 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC07959C1DD4B38C005F0A16 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = FC07959B1DD4B38C005F0A16 /* test.c */; };
+		FC12FB8F1DE3A154002F214B /* tacho.c in Sources */ = {isa = PBXBuildFile; fileRef = FC12FB8E1DE3A154002F214B /* tacho.c */; };
+		FC3F063E1DD21A3800E8CDB2 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = FC3F063D1DD21A3800E8CDB2 /* init.c */; };
+		FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */ = {isa = PBXBuildFile; fileRef = FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */; };
 		FC72AF9C1DCA08E400CC1908 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = FC72AF9B1DCA08E400CC1908 /* main.c */; settings = {COMPILER_FLAGS = "-Ofast"; }; };
+		FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC101DD0CCBB0007F935 /* movement.c */; };
+		FCA2FC141DD0D0690007F935 /* utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = FCA2FC131DD0D0690007F935 /* utilities.c */; };
+		FCABB1091DF6E84400B74E58 /* us_sensor.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB1081DF6E84400B74E58 /* us_sensor.c */; };
+		FCABB10C1DF81DD600B74E58 /* grabber.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB10B1DF81DD600B74E58 /* grabber.c */; };
+		FCABB10F1DF8638400B74E58 /* color_sensor.c in Sources */ = {isa = PBXBuildFile; fileRef = FCABB10E1DF8638400B74E58 /* color_sensor.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,9 +32,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FC07959A1DD4B376005F0A16 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test.h; path = include/test.h; sourceTree = SOURCE_ROOT; };
+		FC07959B1DD4B38C005F0A16 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = src/test.c; sourceTree = SOURCE_ROOT; };
+		FC12FB8D1DE3A133002F214B /* tacho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tacho.h; path = include/tacho.h; sourceTree = SOURCE_ROOT; };
+		FC12FB8E1DE3A154002F214B /* tacho.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tacho.c; path = src/tacho.c; sourceTree = SOURCE_ROOT; };
+		FC12FB911DE3A194002F214B /* include.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = include.h; path = include/include.h; sourceTree = SOURCE_ROOT; };
+		FC2AC4331DE5B10A0016C0B6 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = include/globals.h; sourceTree = SOURCE_ROOT; };
+		FC2AC4341DE5B4580016C0B6 /* gyro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gyro.h; path = include/gyro.h; sourceTree = SOURCE_ROOT; };
+		FC3F063D1DD21A3800E8CDB2 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = src/init.c; sourceTree = SOURCE_ROOT; };
+		FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gyro.c; path = src/gyro.c; sourceTree = SOURCE_ROOT; };
 		FC72AF9B1DCA08E400CC1908 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = src/main.c; sourceTree = SOURCE_ROOT; };
-		FC72AF9D1DCA095900CC1908 /* template.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = template.h; path = include/template.h; sourceTree = SOURCE_ROOT; };
+		FC72AF9D1DCA095900CC1908 /* movement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = movement.h; path = include/movement.h; sourceTree = SOURCE_ROOT; };
 		FC9FE0F41DCA020800227F94 /* robot */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = robot; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCA2FC101DD0CCBB0007F935 /* movement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = movement.c; path = src/movement.c; sourceTree = SOURCE_ROOT; };
+		FCA2FC121DD0CFF30007F935 /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utilities.h; path = include/utilities.h; sourceTree = SOURCE_ROOT; };
+		FCA2FC131DD0D0690007F935 /* utilities.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utilities.c; path = src/utilities.c; sourceTree = SOURCE_ROOT; };
+		FCA2FC151DD13FC20007F935 /* init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = init.h; path = include/init.h; sourceTree = SOURCE_ROOT; };
+		FCABB1071DF6E7C800B74E58 /* us_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = us_sensor.h; path = include/us_sensor.h; sourceTree = SOURCE_ROOT; };
+		FCABB1081DF6E84400B74E58 /* us_sensor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = us_sensor.c; path = src/us_sensor.c; sourceTree = SOURCE_ROOT; };
+		FCABB10A1DF81BEC00B74E58 /* grabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = grabber.h; path = include/grabber.h; sourceTree = SOURCE_ROOT; };
+		FCABB10B1DF81DD600B74E58 /* grabber.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = grabber.c; path = src/grabber.c; sourceTree = SOURCE_ROOT; };
+		FCABB10D1DF860F300B74E58 /* color_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = color_sensor.h; path = include/color_sensor.h; sourceTree = SOURCE_ROOT; };
+		FCABB10E1DF8638400B74E58 /* color_sensor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = color_sensor.c; path = src/color_sensor.c; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +71,15 @@
 			isa = PBXGroup;
 			children = (
 				FC72AF9B1DCA08E400CC1908 /* main.c */,
+				FCA2FC101DD0CCBB0007F935 /* movement.c */,
+				FCA2FC131DD0D0690007F935 /* utilities.c */,
+				FC3F063D1DD21A3800E8CDB2 /* init.c */,
+				FC07959B1DD4B38C005F0A16 /* test.c */,
+				FC12FB8E1DE3A154002F214B /* tacho.c */,
+				FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */,
+				FCABB1081DF6E84400B74E58 /* us_sensor.c */,
+				FCABB10B1DF81DD600B74E58 /* grabber.c */,
+				FCABB10E1DF8638400B74E58 /* color_sensor.c */,
 			);
 			name = src;
 			path = robot;
@@ -68,7 +105,17 @@
 		FC9FE0F61DCA020800227F94 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				FC72AF9D1DCA095900CC1908 /* template.h */,
+				FC72AF9D1DCA095900CC1908 /* movement.h */,
+				FCA2FC121DD0CFF30007F935 /* utilities.h */,
+				FCA2FC151DD13FC20007F935 /* init.h */,
+				FC07959A1DD4B376005F0A16 /* test.h */,
+				FC12FB8D1DE3A133002F214B /* tacho.h */,
+				FC12FB911DE3A194002F214B /* include.h */,
+				FC2AC4331DE5B10A0016C0B6 /* globals.h */,
+				FC2AC4341DE5B4580016C0B6 /* gyro.h */,
+				FCABB1071DF6E7C800B74E58 /* us_sensor.h */,
+				FCABB10A1DF81BEC00B74E58 /* grabber.h */,
+				FCABB10D1DF860F300B74E58 /* color_sensor.h */,
 			);
 			name = include;
 			path = robot;
@@ -148,7 +195,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */,
+				FCABB10F1DF8638400B74E58 /* color_sensor.c in Sources */,
+				FC07959C1DD4B38C005F0A16 /* test.c in Sources */,
+				FCA2FC141DD0D0690007F935 /* utilities.c in Sources */,
+				FCABB10C1DF81DD600B74E58 /* grabber.c in Sources */,
+				FCA2FC111DD0CCBB0007F935 /* movement.c in Sources */,
+				FC12FB8F1DE3A154002F214B /* tacho.c in Sources */,
+				FCABB1091DF6E84400B74E58 /* us_sensor.c in Sources */,
 				FC72AF9C1DCA08E400CC1908 /* main.c in Sources */,
+				FC3F063E1DD21A3800E8CDB2 /* init.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +295,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib_ev3/source/ev3";
+				USER_HEADER_SEARCH_PATHS = "../lib_ev3/** ../lib_ev3/source/ev3/**";
 			};
 			name = Debug;
 		};
@@ -248,7 +304,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../lib/** ../lib_ev3/source/ev3";
+				USER_HEADER_SEARCH_PATHS = "../lib_ev3/** ../lib_ev3/source/ev3/**";
 			};
 			name = Release;
 		};

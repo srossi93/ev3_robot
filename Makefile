@@ -4,8 +4,8 @@ C_FILES = $(wildcard robot/src/*.c)
 OBJ_FILES = $(addprefix $(OBJ_DIR),$(notdir $(C_FILES:.c=.o)))
 
 
-CFLAGS = $(INC_DIR) -Wall -Ofast
-LDFLAGS = -lm -lbluetooth -pthread
+CFLAGS = $(INC_DIR) -Wall -O0 -g -D DEBUG_TERMINAL
+LDFLAGS = -lm -pthread
 
 robot: $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o run $^ lib_ev3/lib/libev3dev-c.a $(LDFLAGS)
@@ -16,4 +16,5 @@ obj/%.o: robot/src/%.c
 
 clean:
 	rm -rf $(OBJ_DIR)
-	rm -f robot
+	rm -f run
+	rm -f log.txt
