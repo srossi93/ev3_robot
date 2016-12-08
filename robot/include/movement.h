@@ -74,6 +74,8 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed);
 void
 go_straight(uint16_t time, int16_t speed);
 
+void
+stop_engines(void);
 
 /**
  *  \details Threaded version of \ref go_straight function
