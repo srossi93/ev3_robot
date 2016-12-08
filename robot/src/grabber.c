@@ -73,7 +73,7 @@ void grab_ball(engine* arm){
     pthread_t check_tid, run_tid;
     turn_engine_arg_struct arg;
     arg.time = 10000;
-    arg.speed = 100;
+    arg.speed = 50;
     
     pthread_create(&run_tid, NULL, __go_straight, (void*)&arg);
     pthread_create(&check_tid, NULL, __check_ball, NULL);
@@ -105,6 +105,21 @@ void grab_ball(engine* arm){
   undeploy_arm(&engines[ARM], 500);
 }
 
+void release_ball(engine* arm){
+
+  //turn_inplace_by_relative_angle(180, 100);
+  
+  deploy_arm(&engines[ARM], 500);
+  
+  open_arm(&engines[ARM], 20);
+  
+  go_straight(3000, -200);
+  
+  close_arm(&engines[ARM], 300);
+  undeploy_arm(&engines[ARM], 300);
+  
+  
+}
 
 
 /*****************************************************
