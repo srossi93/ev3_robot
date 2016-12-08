@@ -20,94 +20,71 @@
 
 extern pthread_cond_t cv_ball_detected;
 
-int main( void )
+void detect_obstacles(void)
 {
-  if (!robot_init()) return 1;
-  
-  //while (1)
-  //{
-    //msleep(1000);
-    //printf("%d %d\n", gyro->angle, gyro->rot_speed);
-  //}
-  sleep(2);
-  
-  
-  //turn_engine_arg_struct arg;
-  //arg.speed = 50;
-  //arg.time = 10000;
-  //int i,ii,n,val;
-  //char s[255];
-  //for ( i = 0; i < DESC_LIMIT; i++ ) {
-    //if ( ev3_sensor[ i ].type_inx != SENSOR_TYPE__NONE_ ) {
-      //if ( !strcmp(ev3_sensor_type( ev3_sensor[ i ].type_inx ), "lego-ev3-color") )
-        //color->address=i;
-        
-    //}
-  //}
-  
-  
+	while ( (engines[L].state != 0 ) && (engines[R].state != 0) ) {
+		if (us->distance <= 200) {
+			printf("Stop engines\n");
+			stop_engines();
+			return;
+		}
+	}
+}
 
-  //while (1) {
-    //msleep(500);
-    //pthread_mutex_lock(&color_mutex);
-    //int tmp;
-    //get_sensor_value(0, color->address, &tmp);
-    //printf("Refl: %d\n", tmp);
-    //get_sensor_value(0, gyro->address, &tmp);
-    //printf("Ang: %d\n", tmp);
-    //if (color->reflection > 10)
-    //  pthread_cond_signal(&cv_ball_detected);
-    //pthread_mutex_unlock(&color_mutex);
-  //}
+/**
+ * main role area part
+ */
+int main( int argc, char* argv[] )
+{
+#if 0
+	char role[20];
+	char area[20];
+	char part[20];
+#endif
+	if (!robot_init()) return 1;
   
-  grab_ball(&engines[ARM]);
-  
-  //test_square();
-  
-  //deploy_arm(&engines[ARM]);
-  
-  //open_arm(&engines[ARM]);
-  
-  
-  //pthread_t check_tid, run_tid;
-  //turn_engine_arg_struct arg;
-  //arg.time = 30000;
-  //arg.speed = 100;
-  //pthread_create(&run_tid, NULL, __go_straight, (void*)&arg);
-  //pthread_create(&check_tid, NULL, __check_ball, NULL);
- 
-  //int i;
-  //for (i = 0; i < 30000; i+=250) {
-    //if (ball_found) {
-      //printf("BALL detected\n");
-      //pthread_cancel(run_tid);
-      //break;
-    //}
-    //msleep(250);
-  //}
-  
-  //pthread_join(run_tid, NULL);
-  //pthread_cancel(check_tid);
+	//sleep(2);
 
-  //printf("done\n");
+  /* Go straight */
+	printf("Go straight for 10 seconds\n");
+	//printf("Go straight for 130 centimets\n");
+	//go_straight_dist(1300);
+	go_straight(10000, 100);
+	/* continuously check if there a obstacles */
+	printf("Detecting obstacles...\n");
+	detect_obstacles();
+	//sleep(1);
+	/*stop */
+	//printf("Stop engines\n");
+	//stop_engines();
+	//sleep(5);
+  /* Turn right */
+ 	//turn_right(); 
+	printf("Turn right\n");
+	turn_inplace_by_relative_angle(90, 100);
+  /* Go straight for 100 centimets*/
+  	//go_straight_dist(1000);
+	printf("Go straight for 5 seconds\n");
+	go_straight(5000, 100);
+	/* continuously check if there a obstacles */
+	printf("Detecting obstacles...\n");
+	detect_obstacles();
+  /* Turn left */
+  	//turn_left();
+	turn_inplace_by_relative_angle(-90, 100);
+  /* Go straight for 50 centimets */
+  	//go_straight_dist(500);
+	printf("Go straight for 10 seconds\n");
+	go_straight(10000, 100);
+	/* continuously check if there a obstacles */
+	detect_obstacles();
+  /*  */
   
-  //write_stop_action(&(engines[R]), TACHO_BRAKE);
-  //write_stop_action(&(engines[L]), TACHO_BRAKE);
+  /*  */
   
-  //write_command(&(engines[R]), TACHO_STOP);
-  //write_command(&(engines[L]), TACHO_STOP);
+  /*  */
   
-  //close_arm(&engines[ARM]);
-  
-  //undeploy_arm(&engines[ARM]);
-  
-  
-  
-  
-  
-
-
-
+  //grab_ball(&engines[ARM]);
   
   threads_deinit();
   ev3_uninit();
