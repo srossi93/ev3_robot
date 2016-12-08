@@ -130,7 +130,7 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
             i, initial_orientation, angle, final_orientation, error);
     log_to_file(msg);
     i++;
-} while (abs(error) > 0);
+} while (abs(error) > 1);
   
   return;
 }
