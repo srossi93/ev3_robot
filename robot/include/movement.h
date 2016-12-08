@@ -75,6 +75,9 @@ void
 go_straight(uint16_t time, int16_t speed);
 
 void
+go_straight_dist(int16_t position, int16_t speed);
+
+void
 stop_engines(void);
 
 /**

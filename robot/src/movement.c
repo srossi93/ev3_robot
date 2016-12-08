@@ -259,3 +259,14 @@ stop_engines(void){
 	write_command(&engines[L],TACHO_STOP);
 	write_command(&engines[ARM],TACHO_STOP);
 }
+
+
+void
+go_straight_dist(int16_t position, int16_t speed){
+  uint16_t time;
+  time = abs(position/(speed/count_per_m)) * 1000;
+  if (position < 0) 
+    speed = -speed;
+  go_straight(time, speed);
+}
+
