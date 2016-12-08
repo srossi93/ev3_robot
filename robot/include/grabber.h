@@ -22,10 +22,10 @@ ARM_STATUS arm_status;
 
 FLAGS_T ball_found;
 
-void deploy_arm(engine* arm);
-void open_arm(engine* arm);
-void close_arm(engine* arm);
-void undeploy_arm(engine* arm);
+void deploy_arm(engine* arm, int16_t speed);
+void open_arm(engine* arm, int16_t speed);
+void close_arm(engine* arm, int16_t speed);
+void undeploy_arm(engine* arm, int16_t speed);
 
 
 void grab_ball(engine* arm);

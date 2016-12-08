@@ -30,24 +30,32 @@
 typedef uint8_t sensor_ptr;
 #endif
 
+/** Mutex for color sensor reading */
 pthread_mutex_t color_mutex;
 pthread_cond_t cv_ball_detected;
 
+/** Structure for the sensor status */
 typedef struct {
-  
+
+  /** Sensor address */
   sensor_ptr address;
   
-  /** reflection in % */
+  /** Reflection in % */
   int reflection;
-  
-  
 }color_sensor;
 
-
+/**
+ * Read the reflection value from the color sensor
+ * \param color color sensor struct 
+ * \ret  reflection */
 int read_reflection(color_sensor* color);
 
+/**
+ * Read all the value of the color sensor 
+ * \param color color sensor struct */
 void read_color_status(color_sensor* color);
 
+/** Threaded version of \ref read_color_status */
 void* __color_status_reader(void* color);
 
 

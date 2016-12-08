@@ -49,63 +49,60 @@ int main( void )
 
   //while (1) {
     //msleep(500);
-    ////pthread_mutex_lock(&color_mutex);
+    //pthread_mutex_lock(&color_mutex);
     //int tmp;
     //get_sensor_value(0, color->address, &tmp);
     //printf("Refl: %d\n", tmp);
     //get_sensor_value(0, gyro->address, &tmp);
-    ///printf("Ang: %d\n", tmp);
-    ////if (color->reflection > 10)
-    ////  pthread_cond_signal(&cv_ball_detected);
-    ////pthread_mutex_unlock(&color_mutex);
+    //printf("Ang: %d\n", tmp);
+    //if (color->reflection > 10)
+    //  pthread_cond_signal(&cv_ball_detected);
+    //pthread_mutex_unlock(&color_mutex);
   //}
   
-  test_square();
+  grab_ball(&engines[ARM]);
   
-  deploy_arm(&engines[ARM]);
+  //test_square();
   
-  open_arm(&engines[ARM]);
+  //deploy_arm(&engines[ARM]);
+  
+  //open_arm(&engines[ARM]);
   
   
-  pthread_t check_tid, run_tid;
-  turn_engine_arg_struct arg;
-  arg.time = 30000;
-  arg.speed = 100;
-  pthread_create(&run_tid, NULL, __go_straight, (void*)&arg);
-  pthread_create(&check_tid, NULL, __check_ball, NULL);
+  //pthread_t check_tid, run_tid;
+  //turn_engine_arg_struct arg;
+  //arg.time = 30000;
+  //arg.speed = 100;
+  //pthread_create(&run_tid, NULL, __go_straight, (void*)&arg);
+  //pthread_create(&check_tid, NULL, __check_ball, NULL);
  
-  int i;
-  for (i = 0; i < 30000; i+=250) {
-    if (ball_found) {
-      printf("BALL detected\n");
-      pthread_cancel(run_tid);
-      break;
-    }
-    msleep(250);
-  }
+  //int i;
+  //for (i = 0; i < 30000; i+=250) {
+    //if (ball_found) {
+      //printf("BALL detected\n");
+      //pthread_cancel(run_tid);
+      //break;
+    //}
+    //msleep(250);
+  //}
   
-  pthread_join(run_tid, NULL);
-  pthread_cancel(check_tid);
+  //pthread_join(run_tid, NULL);
+  //pthread_cancel(check_tid);
 
+  //printf("done\n");
   
-  printf("done\n");
+  //write_stop_action(&(engines[R]), TACHO_BRAKE);
+  //write_stop_action(&(engines[L]), TACHO_BRAKE);
+  
+  //write_command(&(engines[R]), TACHO_STOP);
+  //write_command(&(engines[L]), TACHO_STOP);
+  
+  //close_arm(&engines[ARM]);
+  
+  //undeploy_arm(&engines[ARM]);
   
   
   
-  
-  
-  write_stop_action(&(engines[R]), TACHO_BRAKE);
-  write_stop_action(&(engines[L]), TACHO_BRAKE);
-  
-  write_command(&(engines[R]), TACHO_STOP);
-  write_command(&(engines[L]), TACHO_STOP);
-  
-  
-  close_arm(&engines[ARM]);
-  
-  undeploy_arm(&engines[ARM]);
-  
-  //  }
   
   
 

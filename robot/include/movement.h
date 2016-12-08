@@ -58,6 +58,29 @@ turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed);
 inline void
 turn_engine_by_time(engine* tacho, uint16_t time, int16_t speed);
 
+
+
+/**
+ * \details Turn in place the robot by a fixed relative angle with respect
+ *          to the head
+ * \param angle[positive] Relative angle, turn right
+ * \param angle[negative] Relative angle, turn left
+ */
+void
+turn_inplace_by_relative_angle(int16_t angle, int16_t speed);
+
+
+
+void
+go_straight(uint16_t time, int16_t speed);
+
+
+/**
+ *  \details Threaded version of \ref go_straight function
+ */
+void *
+__go_straight(void* arg);
+
 /**
  *  \details Threaded version of \ref turn_engine function
  */
@@ -70,30 +93,6 @@ __turn_engine_by_angle(void *arg);
 void*
 __turn_engine_by_time(void *arg);
 
-/**
- * \details Turn in place the robot by a fixed relative angle with respect
- *          to the head
- * \param angle[positive] Relative angle, turn right
- * \param angle[negative] Relative angle, turn left
- */
-void
-turn_inplace_by_relative_angle(int16_t angle, int16_t speed);
-
-/**
- *  \details Identify the correct right and left engine
- *  \param[out] right_engine Will contain the pointer to the right engine
- *  \param[out] left_engine Will contain the pointer to the left engine
- *  \return 1 if successful, 0 otherwise
- */
-int
-identify_engines(engine_ptr *right_engine, engine_ptr *left_engine);
-
-void
-go_straight(uint16_t time, int16_t speed);
-
-
-void *
-__go_straight(void* arg);
 
 //void* thread_check_azimut();
 
