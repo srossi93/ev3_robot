@@ -175,7 +175,7 @@ go_straight(uint16_t time, int16_t speed)
   initial_orientation = gyro->angle;
   pthread_mutex_unlock(&gyro_mutex);
   
-  for (i = 0; i < time; i += 250)
+  for (i = 0; i < time; i += 500)
   {
     pthread_mutex_lock(&gyro_mutex);
     current_orientation = gyro->angle;
@@ -213,7 +213,7 @@ go_straight(uint16_t time, int16_t speed)
       write_command(&engines[R], TACHO_RUN_TIMED);
       write_command(&engines[L], TACHO_RUN_TIMED);
     }
-    msleep(250);
+    msleep(500);
   }
   pthread_mutex_lock(&gyro_mutex);
   current_orientation = gyro->angle;
@@ -241,13 +241,14 @@ __go_straight(void* arg){
 }
 
 
-void 
-stop_engines(void){
-//function to stop all the motors at the same time
-  write_stop_action(&engines[R], TACHO_BRAKE);
-  write_stop_action(&engines[L], TACHO_BRAKE);
-
-  write_command(&engines[R],TACHO_STOP);
-  write_command(&engines[L],TACHO_STOP);
-  //write_command(&engines[ARM],TACHO_STOP);
+pthread_t
+___go_straight(uint16_t time, int16_t speed){
+  pthread_t tid;
+  
+  turn_engine_arg_struct arg;
+  arg.time = time;
+  arg.speed = speed;
+  
+  pthread_create(&tid, NULL, __go_straight, (void*)&arg);
+  return tid;
 }
