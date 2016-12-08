@@ -244,7 +244,10 @@ __go_straight(void* arg){
 void 
 stop_engines(void){
 //function to stop all the motors at the same time
-	write_command(&engines[R],TACHO_STOP);
-	write_command(&engines[L],TACHO_STOP);
-	write_command(&engines[ARM],TACHO_STOP);
+  write_stop_action(&engines[R], TACHO_BRAKE);
+  write_stop_action(&engines[L], TACHO_BRAKE);
+
+  write_command(&engines[R],TACHO_STOP);
+  write_command(&engines[L],TACHO_STOP);
+  //write_command(&engines[ARM],TACHO_STOP);
 }
