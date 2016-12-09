@@ -130,7 +130,7 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
             i, initial_orientation, angle, final_orientation, error);
     log_to_file(msg);
     i++;
-} while (abs(error) > 0);
+} while (abs(error) > 1);
   
   return;
 }
@@ -284,3 +284,15 @@ go_straight_dist(int16_t position, int16_t speed){
   go_straight(time, speed);
 }
 
+void
+go_to_position(int16_t x, int16_t y, int16_t speed){
+  go_straight_dist(y, speed);
+  
+  if(x < 0)
+    turn_inplace_by_relative_angle(-90, 250);
+  else
+    turn_inplace_by_relative_angle(90, 250);
+  
+  go_straight_dist(abs(x), speed);
+  
+}

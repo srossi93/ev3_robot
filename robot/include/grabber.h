@@ -29,7 +29,7 @@ void undeploy_arm(engine* arm, int16_t speed);
 
 
 void grab_ball(engine* arm);
-
+void release_ball(engine* arm, int16_t space);
 
 void* __check_ball();
 

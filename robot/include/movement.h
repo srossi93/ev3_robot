@@ -102,6 +102,9 @@ __turn_engine_by_time(void *arg);
 pthread_t
 ___go_straight(uint16_t time, int16_t speed);
 
+
+void
+go_to_position(int16_t x, int16_t y, int16_t speed);
 //void* thread_check_azimut();
 
 

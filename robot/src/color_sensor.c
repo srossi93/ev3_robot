@@ -16,7 +16,8 @@ int read_reflection(color_sensor* color)
 }
 
 void read_color_status(color_sensor* color){
-  color->reflection = read_reflection(color);
+  int tmp = read_reflection(color);
+  color->reflection = tmp;
 }
 
 void* __color_status_reader(void* color)

@@ -47,21 +47,31 @@ int main( int argc, char* argv[] )
   sleep(2);
   
 
-  go_straight_dist(50, 100);
-  go_straight_dist(-50, 100);
-  sleep(2);
-  go_straight_dist(50, 200);
-  go_straight_dist(-50, 200);
-  sleep(2);
-  go_straight_dist(50, 300);
-  go_straight_dist(-50, 300);
-  sleep(2);
-  go_straight_dist(50, 400);
-  go_straight_dist(-50, 400);
-  sleep(2);
-  go_straight_dist(50, 500);
-  go_straight_dist(-50, 500);
+  //TEST 1
+  //go_straight_dist(160, 500);
 
+  //TEST 2
+  //go_straight_dist(87, 400);
+  //turn_inplace_by_relative_angle(-90, 200);
+  //go_straight_dist(18, 100);
+  //release_ball(&engines[ARM], 18);
+  //turn_inplace_by_relative_angle(90, 200);
+  //go_straight_dist(75, 400);
+
+  
+  //grab_ball(&engines[ARM]);
+  
+  //TEST 5
+  go_straight_dist(87, 400);
+  turn_inplace_by_relative_angle(-90, 200);
+  go_straight_dist(10, 100);
+  grab_ball(&engines[ARM]);
+  go_straight_dist(-18, 100);
+  turn_inplace_by_relative_angle(90, 200);
+  go_straight_dist(75, 400);
+  
+  
+  
   //go_straight(10000, 500);
   //go_straight(10000, 300);
   //go_straight(10000, 300);
