@@ -23,8 +23,11 @@ int read_gyro_speed(gyro_sensor* gyro){
 }
 
 void read_gyro_status(gyro_sensor* gyro){
+  
+  if (!ev3_search_sensor(LEGO_EV3_GYRO, &gyro->address, 0)) return;
   gyro->angle = read_gyro_angle(gyro);
   gyro->rot_speed = read_gyro_speed(gyro);
+
 }
 
 void* __gyro_status_reader(void* gyro){
@@ -32,6 +35,6 @@ void* __gyro_status_reader(void* gyro){
     pthread_mutex_lock(&gyro_mutex);
     read_gyro_status((gyro_sensor*)gyro);
     pthread_mutex_unlock(&gyro_mutex);
-    msleep(10);
+    msleep(50);
   }
 }

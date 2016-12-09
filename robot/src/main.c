@@ -44,45 +44,69 @@ int main( int argc, char* argv[] )
 	char part[20];
 #endif
 	if (!robot_init()) return 1;
+  sleep(2);
   
-	//sleep(2);
 
-  /* Go straight */
-	printf("Go straight for 10 seconds\n");
-	//printf("Go straight for 500 centimets\n");
-	//go_straight_dist(1, 300);
-	___go_straight(10000, 100);
-	/* continuously check if there a obstacles */
-#if 1
-	printf("Detecting obstacles...\n");
-	detect_obstacles();
-	//sleep(1);
-	/*stop */
-	//printf("Stop engines\n");
-	//stop_engines();
-	//sleep(5);
-  /* Turn right */
- 	//turn_right(); 
-	printf("Turn right\n");
-	turn_inplace_by_relative_angle(90, 100);
-  /* Go straight for 100 centimets*/
-  	//go_straight_dist(1000);
-	printf("Go straight for 5 seconds\n");
-	___go_straight(5000, 100);
-	/* continuously check if there a obstacles */
-	printf("Detecting obstacles...\n");
-	detect_obstacles();
-  /* Turn left */
-  	//turn_left();
-	turn_inplace_by_relative_angle(-90, 100);
-  /* Go straight for 50 centimets */
-  	//go_straight_dist(500);
-	printf("Go straight for 10 seconds\n");
-	___go_straight(10000, 100);
-	/* continuously check if there a obstacles */
-	detect_obstacles();
-  /*  */
-#endif
+  go_straight_dist(50, 100);
+  go_straight_dist(-50, 100);
+  sleep(2);
+  go_straight_dist(50, 200);
+  go_straight_dist(-50, 200);
+  sleep(2);
+  go_straight_dist(50, 300);
+  go_straight_dist(-50, 300);
+  sleep(2);
+  go_straight_dist(50, 400);
+  go_straight_dist(-50, 400);
+  sleep(2);
+  go_straight_dist(50, 500);
+  go_straight_dist(-50, 500);
+
+  //go_straight(10000, 500);
+  //go_straight(10000, 300);
+  //go_straight(10000, 300);
+  //go_straight(10000, 300);
+  //go_straight(10000, 300);
+  
+  
+  //go_straight_dist(1, 300);
+  
+  ///* Go straight */
+	//printf("Go straight for 10 seconds\n");
+	////printf("Go straight for 500 centimets\n");
+	////go_straight_dist(1, 300);
+	//___go_straight(10000, 100);
+	///* continuously check if there a obstacles */
+//#if 1
+	//printf("Detecting obstacles...\n");
+	//detect_obstacles();
+	////sleep(1);
+	///*stop */
+	////printf("Stop engines\n");
+	////stop_engines();
+	////sleep(5);
+  ///* Turn right */
+ 	////turn_right(); 
+	//printf("Turn right\n");
+	//turn_inplace_by_relative_angle(90, 100);
+  ///* Go straight for 100 centimets*/
+  	////go_straight_dist(1000);
+	//printf("Go straight for 5 seconds\n");
+	//___go_straight(5000, 100);
+	///* continuously check if there a obstacles */
+	//printf("Detecting obstacles...\n");
+	//detect_obstacles();
+  ///* Turn left */
+  	////turn_left();
+	//turn_inplace_by_relative_angle(-90, 100);
+  ///* Go straight for 50 centimets */
+  	////go_straight_dist(500);
+	//printf("Go straight for 10 seconds\n");
+	//___go_straight(10000, 100);
+	///* continuously check if there a obstacles */
+	//detect_obstacles();
+  ///*  */
+//#endif
   /*  */
   
   /*  */

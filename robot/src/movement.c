@@ -130,7 +130,7 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
             i, initial_orientation, angle, final_orientation, error);
     log_to_file(msg);
     i++;
-} while (abs(error) > 1);
+} while (abs(error) > 0);
   
   return;
 }
@@ -175,15 +175,15 @@ go_straight(uint16_t time, int16_t speed)
   initial_orientation = gyro->angle;
   pthread_mutex_unlock(&gyro_mutex);
   
-  for (i = 0; i < time; i += 500)
+  for (i = 0; i < time-500; i += 500)
   {
     pthread_mutex_lock(&gyro_mutex);
     current_orientation = gyro->angle;
     pthread_mutex_unlock(&gyro_mutex);
     
     current_error = (current_orientation - initial_orientation);
-    sprintf(msg, "Iter #%d - Initial orientation: %d - Final orientation: %d - Error: %d\n",
-           i, initial_orientation, current_orientation, current_error);
+    sprintf(msg, "Time: %d ms - Error: %d\n",
+           i, current_error);
     log_to_file(msg);
 
     write_ramp_up_sp(&engines[R], 1000);
@@ -198,8 +198,8 @@ go_straight(uint16_t time, int16_t speed)
       write_time_sp(&engines[R], time - i);
       write_time_sp(&engines[L], time - i);
 
-      write_stop_action(&engines[R], TACHO_COAST);
-      write_stop_action(&engines[L], TACHO_COAST);
+      //write_stop_action(&engines[R], TACHO_COAST);
+      //write_stop_action(&engines[L], TACHO_COAST);
       
       write_speed_sp(&engines[R], speed);
       write_speed_sp(&engines[L], speed);
@@ -215,11 +215,13 @@ go_straight(uint16_t time, int16_t speed)
     }
     msleep(500);
   }
+  msleep(500);
+  
   pthread_mutex_lock(&gyro_mutex);
   current_orientation = gyro->angle;
   pthread_mutex_unlock(&gyro_mutex);
   
-  if ((current_orientation - initial_orientation) != 0) {
+  if ((current_orientation - initial_orientation) != 2) {
     pthread_mutex_lock(&gyro_mutex);
     int gyro_angle = gyro->angle;
     pthread_mutex_unlock(&gyro_mutex);
@@ -252,6 +254,7 @@ ___go_straight(uint16_t time, int16_t speed){
   pthread_create(&tid, NULL, __go_straight, (void*)&arg);
   return tid;
 }
+
 void 
 stop_engines(void){
 //function to stop all the motors at the same time
@@ -263,10 +266,21 @@ stop_engines(void){
 
 void
 go_straight_dist(int16_t position, int16_t speed){
+  
+  /** Table conversion between tacho speed and cm/second */
+  /** Sampled every 100 tacho speed */
+  float conversion_speed_table[] = {0, 5.8, 10.6, 15.2, 19.1, 23.5};
   uint16_t time;
-  time = abs(position/(speed/engines[R].count_per_m)) * 1000;
+
+  if (speed > 500)
+    speed = 500;
+  
+  time = ((speed * 1500 / 4000)) + abs((int)(position * 1000 / conversion_speed_table[(int)speed/100])) ;
+
+  log_to_file("Moving ahead ...");
   if (position < 0) 
     speed = -speed;
+  
   go_straight(time, speed);
 }
 
