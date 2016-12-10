@@ -33,43 +33,110 @@ void detect_obstacles(void)
 	}
 }
 
+void TEST1(void)
+{
+  //TEST 1
+  go_straight_dist(160, 500);
+}
+
+void TEST2(void)
+{
+  //TEST 2
+  go_straight_dist(87, 400);
+  turn_inplace_by_relative_angle(-90, 200);
+  go_straight_dist(18, 100);
+  release_ball(&engines[ARM], 18);
+  turn_inplace_by_relative_angle(90, 200);
+  go_straight_dist(75, 400);
+}
+  
+void TEST3(void)
+{
+  //TEST 3
+  go_straight_dist(160, 500);
+}
+
+void TEST4(void)
+{
+  //TEST 4
+  go_straight_dist(87, 400);
+  turn_inplace_by_relative_angle(-90, 200);
+  go_straight_dist(18, 100);
+  release_ball(&engines[ARM], 18);
+  turn_inplace_by_relative_angle(90, 200);
+  go_straight_dist(75, 400);
+}
+  //grab_ball(&engines[ARM]);
+  
+void TEST5(void)
+{
+  //TEST 5
+//  go_straight_dist(87, 400);
+//  turn_inplace_by_relative_angle(-90, 200);
+//  go_straight_dist(10, 100);
+  grab_ball(&engines[ARM]);
+//  go_straight_dist(-18, 100);
+//  turn_inplace_by_relative_angle(90, 200);
+//  go_straight_dist(75, 400);
+}
+
 /**
  * main role area part
  */
 int main( int argc, char* argv[] )
 {
-#if 0
-	char role[20];
-	char area[20];
-	char part[20];
-#endif
+	if ( argc < 5 ) {
+		printf("Usage: %s [role] [area] [part] [action]\n", argv[0] );
+		printf("Options:\n");
+		printf("    role: 'b' or 'f' or 'g'(beginner or finisher, or (just for test) grabber)\n");
+		printf("    area: 'l' or 's' (large or small)\n");
+		printf("    part: 'l' or 'r' (left or right, valid only with LARGE area.)\n");
+		printf("    action: 'g' or 'b' (just Go or place a Ball)\n");
+
+		return 1;
+	}
+
 	if (!robot_init()) return 1;
-  sleep(2);
-  
 
-  //TEST 1
-  //go_straight_dist(160, 500);
+	/* BEGINNER + SMALL */
+	if ( (strcmp(argv[1], "b") == 0) && (strcmp(argv[2], "s") == 0) ) {
+		if ( strcmp(argv[4], "g") == 0 ) { /* Just go */
+			printf("TEST 1 start!\n");
+			TEST1();
+			printf("Mission completed!\n");
+			return 1;
+		} else if ( strcmp(argv[4], "b") == 0 ) { /* with placing the ball */
+			printf("TEST 2 start!\n");
+			TEST2();
+			printf("Mission completed!\n");
+			return 1;
+		}
 
-  //TEST 2
-  //go_straight_dist(87, 400);
-  //turn_inplace_by_relative_angle(-90, 200);
-  //go_straight_dist(18, 100);
-  //release_ball(&engines[ARM], 18);
-  //turn_inplace_by_relative_angle(90, 200);
-  //go_straight_dist(75, 400);
+	} 
+	/* BEGINNER + LARGE */
+	if ( (strcmp(argv[1], "b") == 0) && (strcmp(argv[2], "l") == 0) ) {
+		if ( strcmp(argv[4], "g") == 0 ) { /* Just go */
+			printf("TEST 3 start!\n");
+			TEST3();
+			printf("Mission completed!\n");
+			return 1;
+		} else if ( strcmp(argv[4], "b") == 0 ) { /* with placing the ball */
+			printf("TEST 4 start!\n");
+			TEST4();
+			printf("Mission completed!\n");
+			return 1;
+		}
+	}
 
-  
-  //grab_ball(&engines[ARM]);
-  
-  //TEST 5
-  go_straight_dist(87, 400);
-  turn_inplace_by_relative_angle(-90, 200);
-  go_straight_dist(10, 100);
-  grab_ball(&engines[ARM]);
-  go_straight_dist(-18, 100);
-  turn_inplace_by_relative_angle(90, 200);
-  go_straight_dist(75, 400);
-  
+	/* GRABBER TEST */
+	if (strcmp(argv[1], "g") == 0)  {
+		printf("TEST 5 start!\n");
+		TEST5();
+		printf("Mission completed!\n");
+		return 1;
+	}
+	
+  //sleep(2);
   
   
   //go_straight(10000, 500);
