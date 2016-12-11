@@ -44,8 +44,8 @@ void TEST2(void)
   //TEST 2
   go_straight_dist(87, 400,1);
   turn_inplace_by_relative_angle(-90, 200);
-  go_straight_dist(18, 100, 1);
-  release_ball(&engines[ARM], 18);
+  go_straight_dist(23, 100, 1);
+  release_ball(&engines[ARM], 23);
   turn_inplace_by_relative_angle(90, 200);
   go_straight_dist(75, 400, 1);
 }
@@ -53,31 +53,42 @@ void TEST2(void)
 void TEST3(void)
 {
   //TEST 3
-  go_straight_dist(160, 500,1);
+  go_straight_dist(100, 500, 1);
+  turn_inplace_by_relative_angle(90, 200);
+  go_straight_dist(75, 500, 1);
+  turn_inplace_by_relative_angle(-90, 200);
+  go_straight_dist(85, 500, 1);
+  turn_inplace_by_relative_angle(+90, 200);
+  go_straight_dist(-60, 500, 1);
+  turn_inplace_by_relative_angle(-90, 200);
+  go_straight_dist(180, 500, 1);
 }
 
 void TEST4(void)
 {
-  //TEST 4
-  go_straight_dist(87, 400, 1);
-  turn_inplace_by_relative_angle(-90, 200);
-  go_straight_dist(18, 100, 1);
-  release_ball(&engines[ARM], 18);
+  //TEST 3
+  go_straight_dist(100, 300, 1);
   turn_inplace_by_relative_angle(90, 200);
-  go_straight_dist(75, 400, 1);
+  go_straight_dist(75, 300, 1);
+  turn_inplace_by_relative_angle(-90, 200);
+  go_straight_dist(80, 300, 1);
+  turn_inplace_by_relative_angle(+90, 200);
+  go_straight_dist(-70, 300, 1);
+  turn_inplace_by_relative_angle(-90, 200);
+  go_straight_dist(180, 300, 1);
 }
   //grab_ball(&engines[ARM]);
   
 void TEST5(void)
 {
   //TEST 5
-//  go_straight_dist(87, 400);
-//  turn_inplace_by_relative_angle(-90, 200);
-//  go_straight_dist(10, 100);
-  grab_ball(&engines[ARM]);
-//  go_straight_dist(-18, 100);
-//  turn_inplace_by_relative_angle(90, 200);
-//  go_straight_dist(75, 400);
+  //go_straight_dist(87, 400, 1);
+  //turn_inplace_by_relative_angle(-90, 200);
+  //go_straight_dist(10, 100, 1);
+  int time = grab_ball(&engines[ARM]);
+  //go_straight(time, -50, 1);
+  //turn_inplace_by_relative_angle(90, 200);
+  //go_straight_dist(75, 400, 1);
 }
 
 /**
@@ -104,7 +115,7 @@ int main( int argc, char* argv[] )
 
   //___go_straight(5000, 50);
   sleep(2);
-  TEST5();
+  TEST3();
 
 	///* BEGINNER + SMALL */
 	//if ( (strcmp(argv[1], "b") == 0) && (strcmp(argv[2], "s") == 0) ) {

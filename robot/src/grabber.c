@@ -62,7 +62,7 @@ undeploy_arm(engine* arm, int16_t speed)
 
 
 
-void grab_ball(engine* arm){
+int grab_ball(engine* arm){
 
   int time = 0;
   do{
@@ -120,6 +120,8 @@ void grab_ball(engine* arm){
     
     undeploy_arm(&engines[ARM], 500);
   } while (color->reflection < 5);
+  
+  return time;
 }
 
 

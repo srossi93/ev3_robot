@@ -45,6 +45,8 @@ robot_init(void)
   engines_init();
   threads_init();
   
+  turn_inplace_by_relative_angle(-gyro->angle, 200);
+  
   sleep(2);
 
   return 1;
@@ -146,6 +148,8 @@ int engines_init(void)
   set_tacho_command_inx(engines[ARM].address, TACHO_RESET );
 
   arm_status = ARM_UP;
+  
+  
   
   return 1;
 }

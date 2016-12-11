@@ -27,9 +27,9 @@ turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed)
     //printf("STATUS: %d\n", tacho->state);
     //fflush(stdout);
     
-  } while (((tacho->state % 2) == 1) || tacho->speed != 0);
+  } while (((tacho->state % 2) == 1));
   
-  write_stop_action(tacho, TACHO_BRAKE);
+  write_stop_action(tacho, TACHO_HOLD);
   write_command(tacho, TACHO_STOP);
   
 }
@@ -115,11 +115,12 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
   
     pthread_create(&right_tid, NULL, __turn_engine_by_angle, (void*)&right_engine_args);
     pthread_create(&left_tid,  NULL, __turn_engine_by_angle, (void*)&left_engine_args);
-  
-    pthread_join(left_tid, NULL);
+
     pthread_join(right_tid, NULL);
+    pthread_join(left_tid, NULL);
+
     
-    msleep(500);
+    //msleep(500);
 
     pthread_mutex_lock(&gyro_mutex);
     final_orientation = gyro->angle;
@@ -149,15 +150,15 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   int initial_orientation,current_orientation;
 
   
-  write_stop_action(&engines[R], TACHO_COAST);
-  write_stop_action(&engines[L], TACHO_COAST);
+  write_stop_action(&engines[R], TACHO_HOLD);
+  write_stop_action(&engines[L], TACHO_HOLD);
 
   
   write_speed_sp(&engines[R], speed);
   write_speed_sp(&engines[L], speed);
   
-  write_ramp_up_sp(&engines[R], 1500);
-  write_ramp_up_sp(&engines[L], 1500);
+  write_ramp_up_sp(&engines[R], 2000);
+  write_ramp_up_sp(&engines[L], 2000);
   
   write_ramp_down_sp(&engines[R], 500);
   write_ramp_down_sp(&engines[L], 500);
@@ -168,12 +169,12 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   write_command(&engines[R], TACHO_RUN_TIMED);
   write_command(&engines[L], TACHO_RUN_TIMED);
 
-  printf("Command sent\n");
+  //printf("Command sent\n");
   
   if (check_orientation == 0) return;
   //set_tacho_command_inx(right_engine, TACHO_STOP);
   //set_tacho_command_inx(left_engine, TACHO_STOP);
-  printf("ERROR detection\n");
+  //printf("ERROR detection\n");
   int i;
   previous_error = 0;
   
@@ -195,7 +196,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
     write_ramp_up_sp(&engines[R], 1000);
     write_ramp_up_sp(&engines[L], 1000);
     
-    if (abs(current_error) > 5) {
+    if (abs(current_error) > 4) {
       write_command(&engines[R], TACHO_STOP);
       write_command(&engines[L], TACHO_STOP);
       turn_inplace_by_relative_angle(-current_error, 200);
@@ -210,8 +211,8 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
       write_speed_sp(&engines[R], speed);
       write_speed_sp(&engines[L], speed);
       
-      write_ramp_up_sp(&engines[R], 250);
-      write_ramp_up_sp(&engines[L], 250);
+      write_ramp_up_sp(&engines[R], 2000);
+      write_ramp_up_sp(&engines[L], 2000);
       
       write_ramp_down_sp(&engines[R], 0);
       write_ramp_down_sp(&engines[L], 0);
@@ -227,7 +228,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   current_orientation = gyro->angle;
   pthread_mutex_unlock(&gyro_mutex);
   
-  if ((current_orientation - initial_orientation) > 1) {
+  if (abs(current_orientation - initial_orientation) > 0) {
     pthread_mutex_lock(&gyro_mutex);
     int gyro_angle = gyro->angle;
     pthread_mutex_unlock(&gyro_mutex);
