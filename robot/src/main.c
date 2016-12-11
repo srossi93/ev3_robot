@@ -17,13 +17,13 @@ static bool _check_pressed( uint8_t sn )
 	return ( get_sensor_value( 0, sn, &val ) && ( val != 0 ));
 }
 
-static bool _check_colision (uint8_t distance)
+static bool _is_too_close (uint8_t distance)
 {
 	float value;
 	uint8_t sn_sonar;
 
 	if (ev3_search_sensor(LEGO_EV3_US, &sn_sonar,0)){
-		printf("SONAR found, reading sonar...\n");
+		//printf("SONAR found, reading sonar...\n");
 		if ( !get_sensor_value0(sn_sonar, &value )) {
 			value = 0;
 			/* it's better to temporarily stop the motors */
@@ -44,20 +44,16 @@ static bool _check_colision (uint8_t distance)
 	return 0;
 }
 
-void TEST1 (void)
+void _check_colision (uint8_t distance)
 {
 	FLAGS_T state_l, state_r;
-
-	printf("TEST1 Start!");
-
-	GO_STRAIGHT(115);
 
 	/* Check if there is an obstacle*/
 	do {
 		printf("Checking colision...");
 		get_tacho_state_flags( left_motor_id, &state_l );
 		get_tacho_state_flags( right_motor_id, &state_r );
-		if (_check_colision( COLISION_DISTANCE )) {
+		if (_is_too_close( distance )) {
 			printf("...DANGEROUS!\n");
 			STOP_ALL();
 			break;
@@ -66,6 +62,17 @@ void TEST1 (void)
 			Sleep(200);
 		}
 	} while ( state_l && state_r ); // until one of the motors stops, state = 0
+
+	return;
+}
+
+void TEST1 (void)
+{
+	printf("TEST1 Start!");
+
+	GO_STRAIGHT(115);
+	/* Check if there is an obstacle*/
+	_check_colision( COLISION_DISTANCE );
 
 	STOP_ALL();
 
@@ -178,47 +185,9 @@ int main( int argc, char* argv[] )
 			}
 		}
 	}
-#if 0
-	//Note that you may need to change this code depending on the order and type of your motors
-	if ( ev3_search_tacho( LEGO_EV3_M_MOTOR, &sn, 0 )) {
-		printf( "LEGO_EV3_M_MOTOR 1 is found . ID = %d...\n", sn );
-		//test_motor(sn);
-	} else {
-		printf( "LEGO_EV3_M_MOTOR 1 is NOT found\n" );
-	}
-	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, 0 )) {
-		printf( "LEGO_EV3_L_MOTOR 1 is found . ID = %d .., port=%s\n", sn, ev3_tacho_port_name(sn, s));
-		//test_motor(sn);
-		/* assign LEFT motor */
-		//left_motor_id = sn;
-		//printf("LEFT motor ID is: %d\n", left_motor_id);
-	} else {
-		printf( "LEGO_EV3_L_MOTOR 1 is NOT found\n" );
-	}
-	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, sn + 1 )) {
-		printf( "LEGO_EV3_L_MOTOR 2 is found . ID = %d..port=%s\n", sn, ev3_tacho_port_name(sn, s));
-		//test_motor(sn);
-		/* assign RIGHT motor */
-		right_motor_id = sn;
-		//printf("RIGHT motor ID is: %d\n", right_motor_id);
-	} else {
-		printf( "LEGO_EV3_L_MOTOR 2 is NOT found\n" );
-	}
-	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, sn + 1 )) {
-		printf( "LEGO_EV3_L_MOTOR 3 is found. ID = %d..port=%s\n", sn, ev3_tacho_port_name(sn, s));
-		//test_motor(sn);
-	} else {
-		printf( "LEGO_EV3_L_MOTOR 3 is NOT found\n" );
-	}
-	if ( ev3_search_tacho( LEGO_EV3_L_MOTOR, &sn, sn + 1 )) {
-		printf( "LEGO_EV3_L_MOTOR 4 is found. ID = %d ...\n", sn );
-		//test_motor(sn);
-	} else {
-		printf( "LEGO_EV3_L_MOTOR 4 is NOT found\n" );
-	}
-#endif
+
 // Some demo
-#if 1
+#if 0
 	printf("Demo: turning left now...");
 	TURN_LEFT();
 	Sleep(2000);
