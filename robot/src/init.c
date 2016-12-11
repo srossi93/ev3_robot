@@ -40,9 +40,9 @@ robot_init(void)
 
   sem_init(&sem_right_engine, 0, 1);
   sem_init(&sem_left_engine, 0, 1);
-  
-  engines_init();
+
   sensor_init();
+  engines_init();
   threads_init();
   
   sleep(2);
@@ -101,21 +101,21 @@ int engines_init(void)
   set_tacho_speed_sp(engine2, max_speed / 20);
   set_tacho_ramp_up_sp(engine1, 0);
   set_tacho_ramp_down_sp(engine1, 0);
-  set_tacho_position_sp(engine1, 180);
+  set_tacho_position_sp(engine1, 90);
   //msleep(1000);
   set_tacho_command_inx(engine1, TACHO_RUN_TO_REL_POS );
   set_tacho_command_inx(engine2, TACHO_STOP);
   
-  msleep(5000);
+  msleep(3000);
   
   get_sensor_value(0, gyro_sensor_id, &final_absolute_angle);
   sprintf(msg, "[GYRO] : Final absolute value %d\n", final_absolute_angle);
   log_to_file(msg);
   
-  set_tacho_position_sp(engine1, -180);
+  set_tacho_position_sp(engine1, -90);
   set_tacho_command_inx(engine1, TACHO_RUN_TO_REL_POS);
   
-  msleep(5000);
+  msleep(3000);
   get_sensor_value(0, gyro_sensor_id, &initial_absolute_angle);
   sprintf(msg, "[GYRO] : Restart absolute value %d\n", initial_absolute_angle);
   log_to_file(msg);
@@ -167,36 +167,18 @@ void sensor_init(){
     }
   }
 
-  
-  
-  
-  
-  
-  
-  // Search the gyroscope
-  //if( !ev3_search_sensor(LEGO_EV3_GYRO, &(gyro->address), 0) )
-  //{
-    //log_to_file(" --> No LEGO_EV3_GYRO found\n\tAborting...\n");
-    //return;
-  //}
+  log_to_file("GYRO Calibration...\n");
+  set_sensor_mode(gyro->address, "GYRO-CAL");
+  msleep(1000);
+  log_to_file("GYRO Calibration Done\n");
   set_sensor_mode(gyro->address, "GYRO-G&A");
   pthread_mutex_init(&gyro_mutex, NULL);
   
-  
-  //if( !ev3_search_sensor(LEGO_EV3_US, &(us->address), 0) )
-  //{
-    //log_to_file(" --> No LEGO_EV3_US found\n\tAborting...\n");
-    //return;
-  //}
+
   set_sensor_mode(gyro->address, "US-DIST-CM");
   pthread_mutex_init(&us_mutex, NULL);
   
   
-  //if( !ev3_search_sensor(LEGO_EV3_COLOR, &(color->address), 0) )
-  //{
-    //log_to_file(" --> No LEGO_EV3_COLOR found\n\tAborting...\n");
-    //return;
-  //}
   set_sensor_mode(color->address, "COL-REFLECT");
   pthread_mutex_init(&color_mutex, NULL);
   

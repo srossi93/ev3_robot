@@ -118,6 +118,8 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
   
     pthread_join(left_tid, NULL);
     pthread_join(right_tid, NULL);
+    
+    msleep(500);
 
     pthread_mutex_lock(&gyro_mutex);
     final_orientation = gyro->angle;
@@ -137,7 +139,7 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
 
 
 void
-go_straight(uint16_t time, int16_t speed)
+go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
 {
   //turn_engine_arg_struct right_engine_args, left_engine_args;
   //pthread_t right_tid, left_tid, error_tid;
@@ -165,9 +167,13 @@ go_straight(uint16_t time, int16_t speed)
   
   write_command(&engines[R], TACHO_RUN_TIMED);
   write_command(&engines[L], TACHO_RUN_TIMED);
+
+  printf("Command sent\n");
   
+  if (check_orientation == 0) return;
   //set_tacho_command_inx(right_engine, TACHO_STOP);
   //set_tacho_command_inx(left_engine, TACHO_STOP);
+  printf("ERROR detection\n");
   int i;
   previous_error = 0;
   
@@ -221,7 +227,7 @@ go_straight(uint16_t time, int16_t speed)
   current_orientation = gyro->angle;
   pthread_mutex_unlock(&gyro_mutex);
   
-  if ((current_orientation - initial_orientation) != 2) {
+  if ((current_orientation - initial_orientation) > 1) {
     pthread_mutex_lock(&gyro_mutex);
     int gyro_angle = gyro->angle;
     pthread_mutex_unlock(&gyro_mutex);
@@ -237,7 +243,7 @@ __go_straight(void* arg){
   
   turn_engine_arg_struct args = *(turn_engine_arg_struct*) arg;
   
-  go_straight(args.time, args.speed);
+  go_straight(args.time, args.speed, 1);
   
   pthread_exit(NULL);
 }
@@ -258,14 +264,17 @@ ___go_straight(uint16_t time, int16_t speed){
 void 
 stop_engines(void){
 //function to stop all the motors at the same time
-	write_command(&engines[R],TACHO_STOP);
+  write_stop_action(&engines[R], TACHO_BRAKE);
+  write_stop_action(&engines[L], TACHO_BRAKE);
+  
+  write_command(&engines[R],TACHO_STOP);
 	write_command(&engines[L],TACHO_STOP);
-	write_command(&engines[ARM],TACHO_STOP);
+
 }
 
 
-void
-go_straight_dist(int16_t position, int16_t speed){
+uint16_t
+go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation){
   
   /** Table conversion between tacho speed and cm/second */
   /** Sampled every 100 tacho speed */
@@ -281,18 +290,47 @@ go_straight_dist(int16_t position, int16_t speed){
   if (position < 0) 
     speed = -speed;
   
-  go_straight(time, speed);
+  go_straight(time, speed, check_orientation);
+  
+  if (check_orientation == 0) return time;
+  return 0;
 }
+
+
+void *
+__go_straight_dist(void* arg){
+  
+  turn_engine_arg_struct args = *(turn_engine_arg_struct*) arg;
+  
+  go_straight_dist(args.distance, args.speed, 1);
+  
+  pthread_exit(NULL);
+}
+
+
+pthread_t
+___go_straight_dist(int16_t distance, int16_t speed){
+  pthread_t tid;
+  
+  turn_engine_arg_struct arg;
+  arg.distance = distance;
+  arg.speed = speed;
+  
+  pthread_create(&tid, NULL, __go_straight_dist, (void*)&arg);
+  return tid;
+}
+
+
 
 void
 go_to_position(int16_t x, int16_t y, int16_t speed){
-  go_straight_dist(y, speed);
+  go_straight_dist(y, speed, 1);
   
   if(x < 0)
     turn_inplace_by_relative_angle(-90, 250);
   else
     turn_inplace_by_relative_angle(90, 250);
   
-  go_straight_dist(abs(x), speed);
+  go_straight_dist(abs(x), speed, 1);
   
 }

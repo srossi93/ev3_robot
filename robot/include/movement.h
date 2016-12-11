@@ -35,6 +35,7 @@ typedef struct
   int16_t angle;
   uint16_t time;
   int16_t speed;
+  int16_t distance;
   engine* tacho;
   sem_t sem_engine;
 }turn_engine_arg_struct;
@@ -72,10 +73,10 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed);
 
 
 void
-go_straight(uint16_t time, int16_t speed);
+go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation);
 
-void
-go_straight_dist(int16_t position, int16_t speed);
+uint16_t
+go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation);
 
 void
 stop_engines(void);
@@ -105,6 +106,14 @@ ___go_straight(uint16_t time, int16_t speed);
 
 void
 go_to_position(int16_t x, int16_t y, int16_t speed);
+
+void *
+__go_straight_dist(void* arg);
+
+
+pthread_t
+___go_straight_dist(int16_t distance, int16_t speed);
+
 //void* thread_check_azimut();
 
 

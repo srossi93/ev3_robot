@@ -15,7 +15,7 @@ deploy_arm(engine* arm, int16_t speed)
 {
   if (arm_status == ARM_UP){
     log_to_file("Deploying arm...\n");
-    turn_engine_by_angle(arm, -300, speed);
+    turn_engine_by_angle(arm, -250, speed);
     log_to_file("--> Arm deployed\n");
     arm_status = ARM_DOWN;
   }
@@ -52,7 +52,7 @@ undeploy_arm(engine* arm, int16_t speed)
 {
   if (arm_status == ARM_DOWN){
     log_to_file("Undeploying arm...\n");
-    turn_engine_by_angle(arm, +300, speed);
+    turn_engine_by_angle(arm, +250, speed);
     log_to_file("--> Arm deployed\n");
     arm_status = ARM_UP;
   }
@@ -63,7 +63,8 @@ undeploy_arm(engine* arm, int16_t speed)
 
 
 void grab_ball(engine* arm){
-  
+
+  int time = 0;
   do{
     deploy_arm(&engines[ARM], 500);
     
@@ -71,19 +72,28 @@ void grab_ball(engine* arm){
       open_arm(&engines[ARM], 300);
       
       
-      pthread_t check_tid, run_tid;
-      turn_engine_arg_struct arg;
-      arg.time = 10000;
-      arg.speed = 100;
+      //pthread_t check_tid, run_tid;
+      //turn_engine_arg_struct arg;
+      //arg.distance = 10;
+      //arg.speed = 50;
       
-      //pthread_create(&run_tid, NULL, __go_straight, (void*)&arg);
+      //pthread_create(&run_tid, NULL, __go_straight_dist, (void*)&arg);
       //pthread_create(&check_tid, NULL, __check_ball, NULL);
       
-      run_tid = ___go_straight(10000, 100);
-
-      while (color->reflection < 5) ;
+      //run_tid = ___go_straight_dist(10, 50);
       
-      pthread_cancel(run_tid);
+      //int tot_time = go_straight_dist(20, 100, 0);
+      
+      go_straight(10000, 50, 0);
+      
+      printf("Detection...\n");
+      while (color->reflection < 5 && time < 10000)
+      {
+        time+=250;
+        msleep(250);
+      }
+      stop_engines();
+
       //int i;
       //for (i = 0; i < 10000; i+=250) {
         //if (ball_found) {
@@ -106,10 +116,10 @@ void grab_ball(engine* arm){
       
       close_arm(&engines[ARM], 50);
       printf("color ref: %d\n", color->reflection);
-    } while(color->reflection < 10);
+    } while(color->reflection < 5);
     
     undeploy_arm(&engines[ARM], 500);
-  } while (color->reflection < 10);
+  } while (color->reflection < 5);
 }
 
 
@@ -121,7 +131,7 @@ void release_ball(engine* arm, int16_t space){
   
   open_arm(&engines[ARM], 20);
   
-  go_straight_dist(-space, 200);
+  go_straight_dist(-space, 200, 1);
   
   close_arm(&engines[ARM], 500);
   undeploy_arm(&engines[ARM], 500);
