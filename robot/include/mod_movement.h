@@ -20,7 +20,7 @@
 #define LEFT_MOTOR_PORT "outB"
 #define ARM_MOTOR_PORT "outD"
 
-#define NINETY_DEGREE	900	/* Used to convert to degree of motor */
+#define NINETY_DEGREE	10	/* Used to convert to degree of motor */
 /**
  * GLOBAL VARIABLES
  */

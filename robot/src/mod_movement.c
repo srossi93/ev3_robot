@@ -127,8 +127,8 @@ void TURN(int isThisLeft) {
 	STOP_ALL();
 
 	/* Then, move */
-	MOVE(left_motor_id, (-1) * isThisLeft * NINETY_DEGREE / 2);
-	MOVE(right_motor_id, isThisLeft * NINETY_DEGREE / 2);
+	MOVE(left_motor_id, (-1) * isThisLeft * 200);
+	MOVE(right_motor_id, isThisLeft * 200);
 	/* Wait tacho stop */
 	Sleep( 100 );
 	do {

@@ -17,20 +17,127 @@ static bool _check_pressed( uint8_t sn )
 	return ( get_sensor_value( 0, sn, &val ) && ( val != 0 ));
 }
 
-int main( void )
+static bool _check_colision (uint8_t distance)
+{
+	float value;
+	uint8_t sn_sonar;
+
+	if (ev3_search_sensor(LEGO_EV3_US, &sn_sonar,0)){
+		printf("SONAR found, reading sonar...\n");
+		if ( !get_sensor_value0(sn_sonar, &value )) {
+			value = 0;
+			/* it's better to temporarily stop the motors */
+			//STOP_ALL();
+			return 1;
+		} else if ( value  < distance) {
+			printf( "                  It's too close: \r(%f) \n", value);
+			printf(" STOP!!\n");
+			//TURN_LEFT();
+			//STOP_ALL();
+			//running = false;
+			//Sleep(1000);
+			return 1;
+		}
+		fflush( stdout );
+	}
+
+	return 0;
+}
+
+void TEST1 (void)
+{
+	FLAGS_T state_l, state_r;
+
+	printf("TEST1 Start!");
+
+	GO_STRAIGHT(115);
+
+	/* Check if there is an obstacle*/
+	do {
+		printf("Checking colision...");
+		get_tacho_state_flags( left_motor_id, &state_l );
+		get_tacho_state_flags( right_motor_id, &state_r );
+		if (_check_colision( COLISION_DISTANCE )) {
+			printf("...DANGEROUS!\n");
+			STOP_ALL();
+			break;
+		} else {
+			printf("...safe!\n");
+			Sleep(200);
+		}
+	} while ( state_l && state_r ); // until one of the motors stops, state = 0
+
+	STOP_ALL();
+
+	printf("TEST1 DONE!\n");
+}
+
+void TEST2 (void)
+{
+	GO_STRAIGHT(87);
+	TURN_RIGHT();
+	GO_STRAIGHT(18);
+	TURN_LEFT();
+	GO_STRAIGHT(75);
+}
+
+void TEST3 (void)
+{
+	GO_STRAIGHT(115);
+	TURN_RIGHT();
+	GO_STRAIGHT(100);
+	TURN_LEFT();
+	GO_STRAIGHT(60);
+	TURN_LEFT();
+	GO_STRAIGHT(100);
+	TURN_RIGHT();
+	GO_STRAIGHT(115);
+
+}
+
+void TEST4 (void)
+{
+	GO_STRAIGHT(115);
+	TURN_RIGHT();
+	GO_STRAIGHT(100);
+	TURN_LEFT();
+	GO_STRAIGHT(60);
+	TURN_LEFT();
+	GO_STRAIGHT(50);
+
+}
+
+void TEST5 (void)
+{
+
+}
+
+int main( int argc, char* argv[] )
 {
 	int i;
 //	uint8_t sn;
 	uint8_t sn_touch;
 //	uint8_t sn_color;
 //	uint8_t sn_compass;
-	uint8_t sn_sonar;
+//	uint8_t sn_sonar;
 //	uint8_t sn_mag;
 	char s[ 256 ];
 	int val;
-	float value;
+//	float value;
 	uint32_t n, ii;
 //	bool running = false;
+
+/* Getting parameters */
+        if ( argc < 5 ) {
+		printf("Usage: %s [role] [area] [part] [action]\n", argv[0] );
+		printf("Options:\n");
+		printf("\t role\t \t 'b' or 'f' or 'g'\t(beginner or finisher, or (just for test) grabber)\n");
+		printf("\t area\t \t 'l' or 's' \t(large or small)\n");
+		printf("\t part\t \t 'l' or 'r' \t(left or right, valid only with LARGE area.)\n");
+		printf("\t action\t \t 'g' or 'b' \t(just Go or place a Ball)\n");
+
+                return 1;
+        }
 
 #ifndef __ARM_ARCH_4T__
 	/* Disable auto-detection of the brick (you have to set the correct address below) */
@@ -47,6 +154,8 @@ int main( void )
 
 #endif
 	while ( ev3_tacho_init() < 1 ) Sleep( 1000 );
+
+	while ( ev3_sensor_init() < 1) Sleep( 1000 );
 
 	printf( "*** ( EV3 ) Hello! ***\n" );
 
@@ -124,8 +233,46 @@ int main( void )
 	//GO_STRAIGHT(10000);
 #endif
 
+       /* BEGINNER + SMALL */
+        if ( (strcmp(argv[1], "b") == 0) && (strcmp(argv[2], "s") == 0) ) {
+                if ( strcmp(argv[4], "g") == 0 ) { /* Just go */
+                        printf("TEST 1 start!\n");
+                        TEST1();
+                        printf("Mission completed!\n");
+                        return 1;
+                } else if ( strcmp(argv[4], "b") == 0 ) { /* with placing the ball */
+                        printf("TEST 2 start!\n");
+                        TEST2();
+                        printf("Mission completed!\n");
+                        return 1;
+                }
+
+        }
+
+        /* BEGINNER + LARGE */
+        if ( (strcmp(argv[1], "b") == 0) && (strcmp(argv[2], "l") == 0) ) {
+                if ( strcmp(argv[4], "g") == 0 ) { /* Just go */
+                        printf("TEST 3 start!\n");
+                        TEST3();
+                        printf("Mission completed!\n");
+                        return 1;
+                } else if ( strcmp(argv[4], "b") == 0 ) { /* with placing the ball */
+                        printf("TEST 4 start!\n");
+                        TEST4();
+                        printf("Mission completed!\n");
+                        return 1;
+                }
+        }
+
+        /* GRABBER TEST */
+        if (strcmp(argv[1], "g") == 0)  {
+                printf("TEST 5 start!\n");
+                TEST5();
+                printf("Mission completed!\n");
+                return 1;
+        }
+
 //Run all sensors
-	ev3_sensor_init();
 
 	printf( "Found sensors:\n" );
 	for ( i = 0; i < DESC_LIMIT; i++ ) {
@@ -166,6 +313,7 @@ int main( void )
 			fflush( stdout );
 	    	}
 #endif
+#if 0
 		if (ev3_search_sensor(LEGO_EV3_US, &sn_sonar,0)){
 			printf("SONAR found, reading sonar...\n");
 			if ( !get_sensor_value0(sn_sonar, &value )) {
@@ -193,6 +341,7 @@ int main( void )
 			}
 			fflush( stdout );
 	    	}
+#endif
 #if 0
 		if (ev3_search_sensor(NXT_ANALOG, &sn_mag,0)){
 			printf("Magnetic sensor found, reading magnet...\n");
