@@ -7,6 +7,9 @@ const char const *color[] = { "?", "BLACK", "BLUE", "GREEN", "YELLOW", "RED", "W
 
 #define COLISION_DISTANCE	250	/* milimets */
 
+/*Initial gyro degreee*/
+float init_gyro_degree;
+
 static bool _check_pressed( uint8_t sn )
 {
 	int val;
@@ -15,6 +18,48 @@ static bool _check_pressed( uint8_t sn )
 		return ( ev3_read_keys(( uint8_t *) &val ) && ( val & EV3_KEY_UP ));
 	}
 	return ( get_sensor_value( 0, sn, &val ) && ( val != 0 ));
+}
+
+void align_with_border(char *NEWS)
+{
+	int degree = 0;
+	float value, adj_degree;
+	uint8_t sn_gyro;
+
+	if (strcmp(NEWS, "N")==0) { degree = 0; }
+	else if (strcmp(NEWS, "E")==0) { degree = 90; }
+	else if (strcmp(NEWS, "S")==0) { degree = 180; }
+	else if (strcmp(NEWS, "W")==0) { degree = -90; }
+
+	printf("Adjusting direction...\n");
+
+	do {
+		if (ev3_search_sensor(LEGO_EV3_GYRO, &sn_gyro,0)){
+			printf("GYRO found, reading gyro...\n");
+			if ( !get_sensor_value0(sn_gyro, &value )) {
+				//value = 0;
+			} else if ( value  > 180 ) {
+				value = value - 360;
+			}
+		}
+
+		printf("Initial = %f, Target = %f, Current = %f\n", 
+				init_gyro_degree, (init_gyro_degree + degree), value);
+
+		adj_degree = value - (init_gyro_degree + degree);
+
+		if ( adj_degree < 0 ) {
+			MOVE(right_motor_id, adj_degree > -5 ? -2 : adj_degree );
+		} else {
+
+			MOVE(left_motor_id, adj_degree < 5 ? -2 :  (-1)*adj_degree );
+		}		
+		Sleep(200);
+	} while ( value  != (init_gyro_degree + degree) );
+
+	printf("Adjust done!\n");
+
+	return;
 }
 
 static bool _is_too_close (uint8_t distance)
@@ -73,6 +118,7 @@ void TEST1 (void)
 	GO_STRAIGHT(115);
 	/* Check if there is an obstacle*/
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("N");
 
 	STOP_ALL();
 
@@ -83,47 +129,66 @@ void TEST2 (void)
 {
 	GO_STRAIGHT(87);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("N");
 	TURN_LEFT();
+	align_with_border("W");
 	GO_STRAIGHT(18);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("W");
 	TURN_RIGHT();
+	align_with_border("N");
 	GO_STRAIGHT(75);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("N");
 }
 
 void TEST3 (void)
 {
 	GO_STRAIGHT(115);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("N");
 	TURN_RIGHT();
+	align_with_border("E");
 	GO_STRAIGHT(100);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("E");
 	TURN_LEFT();
+	align_with_border("N");
 	GO_STRAIGHT(60);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("N");
 	TURN_LEFT();
+	align_with_border("W");
 	GO_STRAIGHT(100);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("W");
 	TURN_RIGHT();
+	align_with_border("N");
 	GO_STRAIGHT(115);
 	_check_colision( COLISION_DISTANCE );
-
+	align_with_border("N");
 }
 
 void TEST4 (void)
 {
 	GO_STRAIGHT(115);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("N");
 	TURN_RIGHT();
+	align_with_border("E");
 	GO_STRAIGHT(100);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("E");
 	TURN_LEFT();
+	align_with_border("N");
 	GO_STRAIGHT(60);
 	_check_colision( COLISION_DISTANCE );
+	align_with_border("N");
 	TURN_LEFT();
+	align_with_border("W");
 	GO_STRAIGHT(50);
 	_check_colision( COLISION_DISTANCE );
-
+	align_with_border("W");
 }
 
 void TEST5 (void)
@@ -136,6 +201,7 @@ int main( int argc, char* argv[] )
 	int i;
 //	uint8_t sn;
 	uint8_t sn_touch;
+	uint8_t sn_gyro;
 //	uint8_t sn_color;
 //	uint8_t sn_compass;
 //	uint8_t sn_sonar;
@@ -196,6 +262,18 @@ int main( int argc, char* argv[] )
 				//do nothing
 			}
 		}
+	}
+
+	/* Initialization */
+	if (ev3_search_sensor(LEGO_EV3_GYRO, &sn_gyro,0)){
+		printf("GYRO found, reading gyro...\n");
+		if ( !get_sensor_value0(sn_gyro, &init_gyro_degree)) {
+			//value = 0;
+		} else if ( init_gyro_degree  > 180 ) {
+			init_gyro_degree = init_gyro_degree - 360;
+		}
+
+		printf("Initial GYRO degree is: %f\n", init_gyro_degree);
 	}
 
 // Some demo
