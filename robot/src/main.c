@@ -82,35 +82,47 @@ void TEST1 (void)
 void TEST2 (void)
 {
 	GO_STRAIGHT(87);
-	TURN_RIGHT();
-	GO_STRAIGHT(18);
+	_check_colision( COLISION_DISTANCE );
 	TURN_LEFT();
+	GO_STRAIGHT(18);
+	_check_colision( COLISION_DISTANCE );
+	TURN_RIGHT();
 	GO_STRAIGHT(75);
+	_check_colision( COLISION_DISTANCE );
 }
 
 void TEST3 (void)
 {
 	GO_STRAIGHT(115);
+	_check_colision( COLISION_DISTANCE );
 	TURN_RIGHT();
 	GO_STRAIGHT(100);
+	_check_colision( COLISION_DISTANCE );
 	TURN_LEFT();
 	GO_STRAIGHT(60);
+	_check_colision( COLISION_DISTANCE );
 	TURN_LEFT();
 	GO_STRAIGHT(100);
+	_check_colision( COLISION_DISTANCE );
 	TURN_RIGHT();
 	GO_STRAIGHT(115);
+	_check_colision( COLISION_DISTANCE );
 
 }
 
 void TEST4 (void)
 {
 	GO_STRAIGHT(115);
+	_check_colision( COLISION_DISTANCE );
 	TURN_RIGHT();
 	GO_STRAIGHT(100);
+	_check_colision( COLISION_DISTANCE );
 	TURN_LEFT();
 	GO_STRAIGHT(60);
+	_check_colision( COLISION_DISTANCE );
 	TURN_LEFT();
 	GO_STRAIGHT(50);
+	_check_colision( COLISION_DISTANCE );
 
 }
 
