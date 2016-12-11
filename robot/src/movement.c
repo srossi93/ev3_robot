@@ -150,8 +150,8 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   int initial_orientation,current_orientation;
 
   
-  write_stop_action(&engines[R], TACHO_HOLD);
-  write_stop_action(&engines[L], TACHO_HOLD);
+  write_stop_action(&engines[R], TACHO_COAST);
+  write_stop_action(&engines[L], TACHO_COAST);
 
   
   write_speed_sp(&engines[R], speed);
@@ -182,7 +182,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   initial_orientation = gyro->angle;
   pthread_mutex_unlock(&gyro_mutex);
   
-  for (i = 0; i < time-500; i += 500)
+  for (i = 0; i < time-500; i += 250)
   {
     pthread_mutex_lock(&gyro_mutex);
     current_orientation = gyro->angle;
@@ -220,7 +220,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
       write_command(&engines[R], TACHO_RUN_TIMED);
       write_command(&engines[L], TACHO_RUN_TIMED);
     }
-    msleep(500);
+    msleep(250);
   }
   msleep(500);
   

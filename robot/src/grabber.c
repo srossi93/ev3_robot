@@ -27,7 +27,7 @@ open_arm(engine* arm, int16_t speed)
 {
   if (arm_status == ARM_DOWN){
     log_to_file("Opening arm...\n");
-    turn_engine_by_angle(arm, -350, speed);
+    turn_engine_by_angle(arm, -325, speed);
     log_to_file("--> Arm open\n");
     arm_status = ARM_OPEN;
   }
@@ -39,7 +39,7 @@ close_arm(engine* arm, int16_t speed)
 {
   if (arm_status == ARM_OPEN){
     log_to_file("Closing arm...\n");
-    turn_engine_by_angle(arm, +350, speed);
+    turn_engine_by_angle(arm, +325, speed);
     log_to_file("--> Arm closed\n");
     arm_status = ARM_DOWN;
   }
@@ -85,9 +85,10 @@ int grab_ball(engine* arm){
       //int tot_time = go_straight_dist(20, 100, 0);
       
       go_straight(10000, 50, 0);
-      
       printf("Detection...\n");
-      while (color->reflection < 5 && time < 10000)
+      time+=250;
+      msleep(250);
+      while ((color->reflection < 5) && ((time % 10000) != 0))
       {
         time+=250;
         msleep(250);
@@ -133,7 +134,7 @@ void release_ball(engine* arm, int16_t space){
   
   open_arm(&engines[ARM], 20);
   
-  go_straight_dist(-space, 200, 1);
+  go_straight_dist(-space, 100, 1);
   
   close_arm(&engines[ARM], 500);
   undeploy_arm(&engines[ARM], 500);
