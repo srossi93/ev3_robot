@@ -166,7 +166,7 @@ void sensor_init(){
         gyro->address=i;
       
       if ( !strcmp(ev3_sensor_type( ev3_sensor[ i ].type_inx ), "lego-ev3-us") )
-        gyro->address=i;
+        us->address=i;
       
     }
   }
@@ -179,7 +179,7 @@ void sensor_init(){
   pthread_mutex_init(&gyro_mutex, NULL);
   
 
-  set_sensor_mode(gyro->address, "US-DIST-CM");
+  set_sensor_mode(us->address, "US-DIST-CM");
   pthread_mutex_init(&us_mutex, NULL);
   
   

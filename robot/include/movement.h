@@ -81,6 +81,11 @@ go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation);
 void
 stop_engines(void);
 
+
+
+
+
+
 /**
  *  \details Threaded version of \ref go_straight function
  */

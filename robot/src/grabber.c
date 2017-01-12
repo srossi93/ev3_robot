@@ -67,9 +67,7 @@ int grab_ball(engine* arm){
   int time = 0;
   do{
     deploy_arm(&engines[ARM], 500);
-    
-    do{
-      open_arm(&engines[ARM], 300);
+    open_arm(&engines[ARM], 300);
       
       
       //pthread_t check_tid, run_tid;
@@ -83,12 +81,12 @@ int grab_ball(engine* arm){
       //run_tid = ___go_straight_dist(10, 50);
       
       //int tot_time = go_straight_dist(20, 100, 0);
-      
-      go_straight(10000, 50, 0);
+      //go_straight_dist(us->distance/4, 100, 1);
+      go_straight(5000, 50, 0);
       printf("Detection...\n");
       time+=250;
       msleep(250);
-      while ((color->reflection < 5) && ((time % 10000) != 0))
+      while ((color->reflection < 3) && ((time % 5000) != 0))
       {
         time+=250;
         msleep(250);
@@ -115,9 +113,9 @@ int grab_ball(engine* arm){
       write_command(&(engines[L]), TACHO_STOP);
       
       
-      close_arm(&engines[ARM], 50);
+      close_arm(&engines[ARM], 250);
       printf("color ref: %d\n", color->reflection);
-    } while(color->reflection < 5);
+
     
     undeploy_arm(&engines[ARM], 500);
   } while (color->reflection < 5);

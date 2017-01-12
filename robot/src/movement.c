@@ -188,6 +188,8 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
     current_orientation = gyro->angle;
     pthread_mutex_unlock(&gyro_mutex);
     
+    
+    
     current_error = (current_orientation - initial_orientation);
     sprintf(msg, "Time: %d ms - Error: %d\n",
            i, current_error);

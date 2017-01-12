@@ -116,57 +116,84 @@ int main( int argc, char* argv[] )
 
   //___go_straight(5000, 50);
   sleep(2);
+  
+  turn_inplace_by_relative_angle(-30, 50);
+  int angle;
+  for (angle = 0; angle < 60; angle += 5)
+  {
+    //set_port_mode(us->address, "US-SI-CM");
+    //msleep(500);
+    turn_inplace_by_relative_angle(+5, 50);
+    msleep(500);
+    int sum = us->distance;
+    msleep(500);
+    sum += us->distance;
+    msleep(500);
+    sum += us->distance;
+
+    
+    printf("Distance AVG: %d\n", sum/3);
+    
+    if ((sum/3) < 400) {
+      turn_inplace_by_relative_angle(+5, 50);
+        printf("DETECTED\n");
+      grab_ball(&engines[ARM]);
+      return 0;
+    }
+  }
+  
+
   //TEST5();
 
   
-  go_straight_dist(100, 300, 1);
-  turn_inplace_by_relative_angle(90, 200);
-  go_straight_dist(75, 300, 1);
-  turn_inplace_by_relative_angle(-90, 200);
-  go_straight_dist(90, 300, 1);
+  //go_straight_dist(100, 300, 1);
+  //turn_inplace_by_relative_angle(90, 200);
+  //go_straight_dist(75, 300, 1);
+  //turn_inplace_by_relative_angle(-90, 200);
+  //go_straight_dist(90, 300, 1);
   
-  set_sensor_mode(gyro->address, "GYRO-CAL");
-  msleep(1000);
-  set_sensor_mode(gyro->address, "GYRO-G&A");
+  //set_sensor_mode(gyro->address, "GYRO-CAL");
+  //msleep(1000);
+  //set_sensor_mode(gyro->address, "GYRO-G&A");
   
-  turn_inplace_by_relative_angle(+90, 200);
-  go_straight_dist(-45, 300, 1);
-  release_ball(&engines[ARM], 15);
-  turn_inplace_by_relative_angle(-90, 200);
-  go_straight_dist(180, 300, 1);
+  //turn_inplace_by_relative_angle(+90, 200);
+  //go_straight_dist(-45, 300, 1);
+  //release_ball(&engines[ARM], 15);
+  //turn_inplace_by_relative_angle(-90, 200);
+  //go_straight_dist(180, 300, 1);
   
-  set_sensor_mode(gyro->address, "GYRO-CAL");
-  msleep(1000);
-  set_sensor_mode(gyro->address, "GYRO-G&A");
+  //set_sensor_mode(gyro->address, "GYRO-CAL");
+  //msleep(1000);
+  //set_sensor_mode(gyro->address, "GYRO-G&A");
   
-  turn_inplace_by_relative_angle(+90, 200);
-  go_straight_dist(70, 300, 1);
-  turn_inplace_by_relative_angle(+90, 200);
+  //turn_inplace_by_relative_angle(+90, 200);
+  //go_straight_dist(70, 300, 1);
+  //turn_inplace_by_relative_angle(+90, 200);
   
-  set_sensor_mode(gyro->address, "GYRO-CAL");
-  msleep(1000);
-  set_sensor_mode(gyro->address, "GYRO-G&A");
+  //set_sensor_mode(gyro->address, "GYRO-CAL");
+  //msleep(1000);
+  //set_sensor_mode(gyro->address, "GYRO-G&A");
   
-  go_straight_dist(100, 300, 1);
-  turn_inplace_by_relative_angle(90, 200);
-  go_straight_dist(75, 300, 1);
-  turn_inplace_by_relative_angle(-90, 200);
-  go_straight_dist(85, 300, 1);
+  //go_straight_dist(100, 300, 1);
+  //turn_inplace_by_relative_angle(90, 200);
+  //go_straight_dist(75, 300, 1);
+  //turn_inplace_by_relative_angle(-90, 200);
+  //go_straight_dist(85, 300, 1);
   
-  set_sensor_mode(gyro->address, "GYRO-CAL");
-  msleep(1000);
-  set_sensor_mode(gyro->address, "GYRO-G&A");
+  //set_sensor_mode(gyro->address, "GYRO-CAL");
+  //msleep(1000);
+  //set_sensor_mode(gyro->address, "GYRO-G&A");
   
-  turn_inplace_by_relative_angle(-90, 200);
-  grab_ball(&engines[ARM]);
-  go_straight_dist(20, 300, 1);
+  //turn_inplace_by_relative_angle(-90, 200);
+  //grab_ball(&engines[ARM]);
+  //go_straight_dist(20, 300, 1);
   
-  set_sensor_mode(gyro->address, "GYRO-CAL");
-  msleep(1000);
-  set_sensor_mode(gyro->address, "GYRO-G&A");
+  //set_sensor_mode(gyro->address, "GYRO-CAL");
+  //msleep(1000);
+  //set_sensor_mode(gyro->address, "GYRO-G&A");
 
-  turn_inplace_by_relative_angle(+90, 200);
-  go_straight_dist(180, 300, 1);
+  //turn_inplace_by_relative_angle(+90, 200);
+  //go_straight_dist(180, 300, 1);
   
   
 	///* BEGINNER + SMALL */
