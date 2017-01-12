@@ -11,7 +11,7 @@ int ball_detector(int dist){
 	act_dist = us->distance; 
 	if ( act_dist > dist ) 
 		y =  0;
-	else if (act_dist =< dist )
+	else if (act_dist <= dist )
 		y =  act_dist;
 
 	return y;
