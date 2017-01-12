@@ -7,7 +7,7 @@
 //
 
 #include "grabber.h"
-
+#include "globals.h"
 
 
 void

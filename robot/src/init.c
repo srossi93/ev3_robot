@@ -7,6 +7,7 @@
 //
 
 #include "init.h"
+#include "globals.h"
 
 extern char msg[255];
 //extern sem_t sem_right_engine, sem_left_engine;

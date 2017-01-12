@@ -5,7 +5,8 @@
 */
 
 #include "movement.h"
-
+#include "globals.h"
+#include "obstacle_detection.h"
 
 inline void
 turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed)
@@ -51,29 +52,7 @@ turn_engine_by_time(engine* tacho, uint16_t time, int16_t speed)
   } while (((tacho->state % 2) == 1) || tacho->speed != 0);
 }
 
-void*
-__turn_engine_by_angle(void *arg)
-{
-  turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
-  
-  sem_wait(&valid_args.sem_engine);
-    turn_engine_by_angle(valid_args.tacho, valid_args.angle, valid_args.speed);
-  sem_post(&valid_args.sem_engine);
-  
-  pthread_exit(NULL);
-}
 
-void*
-__turn_engine_by_time(void *arg)
-{
-  turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
-  
-  sem_wait(&valid_args.sem_engine);
-    turn_engine_by_time(valid_args.tacho, valid_args.time, valid_args.speed);
-  sem_post(&valid_args.sem_engine);
-  
-  pthread_exit(NULL);
-}
 
 void
 turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
@@ -142,6 +121,7 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
 void
 go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
 {
+  robot_status = ROBOT_RUNNING;
   //turn_engine_arg_struct right_engine_args, left_engine_args;
   //pthread_t right_tid, left_tid, error_tid;
   //struct timeval start_time, current_time, diff_time;
@@ -206,7 +186,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
       
       write_time_sp(&engines[R], time - i);
       write_time_sp(&engines[L], time - i);
-
+      
       //write_stop_action(&engines[R], TACHO_COAST);
       //write_stop_action(&engines[L], TACHO_COAST);
       
@@ -237,7 +217,63 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
     turn_inplace_by_relative_angle(-(gyro_angle - initial_orientation), 200);
     
   }
+  robot_status = ROBOT_NOT_RUNNING;
   return;
+}
+
+
+
+
+void 
+stop_engines(void){
+//function to stop all the motors at the same time
+  write_stop_action(&engines[R], TACHO_BRAKE);
+  write_stop_action(&engines[L], TACHO_BRAKE);
+  
+  write_command(&engines[R],TACHO_STOP);
+	write_command(&engines[L],TACHO_STOP);
+  
+  robot_status = ROBOT_NOT_RUNNING;
+
+}
+
+
+uint16_t
+go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation){
+  
+  /** Table conversion between tacho speed and cm/second */
+  /** Sampled every 100 tacho speed */
+  float conversion_speed_table[] = {0, 5.8, 10.6, 15.2, 19.1, 23.5};
+  uint16_t time;
+
+  if (speed > 500)
+    speed = 500;
+  
+  time = ((speed * 1500 / 4000)) + abs((int)(position * 1000 / conversion_speed_table[(int)speed/100])) ;
+
+  log_to_file("Moving ahead ...\n");
+  if (position < 0) 
+    speed = -speed;
+  
+  go_straight(time, speed, check_orientation);
+  
+  if (check_orientation == 0) return time;
+  return 0;
+}
+
+
+
+void
+go_straight_dist_obstacle(int16_t position, int16_t speed){
+  
+  pthread_t tid = ___go_straight_dist(position, speed);
+  msleep(250);
+  while (robot_status == ROBOT_RUNNING) {
+    if (obstacle_detected(200)) {
+      stop_engines();
+      pthread_cancel(tid);
+    }
+  }
 }
 
 
@@ -264,41 +300,30 @@ ___go_straight(uint16_t time, int16_t speed){
   return tid;
 }
 
-void 
-stop_engines(void){
-//function to stop all the motors at the same time
-  write_stop_action(&engines[R], TACHO_BRAKE);
-  write_stop_action(&engines[L], TACHO_BRAKE);
-  
-  write_command(&engines[R],TACHO_STOP);
-	write_command(&engines[L],TACHO_STOP);
 
+void*
+__turn_engine_by_angle(void *arg)
+{
+  turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
+  
+  sem_wait(&valid_args.sem_engine);
+  turn_engine_by_angle(valid_args.tacho, valid_args.angle, valid_args.speed);
+  sem_post(&valid_args.sem_engine);
+  
+  pthread_exit(NULL);
 }
 
-
-uint16_t
-go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation){
+void*
+__turn_engine_by_time(void *arg)
+{
+  turn_engine_arg_struct valid_args = *(turn_engine_arg_struct*)arg;
   
-  /** Table conversion between tacho speed and cm/second */
-  /** Sampled every 100 tacho speed */
-  float conversion_speed_table[] = {0, 5.8, 10.6, 15.2, 19.1, 23.5};
-  uint16_t time;
-
-  if (speed > 500)
-    speed = 500;
+  sem_wait(&valid_args.sem_engine);
+  turn_engine_by_time(valid_args.tacho, valid_args.time, valid_args.speed);
+  sem_post(&valid_args.sem_engine);
   
-  time = ((speed * 1500 / 4000)) + abs((int)(position * 1000 / conversion_speed_table[(int)speed/100])) ;
-
-  log_to_file("Moving ahead ...");
-  if (position < 0) 
-    speed = -speed;
-  
-  go_straight(time, speed, check_orientation);
-  
-  if (check_orientation == 0) return time;
-  return 0;
+  pthread_exit(NULL);
 }
-
 
 void *
 __go_straight_dist(void* arg){

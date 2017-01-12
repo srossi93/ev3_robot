@@ -12,13 +12,13 @@
 #include "movement.h"
 
 
-typedef enum {
-  ARM_UP,
-  ARM_DOWN,
-  ARM_OPEN,
-} ARM_STATUS;
+//typedef enum {
+  //ARM_UP,
+  //ARM_DOWN,
+  //ARM_OPEN,
+//} ARM_STATUS;
 
-ARM_STATUS arm_status;
+//ARM_STATUS arm_status;
 
 FLAGS_T ball_found;
 

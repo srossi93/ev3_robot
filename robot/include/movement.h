@@ -3,7 +3,7 @@
 //  robot
 //
 //
-
+#pragma once
 #ifndef movement_h
 #define movement_h
 
@@ -21,14 +21,14 @@
 
 #include "utilities.h"
 
-#include "globals.h"
+
 
 #include "tacho.h"
 #include "gyro.h"
 
 //#include "globals.h"
 
-#define AZIMUT_ERROR 1
+//#define AZIMUT_ERROR 1
 
 typedef struct
 {
@@ -39,6 +39,9 @@ typedef struct
   engine* tacho;
   sem_t sem_engine;
 }turn_engine_arg_struct;
+
+
+
 
 
 //sem_t sem_right_engine, sem_left_engine;
@@ -83,6 +86,11 @@ stop_engines(void);
 
 
 
+void
+go_straight_dist_obstacle(int16_t position, int16_t speed);
+
+
+
 
 
 
@@ -121,5 +129,5 @@ ___go_straight_dist(int16_t distance, int16_t speed);
 
 //void* thread_check_azimut();
 
-
+#define _movement_h
 #endif /* movement_h */

@@ -10,7 +10,7 @@
 #define obstacle_detection_h
 
 #include "us_sensor.h"
-#include "globals.h"
+
 
 int
 obstacle_detected(int threashold);

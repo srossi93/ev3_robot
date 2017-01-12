@@ -11,12 +11,15 @@
 #include "ev3_tacho.h"
 #include "ev3_sensor.h"
 
+#include "globals.h"
+
 #include "utilities.h"
 #include "tacho.h"
 #include "movement.h"
 #include "init.h"
-#include "test.h"
+//#include "test.h"
 #include "grabber.h"
+#include "obstacle_detection.h"
 
 extern pthread_cond_t cv_ball_detected;
 
@@ -116,31 +119,34 @@ int main( int argc, char* argv[] )
 
   //___go_straight(5000, 50);
   sleep(2);
+
   
-  turn_inplace_by_relative_angle(-30, 50);
-  int angle;
-  for (angle = 0; angle < 60; angle += 5)
-  {
-    //set_port_mode(us->address, "US-SI-CM");
+  go_straight_dist_obstacle(1000, 500);
+  
+  //turn_inplace_by_relative_angle(-30, 50);
+  //int angle;
+  //for (angle = 0; angle < 60; angle += 5)
+  //{
+    ////set_port_mode(us->address, "US-SI-CM");
+    ////msleep(500);
+    //turn_inplace_by_relative_angle(+5, 50);
     //msleep(500);
-    turn_inplace_by_relative_angle(+5, 50);
-    msleep(500);
-    int sum = us->distance;
-    msleep(500);
-    sum += us->distance;
-    msleep(500);
-    sum += us->distance;
+    //int sum = us->distance;
+    //msleep(500);
+    //sum += us->distance;
+    //msleep(500);
+    //sum += us->distance;
 
     
-    printf("Distance AVG: %d\n", sum/3);
+    //printf("Distance AVG: %d\n", sum/3);
     
-    if ((sum/3) < 400) {
-      turn_inplace_by_relative_angle(+5, 50);
-        printf("DETECTED\n");
-      grab_ball(&engines[ARM]);
-      return 0;
-    }
-  }
+    //if ((sum/3) < 400) {
+      //turn_inplace_by_relative_angle(+5, 50);
+        //printf("DETECTED\n");
+      //grab_ball(&engines[ARM]);
+      //return 0;
+    //}
+  //}
   
 
   //TEST5();
