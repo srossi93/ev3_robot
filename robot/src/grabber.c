@@ -62,9 +62,10 @@ undeploy_arm(engine* arm, int16_t speed)
 
 
 
-int grab_ball(engine* arm){
+int grab_ball(engine* arm, int ball_distance){
 
   int time = 0;
+  //int ball_distance = us->distance;
   do{
     deploy_arm(&engines[ARM], 500);
     open_arm(&engines[ARM], 300);
@@ -82,16 +83,16 @@ int grab_ball(engine* arm){
       
       //int tot_time = go_straight_dist(20, 100, 0);
       //go_straight_dist(us->distance/4, 100, 1);
-      go_straight(5000, 50, 0);
-      printf("Detection...\n");
-      time+=250;
+      //go_straight(5000, 50, 0);
+
+    go_straight_dist(ball_distance, 50, 0);
+    printf("Detection...\n");
+    //  time+=250;
+    msleep(250);
+    while ((color->reflection < 4) && robot_status == ROBOT_RUNNING) {
       msleep(250);
-      while ((color->reflection < 3) && ((time % 5000) != 0))
-      {
-        time+=250;
-        msleep(250);
-      }
-      stop_engines();
+    }
+    stop_engines();
 
       //int i;
       //for (i = 0; i < 10000; i+=250) {
@@ -106,19 +107,13 @@ int grab_ball(engine* arm){
       //pthread_join(run_tid, NULL);
       //pthread_cancel(check_tid);
       
-      write_stop_action(&(engines[R]), TACHO_BRAKE);
-      write_stop_action(&(engines[L]), TACHO_BRAKE);
-      
-      write_command(&(engines[R]), TACHO_STOP);
-      write_command(&(engines[L]), TACHO_STOP);
-      
-      
+    
       close_arm(&engines[ARM], 250);
       printf("color ref: %d\n", color->reflection);
 
     
     undeploy_arm(&engines[ARM], 500);
-  } while (color->reflection < 5);
+  } while (color->reflection < 4);
   
   return time;
 }
@@ -138,6 +133,85 @@ void release_ball(engine* arm, int16_t space){
   undeploy_arm(&engines[ARM], 500);
   
   
+}
+
+
+
+void
+search_and_grab(engine* arm){
+  int span[] = {60, 60};
+  int distance[200];
+  int orientation[200];
+  
+  int min_position, num_of_observations, min_orientation, min_distance = 0;
+  int j = 0;
+  
+  for (j = 0; j < 2; j++) {
+    
+    min_distance = distance[0];
+    min_position = 0;
+    num_of_observations = 0;
+    min_orientation = 0;
+    
+    int i = 0;
+    for (i = 0; i < 200; i++) {
+      distance[i] = 3000;
+    }
+    
+    turn_inplace_by_relative_angle(-span[j]/2, 500);
+    
+    pthread_t tid;
+    turn_engine_arg_struct arg;
+    arg.angle = span[j];
+    arg.speed = 20;
+    
+    pthread_create(&tid, NULL, __turn_inplace_by_relative_angle, (void*)&arg);
+    msleep(100);
+    
+    i = 0;
+    for (i = 0; i < 200; i++) {
+      if (robot_status != ROBOT_RUNNING) {
+        break;
+      }
+      distance[i] = us->distance;
+      orientation[i] = gyro->angle;
+      //printf("%d\n", us->distance);
+      msleep(50);
+    }
+    
+    
+    
+    min_distance = distance[0];
+    min_position = 0;
+    num_of_observations = 0;
+    
+    for (i = 0; i < 200; i++){
+      if (distance[i] == 3000) {
+        break;
+      }
+      //printf("%d: %d\n", i, distance[i]);
+      if(distance[i] <= min_distance){
+        min_distance = distance[i];
+        min_orientation = orientation[i];
+        min_position = i;
+      }
+      num_of_observations++;
+    }
+    
+    printf("Min distance: %d\nPosition: %d\nNum of obs: %d\nOrientation: %d\n", min_distance, min_position, num_of_observations, min_orientation);
+    
+    //turn_inplace_by_relative_angle(-90+4.2*min_position/2, 100);
+    turn_inplace_by_relative_angle(-(gyro->angle - min_orientation), 100);
+    
+    if (min_distance < 250) {
+      continue;
+    }
+    go_straight_dist(10, 200, 1);
+    
+  }
+  
+  grab_ball(arm, min_distance/10-5);
+
 }
 
 

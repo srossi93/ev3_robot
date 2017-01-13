@@ -74,23 +74,28 @@ void
 turn_inplace_by_relative_angle(int16_t angle, int16_t speed);
 
 
-
 void
 go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation);
+
 
 uint16_t
 go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation);
 
+
 void
 stop_engines(void);
-
 
 
 void
 go_straight_dist_obstacle(int16_t position, int16_t speed);
 
 
+void
+go_to_position(int16_t x, int16_t y, int16_t speed);
 
+
+void *
+__turn_inplace_by_relative_angle(void *arg);
 
 
 
@@ -117,8 +122,6 @@ pthread_t
 ___go_straight(uint16_t time, int16_t speed);
 
 
-void
-go_to_position(int16_t x, int16_t y, int16_t speed);
 
 void *
 __go_straight_dist(void* arg);

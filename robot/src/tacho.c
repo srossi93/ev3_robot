@@ -47,7 +47,7 @@ inline int   read_position          (engine* tacho)
 {
   int tmp;
   get_tacho_position(tacho->address, &tmp);
-  return tmp;
+  return -tmp;
 }
 
 inline int   read_hold_pid_Kd       (engine* tacho)

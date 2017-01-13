@@ -28,8 +28,10 @@ void close_arm(engine* arm, int16_t speed);
 void undeploy_arm(engine* arm, int16_t speed);
 
 
-int grab_ball(engine* arm);
+int grab_ball(engine* arm, int ball_distance);
 void release_ball(engine* arm, int16_t space);
+
+void search_and_grab(engine* arm);
 
 void* __check_ball();
 

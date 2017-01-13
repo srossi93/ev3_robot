@@ -20,6 +20,7 @@
 //#include "test.h"
 #include "grabber.h"
 #include "obstacle_detection.h"
+#include "odometry.h"
 
 extern pthread_cond_t cv_ball_detected;
 
@@ -83,13 +84,12 @@ void TEST4(void)
 }
   //grab_ball(&engines[ARM]);
   
-void TEST5(void)
-{
+void TEST5(void){
   //TEST 5
   //go_straight_dist(87, 400, 1);
   //turn_inplace_by_relative_angle(-90, 200);
   //go_straight_dist(10, 100, 1);
-  int time = grab_ball(&engines[ARM]);
+  int time = grab_ball(&engines[ARM], 200);
   //go_straight(time, -50, 1);
   //turn_inplace_by_relative_angle(90, 200);
   //go_straight_dist(75, 400, 1);
@@ -119,17 +119,25 @@ int main( int argc, char* argv[] )
 
   //___go_straight(5000, 50);
   sleep(2);
+  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
 
+  go_straight_dist(10, 100, 1);
+  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
+  go_straight_dist(20, 100, 1);
+  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
+  go_straight_dist(30, 100, 1);
+  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
+  turn_inplace_by_relative_angle(90, 100);
+  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
+  //msleep(5000);
+  //grab_ball(&engines[ARM], min_distance/10-22);
   
-  go_straight_dist_obstacle(1000, 500);
-  
-  //turn_inplace_by_relative_angle(-30, 50);
+  //turn_inplace_by_relative_angle(-30, 500);
   //int angle;
   //for (angle = 0; angle < 60; angle += 5)
   //{
     ////set_port_mode(us->address, "US-SI-CM");
     ////msleep(500);
-    //turn_inplace_by_relative_angle(+5, 50);
     //msleep(500);
     //int sum = us->distance;
     //msleep(500);
@@ -141,11 +149,12 @@ int main( int argc, char* argv[] )
     //printf("Distance AVG: %d\n", sum/3);
     
     //if ((sum/3) < 400) {
-      //turn_inplace_by_relative_angle(+5, 50);
+      ////turn_inplace_by_relative_angle(-5, 50);
         //printf("DETECTED\n");
-      //grab_ball(&engines[ARM]);
-      //return 0;
+      //grab_ball(&engines[ARM], (sum/3)/10);
+      //break;
     //}
+    //turn_inplace_by_relative_angle(+5, 50);
   //}
   
 
@@ -250,49 +259,7 @@ int main( int argc, char* argv[] )
   //go_straight(10000, 300);
   
   
-  //go_straight_dist(1, 300);
   
-  ///* Go straight */
-	//printf("Go straight for 10 seconds\n");
-	////printf("Go straight for 500 centimets\n");
-	////go_straight_dist(1, 300);
-	//___go_straight(10000, 100);
-	///* continuously check if there a obstacles */
-//#if 1
-	//printf("Detecting obstacles...\n");
-	//detect_obstacles();
-	////sleep(1);
-	///*stop */
-	////printf("Stop engines\n");
-	////stop_engines();
-	////sleep(5);
-  ///* Turn right */
- 	////turn_right(); 
-	//printf("Turn right\n");
-	//turn_inplace_by_relative_angle(90, 100);
-  ///* Go straight for 100 centimets*/
-  	////go_straight_dist(1000);
-	//printf("Go straight for 5 seconds\n");
-	//___go_straight(5000, 100);
-	///* continuously check if there a obstacles */
-	//printf("Detecting obstacles...\n");
-	//detect_obstacles();
-  ///* Turn left */
-  	////turn_left();
-	//turn_inplace_by_relative_angle(-90, 100);
-  ///* Go straight for 50 centimets */
-  	////go_straight_dist(500);
-	//printf("Go straight for 10 seconds\n");
-	//___go_straight(10000, 100);
-	///* continuously check if there a obstacles */
-	//detect_obstacles();
-  ///*  */
-//#endif
-  /*  */
-  
-  /*  */
-  
-  //grab_ball(&engines[ARM]);
   
   threads_deinit();
   ev3_uninit();

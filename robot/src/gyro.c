@@ -23,10 +23,19 @@ int read_gyro_speed(gyro_sensor* gyro){
 }
 
 void read_gyro_status(gyro_sensor* gyro){
-  int tmp = read_gyro_angle(gyro);
-  if (!ev3_search_sensor(LEGO_EV3_GYRO, &gyro->address, 0)) return;
-  if (abs(tmp) > 30000000) return;
-  gyro->angle = tmp;
+  int sum = 0;
+  int i = 0;
+  for (; i<3; i++) {
+    int tmp = read_gyro_angle(gyro);
+    if (!ev3_search_sensor(LEGO_EV3_GYRO, &gyro->address, 0)) return;
+    if (abs(tmp) > 30000000) return;
+    sum += tmp;
+
+  }
+  //int tmp = read_gyro_angle(gyro);
+  //if (!ev3_search_sensor(LEGO_EV3_GYRO, &gyro->address, 0)) return;
+  //if (abs(tmp) > 30000000) return;
+  gyro->angle = sum / 3;
   gyro->rot_speed = read_gyro_speed(gyro);
 
 }

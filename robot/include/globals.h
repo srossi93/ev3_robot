@@ -55,5 +55,12 @@ typedef enum {
 extern ARM_STATUS arm_status;
 extern ROBOT_STATUS robot_status;
 
+typedef struct{
+  int x;
+  int y;
+}POSITION;
+
+extern POSITION robot_position;
+
 
 #endif /* globals_h */

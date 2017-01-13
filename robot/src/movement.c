@@ -29,6 +29,7 @@ turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed)
     //fflush(stdout);
     
   } while (((tacho->state % 2) == 1));
+    //} while (((tacho->state % 2) != 0));
   
   write_stop_action(tacho, TACHO_HOLD);
   write_command(tacho, TACHO_STOP);
@@ -57,6 +58,8 @@ turn_engine_by_time(engine* tacho, uint16_t time, int16_t speed)
 void
 turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
 {
+  robot_status = ROBOT_RUNNING;
+  
   turn_engine_arg_struct right_engine_args, left_engine_args;
   pthread_t right_tid, left_tid;
   
@@ -91,6 +94,8 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
     left_engine_args.tacho = &engines[L];
     left_engine_args.speed = speed;
     left_engine_args.sem_engine = sem_left_engine;
+    
+
   
     pthread_create(&right_tid, NULL, __turn_engine_by_angle, (void*)&right_engine_args);
     pthread_create(&left_tid,  NULL, __turn_engine_by_angle, (void*)&left_engine_args);
@@ -99,7 +104,9 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
     pthread_join(left_tid, NULL);
 
     
-    //msleep(500);
+    msleep(150);
+    
+
 
     pthread_mutex_lock(&gyro_mutex);
     final_orientation = gyro->angle;
@@ -113,6 +120,8 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
     log_to_file(msg);
     i++;
 } while (abs(error) > 1);
+  
+  robot_status = ROBOT_NOT_RUNNING;
   
   return;
 }
@@ -251,6 +260,10 @@ go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation){
   
   time = ((speed * 1500 / 4000)) + abs((int)(position * 1000 / conversion_speed_table[(int)speed/100])) ;
 
+  if (speed == 50) {
+    time = ((speed * 1500 / 4000)) + abs((int)(position * 1000 / 2.5)) ;
+  }
+  
   log_to_file("Moving ahead ...\n");
   if (position < 0) 
     speed = -speed;
@@ -266,15 +279,38 @@ go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation){
 void
 go_straight_dist_obstacle(int16_t position, int16_t speed){
   
-  pthread_t tid = ___go_straight_dist(position, speed);
+  turn_engine_arg_struct arg;
+  pthread_t tid;
+  
+  arg.distance = position;
+  arg.speed = speed;
+  
+  pthread_create(&tid, NULL, __go_straight_dist, (void*)&arg);
+
   msleep(250);
   while (robot_status == ROBOT_RUNNING) {
-    if (obstacle_detected(200)) {
+    if (obstacle_detected(250)) {
       stop_engines();
       pthread_cancel(tid);
     }
   }
+  
+  pthread_join(tid, NULL);
 }
+
+
+void *
+__turn_inplace_by_relative_angle(void *arg){
+  
+
+  
+  turn_engine_arg_struct args = *(turn_engine_arg_struct*) arg;
+  turn_inplace_by_relative_angle(args.angle, args.speed);
+  pthread_exit(NULL);
+}
+
+
+
 
 
 void *

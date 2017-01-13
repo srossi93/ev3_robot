@@ -10,6 +10,7 @@
 		FC07959C1DD4B38C005F0A16 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = FC07959B1DD4B38C005F0A16 /* test.c */; };
 		FC12FB8F1DE3A154002F214B /* tacho.c in Sources */ = {isa = PBXBuildFile; fileRef = FC12FB8E1DE3A154002F214B /* tacho.c */; };
 		FC2DAC781E27CEE90083742F /* globals.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2DAC771E27CEE90083742F /* globals.c */; };
+		FC2DAC7B1E2965220083742F /* odometry.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2DAC7A1E2965220083742F /* odometry.c */; };
 		FC3EB9961E25331A00293E9E /* obstacle_detection.c in Sources */ = {isa = PBXBuildFile; fileRef = FC3EB9951E25331A00293E9E /* obstacle_detection.c */; };
 		FC3F063E1DD21A3800E8CDB2 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = FC3F063D1DD21A3800E8CDB2 /* init.c */; };
 		FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */ = {isa = PBXBuildFile; fileRef = FC5CF5CB1DE6ED10007CE7C0 /* gyro.c */; };
@@ -42,6 +43,8 @@
 		FC2AC4331DE5B10A0016C0B6 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = include/globals.h; sourceTree = SOURCE_ROOT; };
 		FC2AC4341DE5B4580016C0B6 /* gyro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gyro.h; path = include/gyro.h; sourceTree = SOURCE_ROOT; };
 		FC2DAC771E27CEE90083742F /* globals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = globals.c; path = src/globals.c; sourceTree = SOURCE_ROOT; };
+		FC2DAC791E29650D0083742F /* odometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = odometry.h; path = include/odometry.h; sourceTree = SOURCE_ROOT; };
+		FC2DAC7A1E2965220083742F /* odometry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = odometry.c; path = src/odometry.c; sourceTree = SOURCE_ROOT; };
 		FC3EB9941E2532D200293E9E /* obstacle_detection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = obstacle_detection.h; path = include/obstacle_detection.h; sourceTree = SOURCE_ROOT; };
 		FC3EB9951E25331A00293E9E /* obstacle_detection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = obstacle_detection.c; path = src/obstacle_detection.c; sourceTree = SOURCE_ROOT; };
 		FC3F063D1DD21A3800E8CDB2 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = src/init.c; sourceTree = SOURCE_ROOT; };
@@ -87,6 +90,7 @@
 				FCABB10B1DF81DD600B74E58 /* grabber.c */,
 				FCABB10E1DF8638400B74E58 /* color_sensor.c */,
 				FC3EB9951E25331A00293E9E /* obstacle_detection.c */,
+				FC2DAC7A1E2965220083742F /* odometry.c */,
 			);
 			name = src;
 			path = robot;
@@ -124,6 +128,7 @@
 				FCABB10A1DF81BEC00B74E58 /* grabber.h */,
 				FCABB10D1DF860F300B74E58 /* color_sensor.h */,
 				FC3EB9941E2532D200293E9E /* obstacle_detection.h */,
+				FC2DAC791E29650D0083742F /* odometry.h */,
 			);
 			name = include;
 			path = robot;
@@ -205,6 +210,7 @@
 			files = (
 				FC3EB9961E25331A00293E9E /* obstacle_detection.c in Sources */,
 				FC5CF5CC1DE6ED10007CE7C0 /* gyro.c in Sources */,
+				FC2DAC7B1E2965220083742F /* odometry.c in Sources */,
 				FCABB10F1DF8638400B74E58 /* color_sensor.c in Sources */,
 				FC07959C1DD4B38C005F0A16 /* test.c in Sources */,
 				FCA2FC141DD0D0690007F935 /* utilities.c in Sources */,
