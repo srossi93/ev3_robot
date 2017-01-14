@@ -8,13 +8,13 @@
 
 #include "init.h"
 #include "globals.h"
+#include "odometry.h"
 
 extern char msg[255];
 //extern sem_t sem_right_engine, sem_left_engine;
 
 int
-robot_init(void)
-{
+robot_init(void){
   sprintf(msg, "*** Initialization ***\n");
   log_to_file(msg);
 
@@ -53,8 +53,8 @@ robot_init(void)
   return 1;
 }
 
-int engines_init(void)
-{
+int
+engines_init(void){
   int max_speed;
   uint8_t gyro_sensor_id;
   engine_ptr engine1, engine2;
@@ -155,7 +155,8 @@ int engines_init(void)
   return 1;
 }
 
-void sensor_init(){
+void
+sensor_init(){
   
   int i;
   for ( i = 0; i < DESC_LIMIT; i++ ) {
@@ -190,25 +191,39 @@ void sensor_init(){
   
 }
 
-void threads_init(){
+void
+threads_init(){
+  
   pthread_create(&engines_status_reader_tid, NULL, __tacho_status_reader, (void*)engines);
   log_to_file("TACHO STATUS READER -> THREAD -- Created\n");
+  
   pthread_create(&gyro_status_reader_tid, NULL, __gyro_status_reader, (void*)gyro);
   log_to_file("GYRO STATUS READER -> THREAD -- Created\n");
+  
   pthread_create(&us_status_reader_tid, NULL, __us_status_reader, (void*)us);
   log_to_file("US STATUS READER -> THREAD -- Created\n");
+  
   pthread_create(&color_status_reader_tid, NULL, __color_status_reader, (void*)color);
   log_to_file("COLOR STATUS READER -> THREAD -- Created\n");
+  
+  pthread_create(&odometry_tid, NULL, __update_position, NULL);
+  log_to_file("ODOMETRY -> THREAD -- Created\n");
 }
 
-
-
-void threads_deinit()
-{
+void
+threads_deinit(){
   pthread_cancel(engines_status_reader_tid);
   log_to_file("TACHO STATUS READER -> THREAD -- Terminated\n");
+  
   pthread_cancel(gyro_status_reader_tid);
   log_to_file("GYRO STATUS READER -> THREAD -- Terminated\n");
+  
   pthread_cancel(us_status_reader_tid);
   log_to_file("US STATUS READER -> THREAD -- Terminated\n");
+  
+  pthread_cancel(color_status_reader_tid);
+  log_to_file("COLOR STATUS READER -> THREAD -- Terminated\n");
+  
+  pthread_cancel(odometry_tid);
+  log_to_file("ODOMETRY -> THREAD -- Terminated\n");
 }

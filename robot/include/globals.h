@@ -27,6 +27,7 @@ pthread_t engines_status_reader_tid;
 pthread_t gyro_status_reader_tid;
 pthread_t us_status_reader_tid;
 pthread_t color_status_reader_tid;
+pthread_t odometry_tid;
 
 sem_t sem_right_engine, sem_left_engine;
 
@@ -56,8 +57,8 @@ extern ARM_STATUS arm_status;
 extern ROBOT_STATUS robot_status;
 
 typedef struct{
-  int x;
-  int y;
+  float x;
+  float y;
 }POSITION;
 
 extern POSITION robot_position;

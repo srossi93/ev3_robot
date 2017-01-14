@@ -119,17 +119,17 @@ int main( int argc, char* argv[] )
 
   //___go_straight(5000, 50);
   sleep(2);
-  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
 
+  //print_position();
   go_straight_dist(10, 100, 1);
-  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
+  //print_position();
   go_straight_dist(20, 100, 1);
-  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
+  //print_position();
   go_straight_dist(30, 100, 1);
-  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
+  //print_position();
   turn_inplace_by_relative_angle(90, 100);
-  printf("Distance: %f\nHeading: %d\n\n",get_displacement(&engines[R], &engines[L]), get_heading(gyro));
-  //msleep(5000);
+  //print_position();
+  msleep(5000);
   //grab_ball(&engines[ARM], min_distance/10-22);
   
   //turn_inplace_by_relative_angle(-30, 500);

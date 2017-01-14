@@ -8,10 +8,14 @@
 
 #include <stdio.h>
 #include "odometry.h"
-
+#include <math.h>
 
 int previous_displacement_L = 0;
 int previous_displacement_R = 0;
+int previous_rotation_L = 0;
+int previous_rotation_R = 0;
+int previous_angle = 0;
+int previous_heading_engines = 90;
 int previous_heading = 90;
 
 void reset_position(){
@@ -20,17 +24,77 @@ void reset_position(){
 }
 
 float get_displacement(engine* motorR, engine* motorL){
-  float displacement = ((motorR->position + motorL->position - previous_displacement_L - previous_displacement_R) * PI * WHEEL_DIAMETER) / motorR->count_per_rot / 2;
+  int positionR, positionL;
+  positionR = motorR->position;
+  positionL = motorL->position;
   
-  previous_displacement_L = motorR->position;
-  previous_displacement_R = motorL->position;
+  //printf("PreviousPositionL: %d\nPreviousPositionR%d\nPositionL: %d\nPositionR:%d\n\n", previous_displacement_L, previous_displacement_R, positionL, positionR);
+  
+  float displacement = ((positionR + positionL - previous_displacement_L - previous_displacement_R) * PI * WHEEL_DIAMETER) / 720;//motorR->count_per_rot / 2;
+  
+  //printf("%f\n\n",displacement);
+  
+  previous_displacement_L = positionL;
+  previous_displacement_R = positionR;
   
   return displacement;
 }
 
-int get_heading(gyro_sensor* gyro){
+int get_heading_from_gyro(gyro_sensor* gyro){
   int heading;
-  heading =  previous_heading - gyro->angle;
+  //printf("angle: %d\n",gyro->angle);
+  heading =  previous_heading + (previous_angle - gyro->angle);
+  previous_angle = gyro->angle;
   previous_heading = heading;
   return heading;
+}
+
+//int get_heading_from_engines(engine* motorR, engine* motorL){
+  //int heading;
+  //int positionR, positionL;
+  //positionR = motorR->position;
+  //positionL = motorL->position;
+  ////printf("HEADING\n");
+  ////printf("PositionL: %d\nPositionR:%d\n\n", positionL, positionR);
+  
+  //if (abs(positionL - previous_rotation_L) < 5)
+    //return heading;
+
+  //if (abs(positionR - previous_rotation_R) < 5)
+    //return heading;
+  
+  //heading =  previous_heading - (((positionR - positionL - previous_rotation_R + previous_rotation_L) * PI * WHEEL_DIAMETER) / 720 ) * TRACK;
+
+  ////previous_heading_engines = heading;
+  //previous_rotation_R = positionR;
+  //previous_rotation_L = positionL;
+  
+  //return heading;
+  
+//}
+
+void update_position(){
+  float displacement = get_displacement(&engines[R], &engines[L]);
+  //int heading = get_heading_from_gyro(gyro);
+  int heading = get_heading_from_gyro(gyro);
+  printf("DISP: %f\nHEAD: %d\n", displacement, heading);
+  previous_heading = heading;
+  robot_position.x += displacement * (float)cos(RAD(heading));
+  robot_position.y += displacement * (float)sin(RAD(heading));
+ 
+}
+
+void* __update_position(){
+  reset_position();
+  print_position();
+  while (1) {
+    msleep(1000);
+    update_position();
+    print_position();
+  }
+}
+
+
+void print_position(){
+  printf("X: %f\nY: %f\n\n", robot_position.x, robot_position.y);
 }
