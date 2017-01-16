@@ -12,7 +12,9 @@
 #include "tacho.h"
 #include "globals.h"
 
-#define PI 3.1424
+#ifndef PI
+#define PI 3.1415
+#endif
 #define WHEEL_DIAMETER 5.61
 #define TRACK 10
 #define MOTOR_SCALE_FACTOR  (PI * WHEEL_DIAMETER) / 360

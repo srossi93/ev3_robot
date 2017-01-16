@@ -7,6 +7,7 @@
 #include "movement.h"
 #include "globals.h"
 #include "obstacle_detection.h"
+#include <math.h>
 
 inline void
 turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed)
@@ -180,7 +181,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
     
     
     current_error = (current_orientation - initial_orientation);
-    sprintf(msg, "Time: %d ms - Error: %d\n",
+    sprintf(msg, "Time: %d ms - \t\tError: %d\n",
            i, current_error);
     log_to_file(msg);
 
@@ -229,7 +230,6 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   robot_status = ROBOT_NOT_RUNNING;
   return;
 }
-
 
 
 
@@ -299,6 +299,28 @@ go_straight_dist_obstacle(int16_t position, int16_t speed){
 }
 
 
+
+
+void
+move_by_offset(int16_t x_off, int16_t y_off, int16_t speed){
+  
+  int16_t angle = -90 + robot_position.head + (atan2f(x_off, y_off) * 180) / 3.14;
+  int16_t distance = sqrtf(POW2(x_off) + POW2(y_off));
+  
+  sprintf(msg, "Moving by offset (x = %d, y = %d)\n", x_off, y_off);
+  log_to_file(msg);
+  
+  sprintf(msg, "Angle: %+d deg\nDistance: %d cm\n", angle, distance);
+  log_to_file(msg);
+  
+  turn_inplace_by_relative_angle(angle, speed);
+  go_straight_dist_obstacle(distance, speed);
+  
+}
+
+
+
+
 void *
 __turn_inplace_by_relative_angle(void *arg){
   
@@ -308,9 +330,6 @@ __turn_inplace_by_relative_angle(void *arg){
   turn_inplace_by_relative_angle(args.angle, args.speed);
   pthread_exit(NULL);
 }
-
-
-
 
 
 void *

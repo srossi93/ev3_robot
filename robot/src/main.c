@@ -22,6 +22,8 @@
 #include "obstacle_detection.h"
 #include "odometry.h"
 
+#include "mjolnir.h"
+
 extern pthread_cond_t cv_ball_detected;
 
 void detect_obstacles(void)
@@ -89,7 +91,7 @@ void TEST5(void){
   //go_straight_dist(87, 400, 1);
   //turn_inplace_by_relative_angle(-90, 200);
   //go_straight_dist(10, 100, 1);
-  int time = grab_ball(&engines[ARM], 200);
+  grab_ball(&engines[ARM], 200);
   //go_straight(time, -50, 1);
   //turn_inplace_by_relative_angle(90, 200);
   //go_straight_dist(75, 400, 1);
@@ -115,21 +117,21 @@ int main( int argc, char* argv[] )
 	//}
 
 	if (!robot_init()) return 1;
-  
+  msleep(1000);
+  robot_position.x = 97;
+  robot_position.y = 17;
+  small_beginner('r');
 
-  //___go_straight(5000, 50);
-  sleep(2);
-
   //print_position();
-  go_straight_dist(10, 100, 1);
+  //go_straight_dist(10, 100, 1);
   //print_position();
-  go_straight_dist(20, 100, 1);
+  //go_straight_dist(20, 100, 1);
   //print_position();
-  go_straight_dist(30, 100, 1);
+  //go_straight_dist(30, 100, 1);
   //print_position();
-  turn_inplace_by_relative_angle(90, 100);
+  //turn_inplace_by_relative_angle(90, 100);
   //print_position();
-  msleep(5000);
+  //search_and_grab(&engines[ARM]);
   //grab_ball(&engines[ARM], min_distance/10-22);
   
   //turn_inplace_by_relative_angle(-30, 500);

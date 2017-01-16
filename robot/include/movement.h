@@ -30,13 +30,23 @@
 
 //#define AZIMUT_ERROR 1
 
+
+/**
+ * \details Multi-purpose structure used to pass parameters to engine-related threads.
+ */
 typedef struct
 {
+  /** \details Relative angle displacement (may be not used in every thread). */
   int16_t angle;
+  /** \details Run time parameter used for time-related threads for movement (may be not used in every thread). */
   uint16_t time;
+  /** \details Speed parameter used in all the threads. Unit of measure is tacho_count per seconds. */
   int16_t speed;
+  /** \details Distance displacement (may be not used in every thread). */
   int16_t distance;
+  /** \details Tacho address set during initialization of all motors. */
   engine* tacho;
+  /** \details Semaphore used for send only one command at a time (for each engine). */
   sem_t sem_engine;
 }turn_engine_arg_struct;
 
@@ -49,19 +59,22 @@ typedef struct
 
 /**
  *  \details Turn one motor by a predefined angle
+ *  \param  tacho Engine address.
+ *  \param  angle Relative angle [in degrees].
+ *  \param  speed Target speed (may be not reached). 
  */
 inline void
 turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed);
 
+
 /**
- *  \details Turn one motor for a predefined time
- *  \param angle Time (milliseconds)
- *  \param engine Motor ID
- *  \param speed_mod Speed modification parameter (speed = max / speed_mod)
+ *  \details Turn on one motor for a predefined amount of time
+ *  \param  tacho Engine address.
+ *  \param  time  Run time.
+ *  \param  speed Target speed (may be not reached).
  */
 inline void
 turn_engine_by_time(engine* tacho, uint16_t time, int16_t speed);
-
 
 
 /**
@@ -69,29 +82,51 @@ turn_engine_by_time(engine* tacho, uint16_t time, int16_t speed);
  *          to the head
  * \param angle[positive] Relative angle, turn right
  * \param angle[negative] Relative angle, turn left
+ * \param speed           Target speed (may be not reached)  
  */
 void
 turn_inplace_by_relative_angle(int16_t angle, int16_t speed);
 
-
+/**
+ *  \details  Go straight for a predefined amount of time
+ *  \param  time              Run time.
+ *  \param  speed             Target speed (may be not reached).
+ *  \param  check_orientation Boolean flag to enable orientation compensation if set to 1
+ */
 void
 go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation);
 
-
+/**
+ *  \details  Go straight for a predefined distance
+ *  \param  position          Target position
+ *  \param  speed             Target speed (may be not reached).
+ *  \param  check_orientation Boolean flag to enable orientation compensation if set to 1
+ */
 uint16_t
 go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation);
 
+/**
+ *  \details  Go straight for a predefined distance while checking to do not touch obstacles 
+ *            (max obstacle distance hardcoded in the function, i.e. 25 cm).
+ *  \param  position  Target position.
+ *  \param  speed     Target speed (may be not reached).
+ */
+void
+go_straight_dist_obstacle(int16_t position, int16_t speed);
 
+/**
+ *  \details Stop all wheel-engines. Does not affect other motors (ARM for example).
+ */
 void
 stop_engines(void);
 
 
 void
-go_straight_dist_obstacle(int16_t position, int16_t speed);
+go_to_position(int16_t x, int16_t y, int16_t speed);
 
 
 void
-go_to_position(int16_t x, int16_t y, int16_t speed);
+move_by_offset(int16_t x_off, int16_t y_off, int16_t speed);
 
 
 void *

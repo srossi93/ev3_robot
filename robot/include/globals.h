@@ -17,6 +17,13 @@
 #include "color_sensor.h"
 //#include "movement.h"
 
+#define POW2(x) (x * x)
+#ifndef PI
+#define PI 3.1415
+#endif
+
+#define TO_DEG(x) x * 180 / PI
+
 engine engines[4];
 gyro_sensor gyro[1];
 us_sensor us[1];
@@ -59,6 +66,7 @@ extern ROBOT_STATUS robot_status;
 typedef struct{
   float x;
   float y;
+  int head;
 }POSITION;
 
 extern POSITION robot_position;

@@ -13,4 +13,4 @@ ARM_STATUS arm_status;
 
 ROBOT_STATUS robot_status = ROBOT_NOT_RUNNING;
 
-POSITION robot_position = {0,0};
+POSITION robot_position = {0,0,0};

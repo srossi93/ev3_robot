@@ -77,20 +77,21 @@ void update_position(){
   float displacement = get_displacement(&engines[R], &engines[L]);
   //int heading = get_heading_from_gyro(gyro);
   int heading = get_heading_from_gyro(gyro);
-  printf("DISP: %f\nHEAD: %d\n", displacement, heading);
+  //printf("DISP: %f\nHEAD: %d\n", displacement, heading);
   previous_heading = heading;
   robot_position.x += displacement * (float)cos(RAD(heading));
   robot_position.y += displacement * (float)sin(RAD(heading));
+  robot_position.head = heading;
  
 }
 
 void* __update_position(){
   reset_position();
-  print_position();
+  //print_position();
   while (1) {
     msleep(1000);
     update_position();
-    print_position();
+    //print_position();
   }
 }
 

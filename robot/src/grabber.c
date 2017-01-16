@@ -210,6 +210,9 @@ search_and_grab(engine* arm){
     
   }
   
+  if (min_distance > 350) {
+    return;
+  }
   grab_ball(arm, min_distance/10-5);
 
 }
