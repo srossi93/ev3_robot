@@ -17,7 +17,8 @@
 #ifndef WIFI_CONNECTION
 #define SERV_ADDR   "dc:53:60:ad:61:90"     /* Whatever the address of the server is */
 #else /*! WIFI_CONNECTION */
-#define SERV_ADDR   "10.42.0.1"     /* Whatever the address of the server is */
+//#define SERV_ADDR   "10.42.0.1"     
+#define SERV_ADDR   "172.17.0.1"     /* Whatever the address of the server is */
 #define INET_PORT	8888
 #endif
 

@@ -43,7 +43,7 @@ int mod_btcom_connect() {
 	}
 #endif
 
-	printf("Trying to connect...\n");
+	printf("Trying to connect to %s...\n", SERV_ADDR);
 	/* connect to server */
 	status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
 	return status;
