@@ -10,7 +10,7 @@ subtitle: How to estimate the robot position
 
 	<p> The information about the position can deteriorate especially when the robot turns and the angle errors increase, and this is why is necessary to use an accurate gyroscope, to avoid the uncertainty of the turning due to the variations of the terrain or environment conditions.  </p>
 	<p> The variable Heading contains the information about the direction where the head of the robot aims. This variable is updated everytime is called, with the difference of the previous angle the current one. Then this value is used to define the position.
-				$$ heading = previous\_heading + (previous\_angle - gyro\rightarrow angle); $$
+				$$ heading = previous\_ heading + (previous\_ angle - gyro \rightarrow angle); $$
 				$$ POS_X = POS_X \cdot cos(HEADING) $$
     				$$ POS_Y = POS_Y \cdot sin(HEADING) $$
 
