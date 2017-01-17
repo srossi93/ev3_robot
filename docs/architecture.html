@@ -1,52 +1,27 @@
 ---
 layout: page
-title: Movement
-subtitle: How can we make the robot move? How can we be sure about its accuracy?
+title: Architecture
+subtitle: The structure of the robot
 ---
 			<section>
-				<h2>Movement</h2>
-        <p>The robot embeds two <em><a href="http://www.ev3dev.org/docs/drivers/tacho-motor-class/">tacho class engines</a></em>,
-          which can be programmed using commands to the relative drivers. </p>
-        <p>The issue with engines and movement in general is the big statistical variance
-          of results of the same command performed on different environments. For instance,
-          turning around on a carpet or in perfectly smooth floor has different effects due
-          to the inertia attenuation of the two materials. So, the question we asked ourselves
-          is: how can we be sure to obtain the expected result?
-        </p>
+				<h2>Structure</h2>
+        <p> To build the robot three motors are deploied, two for the wheels and one for the grabber.
+At the same level as the wheels' motors there are placed the ultrasound sensor (placed as low as possible in order to let it detect obstacles and the ball), and the gyro sensor.
+Over this layer there is the motor of the grabber and the bearing structure.
+The Ev3 brick is placed at the back to counter balance the weight of the grabbing arm.
+The grabber is ingenious mechanism made of toothed wheels, gears, and extravagant lego pieces. This arm is able to go up and down, open and close the grabber using just one motor, pretty awesome!
+Morover on top of the grabber ther is the color sensor, that aims where the ball should be placed. This is useful to recognize if the ball has been found and it has been caught. </p>
+      
 				<hr />
 				<header>
-					<h3>Digital controller</h3>
-					<p>A little of math behind control theory</p>
+					<h3>Initializing</h3>
+					<p>All the motors and sensors used have been tested, and since some of them are not very reliable a statistical approach has been used to gather data.
+Motors are initialized once as soon as the robot is turned on.</p>
+				</header>	
+				<hr />
+				<header>
+					<h3>Sensors</h3>
+					<p>The sensors we deployed are the gyro sensor,  the color sensor and  the ultrasound sensor. These sensors have built-in functions that can be exploited to read data from them. Using these sensor it was clear that the unit measure where arbitrary, therefore to find threshold values it was necessary a trial and error approach. Also because the data reported were a bit imprecise in some cases, a statistical approach should be used. </p>
 				</header>
-				<p>The simplest model to describe the dynamic behaviour of the position of
-          the robot is presented in the following formula:</p>
-          <div class="box alt">
-            <div class="row uniform 50%">
-          <div class="7u"><span class="image fit"><img src="images/dc_engine.jpg" alt="" /></span></div>
-          <div class="5u"><span class="image fit"> $$ T(s) = \dfrac{1}{s^2+2s+1} $$
-            <p>Of course, this is a simplistic rappresentation which does not take into account a lot
-              of parameters and features of the real system under test: it's in just the basic
-              model used to evaluate different control strategies.</p><p> The plot on the left shows the
-              response of the model to a constant input (which in our case rappresents the evolution of
-              the position over time).
-             </p>
-           </span></div>
-          </div></div>
-          <p>To implement this control, we used a well known stategy in control theory: a proportional
-            feedback in closed-loop.
-            <center><div class="5u"><span class="image fit"><img src="images/closed_loop.png" alt="" /></span></div></center>
-            This structure, since it doesn't add zeros or poles, for positive value of K, the system is always observable,
-            controllable and stable. In fact, if a system defined by a transfer function
-            $$ T(s) = \dfrac{1}{\prod_{i=0} ^ n (s-z_i)} $$
-            using proportional controller, the complete system is stable
-            $$ H(s) = \dfrac{K T(s)}{1+K T(s)} $$
-          </p>
-          <p>In our implemetation, we simply choose K = 1 (i.e. the engine is driven by the error itself).</p>
 
-				<header>
-					<h4>Implementation</h4>
-					<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
-				</header>
-				<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-				<hr />
-				
+			</section>
