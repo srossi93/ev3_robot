@@ -304,7 +304,7 @@ go_straight_dist_obstacle(int16_t position, int16_t speed){
 void
 move_by_offset(int16_t x_off, int16_t y_off, int16_t speed){
   
-  int16_t angle = -90 + robot_position.head + (atan2f(x_off, y_off) * 180) / 3.14;
+  int16_t angle = (int)(-90 + robot_position.head + (atan2f(x_off, y_off) * 180) / 3.14) % 360;
   int16_t distance = sqrtf(POW2(x_off) + POW2(y_off));
   
   sprintf(msg, "Moving by offset (x = %d, y = %d)\n", x_off, y_off);

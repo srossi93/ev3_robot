@@ -90,6 +90,7 @@ int grab_ball(engine* arm, int ball_distance){
     //  time+=250;
     msleep(250);
     while ((color->reflection < 4) && robot_status == ROBOT_RUNNING) {
+      if (robot_status == ROBOT_NOT_RUNNING) break;
       msleep(250);
     }
     stop_engines();
@@ -109,7 +110,7 @@ int grab_ball(engine* arm, int ball_distance){
       
     
       close_arm(&engines[ARM], 250);
-      printf("color ref: %d\n", color->reflection);
+    //printf("color ref: %d\n", color->reflection);
 
     
     undeploy_arm(&engines[ARM], 500);
@@ -125,7 +126,7 @@ void release_ball(engine* arm, int16_t space){
   
   deploy_arm(&engines[ARM], 500);
   
-  open_arm(&engines[ARM], 20);
+  open_arm(&engines[ARM], 100);
   
   go_straight_dist(-space, 100, 1);
   
@@ -163,7 +164,8 @@ search_and_grab(engine* arm){
     pthread_t tid;
     turn_engine_arg_struct arg;
     arg.angle = span[j];
-    arg.speed = 20;
+    //arg.speed = 20;
+    arg.speed = 100;
     
     pthread_create(&tid, NULL, __turn_inplace_by_relative_angle, (void*)&arg);
     msleep(100);

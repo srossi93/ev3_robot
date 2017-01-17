@@ -118,9 +118,12 @@ int main( int argc, char* argv[] )
 
 	if (!robot_init()) return 1;
   msleep(1000);
-  robot_position.x = 97;
-  robot_position.y = 17;
+  
+  robot_position.x = BEGINNER_RIGHT_START_X;
+  robot_position.y = BEGINNER_RIGHT_START_Y;
+  
   small_beginner('r');
+  small_finisher('r');
 
   //print_position();
   //go_straight_dist(10, 100, 1);
