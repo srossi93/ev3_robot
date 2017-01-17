@@ -1,52 +1,36 @@
 ---
 layout: page
-title: Movement
-subtitle: How can we make the robot move? How can we be sure about its accuracy?
+title: Mithology
+subtitle: The story behind the powerful hammer
 ---
 			<section>
-				<h2>Movement</h2>
-        <p>The robot embeds two <em><a href="http://www.ev3dev.org/docs/drivers/tacho-motor-class/">tacho class engines</a></em>,
-          which can be programmed using commands to the relative drivers. </p>
-        <p>The issue with engines and movement in general is the big statistical variance
-          of results of the same command performed on different environments. For instance,
-          turning around on a carpet or in perfectly smooth floor has different effects due
-          to the inertia attenuation of the two materials. So, the question we asked ourselves
-          is: how can we be sure to obtain the expected result?
-        </p>
-				<hr />
-				<header>
-					<h3>Digital controller</h3>
-					<p>A little of math behind control theory</p>
-				</header>
-				<p>The simplest model to describe the dynamic behaviour of the position of
-          the robot is presented in the following formula:</p>
-          <div class="box alt">
-            <div class="row uniform 50%">
-          <div class="7u"><span class="image fit"><img src="images/dc_engine.jpg" alt="" /></span></div>
-          <div class="5u"><span class="image fit"> $$ T(s) = \dfrac{1}{s^2+2s+1} $$
-            <p>Of course, this is a simplistic rappresentation which does not take into account a lot
-              of parameters and features of the real system under test: it's in just the basic
-              model used to evaluate different control strategies.</p><p> The plot on the left shows the
-              response of the model to a constant input (which in our case rappresents the evolution of
-              the position over time).
-             </p>
-           </span></div>
-          </div></div>
-          <p>To implement this control, we used a well known stategy in control theory: a proportional
-            feedback in closed-loop.
-            <center><div class="5u"><span class="image fit"><img src="images/closed_loop.png" alt="" /></span></div></center>
-            This structure, since it doesn't add zeros or poles, for positive value of K, the system is always observable,
-            controllable and stable. In fact, if a system defined by a transfer function
-            $$ T(s) = \dfrac{1}{\prod_{i=0} ^ n (s-z_i)} $$
-            using proportional controller, the complete system is stable
-            $$ H(s) = \dfrac{K T(s)}{1+K T(s)} $$
-          </p>
-          <p>In our implemetation, we simply choose K = 1 (i.e. the engine is driven by the error itself).</p>
+				<h2	>The Gylfaginning</h2>
+        <p><em>IThor is the foremost of them, he that is called Thor of the Æsir, or Öku-Thor; he is strongest of all the gods and men. He has his realm in the place called Thrúdvangar, and his hall is called Bilskirnir; in that hall are five hundred rooms and forty. That is the greatest house that men know of.</em></p>
 
-				<header>
-					<h4>Implementation</h4>
-					<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
-				</header>
-				<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+<p><em>Thor has two he-goats, that are called Tooth-Gnasher and Tooth-Gritter, and a chariot wherein he drives, and the he-goats draw the chariot; therefore is he called Öku-Thor. He has also three things of great price: one is the hammer Mjöllnir, which the Rime-Giants and the Hill-Giants know, when it is raised on high; and that is no wonder, it has bruised many a skull among their fathers or their kinsmen. He has a second costly thing, best of all: the girdle of might; and when he clasps it about him, then the godlike strength within him is increased by half. Yet a third thing he has, in which there is much virtue: his iron gloves; he cannot do without them when he uses his hammer-shaft.</em>
+				</p>
 				<hr />
-				
+				<header>
+					<h3>The Norse mithology narrative</h3>
+					<p>This is how the god of storm and thunder Thor is introduces in the Norse mythology.
+The book we are talking about is the Gylfaginning, litterally "The Tricking of Gylfi". It is the first part of the Snorri Sturluson's Prose Edda after Prologue.</p>
+<p>Snorri Sturluson is an icelandic historian and mythographer. In this book he proposed the hypothesis that mythological gods where human war leaders and kings. In their gravesite people used to gather to pray and honor them, and since their protection was invoked during wars or tribal hostilities, they began to be venerated, and that is how eventually they became gods.</p>
+				<hr />
+				</header>
+				<header>
+				<h3>Thor</h3>
+				<p>Thor is a god then, son of Odin, the god's king, and Jörð, godness of the earth. Since he was the strongest within the Æsir dynasty he was living in Ásgard.</p>
+				<p>The iconography depicts Thor as redhead with a thick red beard and mighty muscles. As his father was considered the god's king he was more considered as the humans' god, and that is why the Vikings called themselves the "People of Thor".  </p>
+				<p>His wife is Sif, godness of ferility, who gave him two sons, Þrúðr e Móði, while with the giantress Járnsaxa he had Magni. </p>
+				<p>In the traditional tales he is fighting and defeating a lot of powerful creatures, like the giants for example, and other monsters. </p>
+				<p>Thor is also known as a Marvel character, but there are few things that are reported differently. </p>
+					<hr />
+					</header>	
+					<header>
+					<h3>Mjöllnir</h3>
+				<p>But what is typical of his figure is the hammer Mjöllnir, the most powerful weapon.
+Mjöllnir was forged by the dwarfs Eitri e Brokkr, it roars like thunder every time it hits, emitting flashes when lashed at enemies. </p>
+				<p> In the sacred ceremonies reproductions of the hammer were used, for example during wddings, since the hammer was both symbol of life and death. In fact it was used in battle to kill enemies, but was also used to bring back to life. </p>
+				<hr />
+				</header>
+				</section>
