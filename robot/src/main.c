@@ -6,11 +6,11 @@ int main(int argc, char* argv[]) {
 	unsigned char mySide, myRole;
 	int count = 0;
 
-	printf("Connecting to BT server:\n");
+	printf("Connecting to server:\n");
 
 	/* Try to connect to BT server */
 	if (mod_btcom_connect() != 0) {
-		printf("Unable to connect to Bluetooth server.\n");
+		printf("Unable to connect to the server.\n");
 		return (-1);
 	}
 

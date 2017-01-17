@@ -21,6 +21,7 @@ int mod_btcom_connect() {
 #endif
 	int status;
 #ifndef WIFI_CONNECTION
+	printf("Connecting with BT connection...\n");
 	/* allocate a socket */
 	s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 
@@ -29,6 +30,7 @@ int mod_btcom_connect() {
 	addr.rc_channel = (uint8_t) 1;
 	str2ba(SERV_ADDR, &addr.rc_bdaddr);
 #else
+	printf("Connecting with LAN/Wifi connection...\n");
 	/* allocate a socket */
 	s = socket(AF_INET, SOCK_STREAM, 0);
 
