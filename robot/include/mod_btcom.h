@@ -14,7 +14,13 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/rfcomm.h>
 
+#ifndef WIFI_CONNECTION
 #define SERV_ADDR   "dc:53:60:ad:61:90"     /* Whatever the address of the server is */
+#else /*! WIFI_CONNECTION */
+#define SERV_ADDR   "10.42.0.1"     /* Whatever the address of the server is */
+#define INET_PORT	8888
+#endif
+
 #define TEAM_ID     4                       /* Your team ID */
 
 #define MSG_ACK     0
@@ -42,6 +48,8 @@ int s;
  * Connect to Bluetooth server.
  *
  * @return Status of socket after trying to connect
+ * 	0	:OK
+ *	Other	:ERROR
  */
 int mod_btcom_connect();
 

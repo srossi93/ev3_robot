@@ -14,9 +14,13 @@
  * @return Status of socket after trying to connect
  */
 int mod_btcom_connect() {
+#ifndef WIFI_CONNECTION
 	struct sockaddr_rc addr = { 0 };
+#else
+	struct sockaddr_in addr = { 0 };
+#endif
 	int status;
-
+#ifndef WIFI_CONNECTION
 	/* allocate a socket */
 	s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 
@@ -24,10 +28,22 @@ int mod_btcom_connect() {
 	addr.rc_family = AF_BLUETOOTH;
 	addr.rc_channel = (uint8_t) 1;
 	str2ba(SERV_ADDR, &addr.rc_bdaddr);
+#else
+	/* allocate a socket */
+	s = socket(AF_INET, SOCK_STREAM, 0);
 
+	 /* set the connection parameters (who to connect to) */
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(INET_PORT);
+	if (inet_aton(SERV_ADDR, &addr.sin_addr) == 0) {
+		fprintf(stderr, "Invalid IP address\n");
+		return -1;
+	}
+#endif
+
+	printf("Trying to connect...\n");
 	/* connect to server */
 	status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
-
 	return status;
 }
 
