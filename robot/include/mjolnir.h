@@ -33,4 +33,17 @@
 //////////////////////////////////////////////////
 #endif
 
+typedef enum {
+	NOTSTARTED,	/* Don't know its role yet. Waiting for instruction from server */
+	STARTED,		/* Got its role, ready for run. */
+	WAITING,		/* At its location, waiting for NEXT mesg to run */
+	RUNNING,		/* On its journey */ 
+	DONE,		/* When beginner or finisher completed its journey */
+	STOPPED
+} robot_state;
+
+extern int msgId;
+extern robot_state gMyState;
+extern unsigned char gMyRole, gMySide, gTeamMateId;
+
 #endif /* MJOLNIR_H */
