@@ -33,8 +33,7 @@
 #define MSG_POSITION 6
 #define MSG_BALL     7
 
-#define NEXT	0xFF
-#define	OVER	0xFF	/*TODO: value?*/
+#define NEXT		0x01
 
 #define SIDE_LEFT	0x01
 #define SIDE_RIGHT	0x00
@@ -42,8 +41,19 @@
 #define BEGINNER	0x00
 #define FINISHER	0x01
 
+/* Action for the ball */
+#define DROP		0x00
+#define PICKUP		0x01
+
+/* State OK or ERROR*/
+#define ACK_OK		0x00
+#define ACK_ERROR	0x01
+
 /* Bluetooth socket */
 int s;
+
+/* Message ID */
+//uint16_t msgId = 0;
 
 /**
  * Connect to Bluetooth server.
@@ -64,20 +74,41 @@ int mod_btcom_receive_from_server(int sock, char *buffer, size_t maxSize);
 
 int mod_btcom_send_to_server(char *data, size_t size);
 
-int mod_btcom_send_location(int x, int y);
+/**
+ * Send ACK
+ * Used to acknowledge the reception of messages
+ * Messages sent by the server should not be acknowledged
+ */
+int mod_btcom_send_ACK(uint8_t dst, int16_t id_ack, int8_t status);
 
 /**
- * Send NEXT or OVER signal.
- * NEXT: 0xff, OVER: ??
+ * Send BALL 
  */
-int mod_btcom_send_signal(uint8_t signal);
+int mod_btcom_send_BALL(uint8_t act, int16_t x, int16_t y);
+
+/**
+ * Send POSITION
+ */
+int mod_btcom_send_POSITION(int x, int y);
+
+/**
+ * Send NEXT 
+ */
+int mod_btcom_send_NEXT(uint8_t dst);
 
 /**
  * Get the role and team side from server.
  * 
  * @return Error if less than 0.
  */
-int mod_btcom_get_role(unsigned char *side, unsigned char *role);
+int mod_btcom_get_role(unsigned char *side, unsigned char *role, unsigned char *ally);
+
+/**
+ * Get the generic message from server
+ * 
+ * @return Error if less than 0.
+ */
+int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int16_t *arg3);
 
 /* Optional */
 int mod_btcom_send_to_teammate(unsigned int teamMateId, char *customMessage, size_t size);

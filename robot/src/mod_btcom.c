@@ -30,7 +30,7 @@ int mod_btcom_connect() {
 	addr.rc_channel = (uint8_t) 1;
 	str2ba(SERV_ADDR, &addr.rc_bdaddr);
 #else
-	printf("Connecting with LAN/Wifi connection...\n");
+	printf("Connecting with LAN connection...\n");
 	/* allocate a socket */
 	s = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -71,12 +71,60 @@ int mod_btcom_send_to_server(char *data, size_t size) {
 	return write(s, data, size);
 }
 
-int mod_btcom_send_location(int x, int y) {
+/**
+ * Send ACK
+ * Used to acknowledge the reception of messages
+ * Messages sent by the server should not be acknowledged
+ */
+int mod_btcom_send_ACK(uint8_t dst, int16_t id_ack, int8_t state) {
+	char string[8];
+
+	/* Construct the data */
+	*((uint16_t *) string) = 0;
+	string[2] = TEAM_ID;	/* src */
+	string[3] = dst;	/* dst */
+	string[4] = MSG_ACK;	/* type */
+	string[5] = id_ack;
+	string[6] = 0x00;
+	string[7] = state;	/* OK or ERROR */
+
+	/* Send the string to server */
+	return mod_btcom_send_to_server(string, 9);
+	
+}
+
+/**
+ * Send BALL
+ */
+int mod_btcom_send_BALL(uint8_t act, int16_t x, int16_t y) {
+	char string[10];
+
+	/* Construct the data */
+	*((uint16_t *) string) = 0;
+	string[2] = TEAM_ID;	/* src */
+	string[3] = 0xFF;	/* dst */
+	string[4] = MSG_BALL;
+	string[5] = act;	/* DROP or PICKUP */
+	string[6] = x;
+	string[7] = 0x00;
+	string[8] = y;
+	string[9] = 0x00;
+
+	/* Send the string to server */
+	return mod_btcom_send_to_server(string, 9);
+}
+
+
+/**
+ * Send POSITION
+ */
+int mod_btcom_send_POSITION(int x, int y) {
 	char string[9];
 
 	/* Construct the data */
-	string[2] = TEAM_ID;
-	string[3] = 0xFF;
+	*((uint16_t *) string) = 0;
+	string[2] = TEAM_ID;	/* src */
+	string[3] = 0xFF;	/* dst */
 	string[4] = MSG_POSITION;
 	string[5] = x;
 	string[6] = 0x00;
@@ -88,16 +136,16 @@ int mod_btcom_send_location(int x, int y) {
 }
 
 /**
- * Send NEXT or OVER signal.
- * NEXT: 0xff, OVER: ??
+ * Send NEXT message whenever finishing my turn
  */
-int mod_btcom_send_signal(uint8_t signal) {
+int mod_btcom_send_NEXT(uint8_t dst) {
 	char string[5];
 
 	/* Construct the data */
-	string[2] = TEAM_ID;
-	string[3] = signal;
-	string[4] = (signal == NEXT) ? MSG_NEXT : MSG_NEXT; // TODO: MSG_OVER?
+	*((uint16_t *) string) = 0;
+	string[2] = TEAM_ID;	/* src */
+	string[3] = dst;	/* dst */
+	string[4] = MSG_NEXT;	/* 0x01 */
 
 	/* Send the string to server */
 	return mod_btcom_send_to_server(string, 5);
@@ -108,7 +156,7 @@ int mod_btcom_send_signal(uint8_t signal) {
  * 
  * @return Error if less than 0.
  */
-int mod_btcom_get_role(unsigned char *side, unsigned char *role) {
+int mod_btcom_get_role(unsigned char *side, unsigned char *role, unsigned char *ally) {
 	char string[58];
 	int ret;
 
@@ -118,6 +166,7 @@ int mod_btcom_get_role(unsigned char *side, unsigned char *role) {
 		if (string[4] == MSG_START) {
 			*role = (unsigned char) string[5];
 			*side = (unsigned char) string[6];
+			*ally = (unsigned char) string[7];
 		}
 	} else {
 		fprintf(stderr, "Error in receiving data from server\n");
@@ -127,3 +176,59 @@ int mod_btcom_get_role(unsigned char *side, unsigned char *role) {
 	return ret;
 }
 
+/**
+ * Get the generic message from server
+ * 
+ * @return Error if less than 0.
+ */
+int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int16_t *arg3) {
+	char string[58];
+	int ret;
+	uint8_t dst;
+
+	ret = mod_btcom_receive_from_server(s, string, 58);
+
+	if (ret >= 0) {
+		*actionType = (uint8_t) string[4];
+		dst = (unsigned char) string[3];
+	} else {
+		fprintf(stderr, "Error in receiving data from server\n");
+		printf("Error code: %d\n", ret);
+	}
+
+	/* Only take care messages sent to us */
+	if (dst != TEAM_ID) {
+		printf("Received a message, but not for us. dst = %d. Skip!\n", dst);
+		return -1;
+	}
+
+	switch (*actionType) {
+		case MSG_ACK:
+			break;	/* no additional info needed */
+		case MSG_NEXT:
+			break;	/* no additional info needed */
+		case MSG_START:
+			break;	/* no additional info needed */
+		case MSG_STOP:
+			break;	/* no additional info needed */
+		case MSG_CUSTOM:
+			break;	/* no additional info needed */
+		case MSG_KICK:
+			*arg1 = (uint8_t ) string[5];
+			break;
+		case MSG_POSITION:
+			*arg1 = (uint8_t ) string[2]; /* src */
+			break;	/* no additional info needed */
+		case MSG_BALL:
+			*arg1 = (uint8_t ) string[5];
+			*arg2 = (int16_t ) string[6];
+			*arg3 = (int16_t ) string[8];
+			break;
+		default:
+			printf("Invalid type of message.\n");
+			ret = -2;	
+			break;
+	}
+
+	return ret;
+}
