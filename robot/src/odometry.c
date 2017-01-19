@@ -99,7 +99,7 @@ void* __update_position(){
   while (1) {
     msleep(500);
     update_position();
-    print_position();
+    //print_position();
   }
 }
 

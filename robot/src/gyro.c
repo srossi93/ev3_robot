@@ -45,6 +45,6 @@ void* __gyro_status_reader(void* gyro){
     pthread_mutex_lock(&gyro_mutex);
     read_gyro_status((gyro_sensor*)gyro);
     pthread_mutex_unlock(&gyro_mutex);
-    msleep(50);
+    msleep(10);
   }
 }

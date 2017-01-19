@@ -148,7 +148,7 @@ release_ball(engine* arm, int16_t space){
 
 void
 search_and_grab(engine* arm){
-  int span[] = {60, 60};
+  int span[] = {80, 60};
   int distance[200];
   int orientation[200];
   

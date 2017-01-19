@@ -26,7 +26,7 @@ void small_beginner(char starting_point){
   }
   else if (starting_point == 'l') {
     
-    target_position_x = BEGINNER_LEFT_LEAVE_X;
+    target_position_x = BEGINNER_LEFT_LEAVE_X; 
     target_position_y = BEGINNER_LEFT_LEAVE_Y;
     end_position_x    = BEGINNER_LEFT_END_X;
     end_position_y    = BEGINNER_LEFT_END_Y;

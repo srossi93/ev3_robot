@@ -313,11 +313,14 @@ move_by_offset(int16_t x_off, int16_t y_off, int16_t speed){
   sprintf(msg, "Angle: %+d deg\nDistance: %d cm\n", angle, distance);
   log_to_file(msg);
   
-  if (abs(angle) > 180) {
-    angle = (angle % 360) - 180;
+  if (angle > 180) {
+    angle = (angle - 360);
+  }
+  else if (angle < -180) {
+    angle = (angle + 360);
   }
   
-  turn_inplace_by_relative_angle(angle, 300);
+  turn_inplace_by_relative_angle(angle, 250);
   go_straight_dist_obstacle(distance, speed);
   
 }
