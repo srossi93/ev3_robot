@@ -188,6 +188,8 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 
 	ret = mod_btcom_receive_from_server(s, string, 58);
 
+	//printf("Received %d bytes from server.\n", ret);
+
 	if (ret >= 0) {
 		*actionType = (uint8_t) string[4];
 		dst = (unsigned char) string[3];

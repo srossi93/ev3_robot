@@ -73,8 +73,10 @@ int main(int argc, char* argv[]) {
 					printf("Got the KICK message.\n");
 					if (arg1 == TEAM_ID) {
 						myState = STOPPED;
-						printf("I'm out!\n");
+						printf("Damn, we got kicked!\n");
 						return 0; /* Exit */
+					} else {
+						printf("Robot no.%d is out of game\n", arg1);
 					}
 					break;
 				case MSG_POSITION:
