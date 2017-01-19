@@ -41,12 +41,25 @@ subtitle: How can we make the robot move? How can we be sure about its accuracy?
             using proportional controller, the complete system is stable
             $$ H(s) = \dfrac{K T(s)}{1+K T(s)} $$
           </p>
-          <p>In our implemetation, we simply choose K = 1 (i.e. the engine is driven by the error itself).</p>
+          <p>In our implemetation, we simply choose K = 1 (i.e. engines are driven by the error itself).</p>
 
 				<header>
-					<h4>Implementation</h4>
-					<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
+					<h3>Implementation</h3>
+					<p>Here we propose you some pseudocode that might help you in understand how
+            our robot can move.</p>
 				</header>
-				<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+				<p>In the following, we're showing how it can rotate and self-adjust if
+          the rotation, for some reason, was not complete.</p>
+          <pre><code>
+void turn_inplace_by_relative_angle(int16_t angle, int16_t speed){
+  set robot status to running;
+  set the error to angle;
+  do {
+    turn the right motor for (-error) degrees;
+    turn the left  motor for (+error) degrees;
+    read current orientation;
+    compute the error;
+  } while (error > 1)
+}
+</code></pre>
 				<hr />
-				
