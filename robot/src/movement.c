@@ -136,7 +136,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   //pthread_t right_tid, left_tid, error_tid;
   //struct timeval start_time, current_time, diff_time;
   //uint16_t remaining_time;
-  int previous_error, current_error;
+  int current_error;
   int initial_orientation,current_orientation;
 
   
@@ -166,7 +166,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
   //set_tacho_command_inx(left_engine, TACHO_STOP);
   //printf("ERROR detection\n");
   int i;
-  previous_error = 0;
+  //previous_error = 0;
   
   pthread_mutex_lock(&gyro_mutex);
   initial_orientation = gyro->angle;
@@ -181,9 +181,9 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
     
     
     current_error = (current_orientation - initial_orientation);
-    sprintf(msg, "Time: %d ms - \t\tError: %d\n",
-           i, current_error);
-    log_to_file(msg);
+    //sprintf(msg, "Time: %d ms - \t\tError: %d\n",
+    //       i, current_error);
+    //log_to_file(msg);
 
     write_ramp_up_sp(&engines[R], 1000);
     write_ramp_up_sp(&engines[L], 1000);
@@ -192,7 +192,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
       write_command(&engines[R], TACHO_STOP);
       write_command(&engines[L], TACHO_STOP);
       turn_inplace_by_relative_angle(-current_error, 200);
-      previous_error = current_error;
+      //previous_error = current_error;
       
       write_time_sp(&engines[R], time - i);
       write_time_sp(&engines[L], time - i);
@@ -293,11 +293,11 @@ go_straight_dist_obstacle(int16_t position, int16_t speed){
       stop_engines();
       pthread_cancel(tid);
     }
+    msleep(100);
   }
   
   pthread_join(tid, NULL);
 }
-
 
 
 
@@ -313,7 +313,11 @@ move_by_offset(int16_t x_off, int16_t y_off, int16_t speed){
   sprintf(msg, "Angle: %+d deg\nDistance: %d cm\n", angle, distance);
   log_to_file(msg);
   
-  turn_inplace_by_relative_angle(angle, speed);
+  if (abs(angle) > 180) {
+    angle = (angle % 360) - 180;
+  }
+  
+  turn_inplace_by_relative_angle(angle, 300);
   go_straight_dist_obstacle(distance, speed);
   
 }

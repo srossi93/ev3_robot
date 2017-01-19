@@ -12,6 +12,8 @@
 #include "tacho.h"
 #include "globals.h"
 
+#include "small_arena.h"
+
 #ifndef PI
 #define PI 3.1415
 #endif
@@ -27,4 +29,6 @@ void print_position();
 float get_displacement(engine* motorR, engine* motorL);
 int get_heading_from_gyro(gyro_sensor* gyro);
 int get_heading_from_engines(engine* motorR, engine* motorL);
+int is_inside(void);
+
 #endif /* odometry_h */

@@ -43,6 +43,7 @@
 		FC12FB911DE3A194002F214B /* include.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = include.h; path = include/include.h; sourceTree = SOURCE_ROOT; };
 		FC1D8F621E2D0663007DB9A8 /* mjolnir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mjolnir.h; path = include/mjolnir.h; sourceTree = SOURCE_ROOT; };
 		FC1D8F631E2D0723007DB9A8 /* mjolnir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mjolnir.c; path = src/mjolnir.c; sourceTree = SOURCE_ROOT; };
+		FC1D8F651E2E601E007DB9A8 /* small_arena.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = small_arena.h; path = include/small_arena.h; sourceTree = SOURCE_ROOT; };
 		FC2AC4331DE5B10A0016C0B6 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = include/globals.h; sourceTree = SOURCE_ROOT; };
 		FC2AC4341DE5B4580016C0B6 /* gyro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gyro.h; path = include/gyro.h; sourceTree = SOURCE_ROOT; };
 		FC2DAC771E27CEE90083742F /* globals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = globals.c; path = src/globals.c; sourceTree = SOURCE_ROOT; };
@@ -134,6 +135,7 @@
 				FC3EB9941E2532D200293E9E /* obstacle_detection.h */,
 				FC2DAC791E29650D0083742F /* odometry.h */,
 				FC1D8F621E2D0663007DB9A8 /* mjolnir.h */,
+				FC1D8F651E2E601E007DB9A8 /* small_arena.h */,
 			);
 			name = include;
 			path = robot;

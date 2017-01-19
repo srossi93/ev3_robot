@@ -11,8 +11,7 @@
 
 
 void
-deploy_arm(engine* arm, int16_t speed)
-{
+deploy_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_UP){
     log_to_file("Deploying arm...\n");
     turn_engine_by_angle(arm, -250, speed);
@@ -23,8 +22,7 @@ deploy_arm(engine* arm, int16_t speed)
 }
 
 void
-open_arm(engine* arm, int16_t speed)
-{
+open_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_DOWN){
     log_to_file("Opening arm...\n");
     turn_engine_by_angle(arm, -325, speed);
@@ -35,8 +33,7 @@ open_arm(engine* arm, int16_t speed)
 }
 
 void
-close_arm(engine* arm, int16_t speed)
-{
+close_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_OPEN){
     log_to_file("Closing arm...\n");
     turn_engine_by_angle(arm, +325, speed);
@@ -46,10 +43,8 @@ close_arm(engine* arm, int16_t speed)
   return;
 }
 
-
 void
-undeploy_arm(engine* arm, int16_t speed)
-{
+undeploy_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_DOWN){
     log_to_file("Undeploying arm...\n");
     turn_engine_by_angle(arm, +250, speed);
@@ -59,18 +54,18 @@ undeploy_arm(engine* arm, int16_t speed)
   return;
 }
 
-
-
-
-int grab_ball(engine* arm, int ball_distance){
+int
+grab_ball(engine* arm, int ball_distance){
 
   int time = 0;
   //int ball_distance = us->distance;
   do{
-    deploy_arm(&engines[ARM], 500);
-    open_arm(&engines[ARM], 300);
-      
-      
+    //deploy_arm(&engines[ARM], 500);
+    //open_arm(&engines[ARM], 300);
+    log_to_file("Deploying arm...\n");
+    turn_engine_by_angle(arm, -575, 400);
+    log_to_file("--> Arm deployed\n");
+    arm_status = ARM_OPEN;
       //pthread_t check_tid, run_tid;
       //turn_engine_arg_struct arg;
       //arg.distance = 10;
@@ -85,15 +80,23 @@ int grab_ball(engine* arm, int ball_distance){
       //go_straight_dist(us->distance/4, 100, 1);
       //go_straight(5000, 50, 0);
 
-    go_straight_dist(ball_distance, 50, 0);
+    //go_straight_dist(ball_distance, 50, 0);  //<<<<<<<<<<<
+    pthread_t tid;
+    turn_engine_arg_struct arg;
+    arg.distance = ball_distance;
+    arg.speed = 50;
+    pthread_create(&tid, NULL, __go_straight_dist, (void*)&arg);
+    
     printf("Detection...\n");
     //  time+=250;
     msleep(250);
     while ((color->reflection < 4) && robot_status == ROBOT_RUNNING) {
-      if (robot_status == ROBOT_NOT_RUNNING) break;
+      if (robot_status == ROBOT_NOT_RUNNING) pthread_cancel(tid);
       msleep(250);
     }
     stop_engines();
+    pthread_join(tid, NULL);
+
 
       //int i;
       //for (i = 0; i < 10000; i+=250) {
@@ -107,20 +110,24 @@ int grab_ball(engine* arm, int ball_distance){
       
       //pthread_join(run_tid, NULL);
       //pthread_cancel(check_tid);
-      
     
-      close_arm(&engines[ARM], 250);
-    //printf("color ref: %d\n", color->reflection);
-
     
-    undeploy_arm(&engines[ARM], 500);
+    
+    //close_arm(&engines[ARM], 250);
+      //printf("color ref: %d\n", color->reflection);
+      //undeploy_arm(&engines[ARM], 500);
+    log_to_file("Undeploying arm...\n");
+    turn_engine_by_angle(arm, +575, 500);
+    log_to_file("--> Arm undeployed\n");
+    arm_status = ARM_UP;
+    
   } while (color->reflection < 4);
   
   return time;
 }
 
-
-void release_ball(engine* arm, int16_t space){
+void
+release_ball(engine* arm, int16_t space){
   
   //turn_inplace_by_relative_angle(180, 100);
   
@@ -128,15 +135,16 @@ void release_ball(engine* arm, int16_t space){
   
   open_arm(&engines[ARM], 100);
   
-  go_straight_dist(-space, 100, 1);
-  
-  close_arm(&engines[ARM], 500);
-  undeploy_arm(&engines[ARM], 500);
-  
+  go_straight_dist(-space, 100, 0);
+
+  msleep(1000);
+  //close_arm(&engines[ARM], 500);
+  //undeploy_arm(&engines[ARM], 500);
+  log_to_file("Undeploying arm...\n");
+  turn_engine_by_angle(arm, +575, 500);
+  log_to_file("--> Arm undeployed\n");
   
 }
-
-
 
 void
 search_and_grab(engine* arm){
@@ -181,8 +189,6 @@ search_and_grab(engine* arm){
       msleep(50);
     }
     
-    
-    
     min_distance = distance[0];
     min_position = 0;
     num_of_observations = 0;
@@ -192,7 +198,7 @@ search_and_grab(engine* arm){
         break;
       }
       //printf("%d: %d\n", i, distance[i]);
-      if(distance[i] <= min_distance){
+      if (distance[i] <= min_distance){
         min_distance = distance[i];
         min_orientation = orientation[i];
         min_position = i;
@@ -215,7 +221,9 @@ search_and_grab(engine* arm){
   if (min_distance > 350) {
     return;
   }
-  grab_ball(arm, min_distance/10-5);
+  
+  
+  grab_ball(arm, min_distance/10-4);
 
 }
 

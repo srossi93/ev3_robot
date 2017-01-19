@@ -121,9 +121,12 @@ int main( int argc, char* argv[] )
   
   robot_position.x = BEGINNER_RIGHT_START_X;
   robot_position.y = BEGINNER_RIGHT_START_Y;
+  robot_position.head = 90;
+  while (1) {
+    small_beginner('r');
+    small_finisher('r');
+  }
   
-  small_beginner('r');
-  small_finisher('r');
 
   //print_position();
   //go_straight_dist(10, 100, 1);

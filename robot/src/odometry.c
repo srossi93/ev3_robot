@@ -85,17 +85,25 @@ void update_position(){
  
 }
 
+int is_inside(){
+  if (robot_position.x > SMALL_ARENA_MAX_X)
+    return 0;
+  if (robot_position.y > SMALL_ARENA_MAX_Y)
+    return 0;
+  return 1;
+}
+
 void* __update_position(){
   reset_position();
   //print_position();
   while (1) {
-    msleep(1000);
+    msleep(500);
     update_position();
-    //print_position();
+    print_position();
   }
 }
 
 
 void print_position(){
-  printf("X: %f\nY: %f\n\n", robot_position.x, robot_position.y);
+  printf("X   :\t%f\nY   :\t%f\nHEAD:\t%d\n\n", robot_position.x, robot_position.y, robot_position.head);
 }
