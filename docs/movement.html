@@ -52,14 +52,26 @@ subtitle: How can we make the robot move? How can we be sure about its accuracy?
           the rotation, for some reason, was not complete.</p>
           <pre><code>
 void turn_inplace_by_relative_angle(int16_t angle, int16_t speed){
-  set robot status to running;
-  set the error to angle;
+  robot_status = running;
+  error = angle;
+  read initial_orientation;
   do {
-    turn the right motor for (-error) degrees;
-    turn the left  motor for (+error) degrees;
-    read current orientation;
-    compute the error;
-  } while (error > 1)
+    // turn the right motor for (-error) degrees;
+    pthread_create(&right_tid, NULL, __turn_engine_by_angle, (void*)&right_engine_args);
+
+    // turn the left  motor for (+error) degrees;
+    pthread_create(&left_tid,  NULL, __turn_engine_by_angle, (void*)&left_engine_args);
+
+    wait for their termination;
+
+    read current_orientation;
+    error = angle - (final_orientation - initial_orientation);
+  } while (error > 1);
+  robot_status = not_running;
 }
 </code></pre>
+
+<p>Now we want to show you how it can go straight by time and by distance, while
+  checking for orientation error. </p>
+
 				<hr />
