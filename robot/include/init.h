@@ -26,6 +26,7 @@
 #include "tacho.h"
 #include "gyro.h" //----
 #include "us_sensor.h"
+#include "mod_btcom.h"
 
 #include "utilities.h"
 
@@ -47,5 +48,8 @@ void sensor_init();
 void threads_init();
 
 void threads_deinit(void);
+
+int
+open_bt(void);
 
 #endif /* init_h */

@@ -41,12 +41,18 @@ robot_init(void){
 
   sem_init(&sem_right_engine, 0, 1);
   sem_init(&sem_left_engine, 0, 1);
-
+  
+#ifndef NO_BLUETOOTH
+  if (!open_bt()){
+    return 0;
+  }
+#endif
   sensor_init();
   engines_init();
   threads_init();
   
-  turn_inplace_by_relative_angle(-gyro->angle, 200);
+  if (gyro->angle > 1)
+    turn_inplace_by_relative_angle(-gyro->angle, 200);
   
   sleep(2);
 
@@ -191,39 +197,89 @@ sensor_init(){
   
 }
 
+int
+open_bt(void){
+  
+  /* Connecting with server */
+  printf("Connecting to server:\n");
+  /* Try to connect to BT server */
+  if (mod_btcom_connect() != 0) {
+    printf("Unable to connect to the server.\n");
+    //#ifdef TEST
+    //printf("[FOR TEST] Running without BT communication\n");
+    //robot_position.x = BEGINNER_RIGHT_START_X;
+    //robot_position.y = BEGINNER_RIGHT_START_Y;
+    //robot_position.head = 90;
+    //while (1) {
+      //small_beginner('r');
+      //small_finisher('r');
+    //}
+    //#else
+    return (0);
+    //#endif
+  }
+  return 1;
+}
+
 void
 threads_init(){
   
   pthread_create(&engines_status_reader_tid, NULL, __tacho_status_reader, (void*)engines);
-  log_to_file("TACHO STATUS READER -> THREAD -- Created\n");
+  log_to_file("TACHO STATUS READER  -> THREAD -- Created\n");
   
   pthread_create(&gyro_status_reader_tid, NULL, __gyro_status_reader, (void*)gyro);
-  log_to_file("GYRO STATUS READER -> THREAD -- Created\n");
+  log_to_file("GYRO STATUS READER   -> THREAD -- Created\n");
   
   pthread_create(&us_status_reader_tid, NULL, __us_status_reader, (void*)us);
-  log_to_file("US STATUS READER -> THREAD -- Created\n");
+  log_to_file("US STATUS READER     -> THREAD -- Created\n");
   
   pthread_create(&color_status_reader_tid, NULL, __color_status_reader, (void*)color);
-  log_to_file("COLOR STATUS READER -> THREAD -- Created\n");
+  log_to_file("COLOR STATUS READER  -> THREAD -- Created\n");
   
   pthread_create(&odometry_tid, NULL, __update_position, NULL);
-  log_to_file("ODOMETRY -> THREAD -- Created\n");
+  log_to_file("ODOMETRY             -> THREAD -- Created\n");
+#ifndef NO_BLUETOOTH
+  pthread_create(&read_bt_tid, NULL, __mod_btcom_wait_messages, NULL);
+  log_to_file("BLUETOOTH READER     -> THREAD -- Created\n");
+  
+  pthread_create(&write_bt_tid, NULL, __mod_btcom_send_location, NULL);
+  log_to_file("BLUETOOTH WRITER     -> THREAD -- Created\n");
+#endif
 }
 
 void
 threads_deinit(){
   pthread_cancel(engines_status_reader_tid);
-  log_to_file("TACHO STATUS READER -> THREAD -- Terminated\n");
+  log_to_file("TACHO STATUS READER  -> THREAD -- Terminated\n");
   
   pthread_cancel(gyro_status_reader_tid);
-  log_to_file("GYRO STATUS READER -> THREAD -- Terminated\n");
+  log_to_file("GYRO STATUS READER   -> THREAD -- Terminated\n");
   
   pthread_cancel(us_status_reader_tid);
-  log_to_file("US STATUS READER -> THREAD -- Terminated\n");
+  log_to_file("US STATUS READER     -> THREAD -- Terminated\n");
   
   pthread_cancel(color_status_reader_tid);
-  log_to_file("COLOR STATUS READER -> THREAD -- Terminated\n");
+  log_to_file("COLOR STATUS READER  -> THREAD -- Terminated\n");
   
   pthread_cancel(odometry_tid);
-  log_to_file("ODOMETRY -> THREAD -- Terminated\n");
+  log_to_file("ODOMETRY             -> THREAD -- Terminated\n");
+
+  pthread_cancel(read_bt_tid);
+  log_to_file("BLUETOOTH READER     -> THREAD -- Terminated\n");
+
+  pthread_cancel(write_bt_tid);
+  log_to_file("BLUETOOTH WRITER     -> THREAD -- Terminated\n");
+  
+  
+  pthread_join(engines_status_reader_tid, NULL);
+  pthread_join(gyro_status_reader_tid, NULL);
+  pthread_join(us_status_reader_tid, NULL);
+  pthread_join(color_status_reader_tid, NULL);
+  pthread_join(odometry_tid, NULL);
+  pthread_join(read_bt_tid, NULL);
+  pthread_join(write_bt_tid, NULL);
+  
+  
+  
+  
 }

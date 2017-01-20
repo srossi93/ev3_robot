@@ -36,6 +36,9 @@ pthread_t us_status_reader_tid;
 pthread_t color_status_reader_tid;
 pthread_t odometry_tid;
 
+pthread_t read_bt_tid;
+pthread_t write_bt_tid;
+
 sem_t sem_right_engine, sem_left_engine;
 
 pthread_mutex_t us_mutex;

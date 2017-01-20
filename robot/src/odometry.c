@@ -43,7 +43,8 @@ float get_displacement(engine* motorR, engine* motorL){
 int get_heading_from_gyro(gyro_sensor* gyro){
   int heading;
   //printf("angle: %d\n",gyro->angle);
-  heading =  previous_heading + (previous_angle - gyro->angle);
+  //  heading =  previous_heading + (previous_angle - gyro->angle);
+  heading =  robot_position.head + (previous_angle - gyro->angle);
   previous_angle = gyro->angle;
   previous_heading = heading;
   return heading;

@@ -17,7 +17,7 @@
 #include <bluetooth/rfcomm.h>
 
 #ifndef WIFI_CONNECTION
-#define SERV_ADDR   "dc:53:60:ad:61:90"
+#define SERV_ADDR  "00:1E:10:00:06:2B" //94:67:c4:99:0f" //"dc:53:60:ad:61:90"
 #else /*! WIFI_CONNECTION */
 //#define SERV_ADDR   "10.42.0.1"     
 #define SERV_ADDR   "172.17.0.1"    
@@ -116,7 +116,7 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 int mod_btcom_send_to_teammate(unsigned int teamMateId, char *customMessage, size_t size);
 
 /* Thread functions */
-void *__mod_btcom_wait_messages(void);
-void *__mod_btcom_send_location(void);
+void *__mod_btcom_wait_messages(void*);
+void *__mod_btcom_send_location(void*);
 
 #endif /* MJOLNIR_MOD_BTCOM_H */

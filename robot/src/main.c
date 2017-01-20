@@ -101,40 +101,30 @@ void TEST5(void){
 /**
  * main role area part
  */
-int main( int argc, char* argv[] )
-{
-	pthread_t tid, tid2;
+int main( int argc, char* argv[] ) {
 
 	/* Initializing the robot */
 	if (!robot_init()) return 1;
 	msleep(1000);
 
-	/* Connecting with server */
-	printf("Connecting to server:\n");
+  robot_position.x = BEGINNER_RIGHT_START_X;
+  robot_position.y = BEGINNER_RIGHT_START_Y;
+  robot_position.head = 90;
 
-	/* Try to connect to BT server */
-	if (mod_btcom_connect() != 0) {
-		printf("Unable to connect to the server.\n");
-#ifdef TEST
-		printf("[FOR TEST] Running without BT communication\n");
-		robot_position.x = BEGINNER_RIGHT_START_X;
-		robot_position.y = BEGINNER_RIGHT_START_Y;
-		robot_position.head = 90;
-		while (1) {
-		  small_beginner('r');
-		  small_finisher('r');
-		}
-#else
-		return (-1);
-#endif
-	}
-
+  //small_beginner('l');
+  //small_finisher('l');
+  
+  //return 0;
+  
+  
+  
 	/* Connected OK */
 	/* Receiving the information from server */
-	while (mod_btcom_get_role(&gMySide, &gMyRole, &gTeamMateId) < 0){
+  //while (mod_btcom_get_role(&gMySide, &gMyRole, &gTeamMateId) < 0){
 		/* Check after 1000 milisecond */
-		sleep(1);
-	}
+  //	sleep(1);
+  //}
+  sleep(2);
 	/* until get the role */
 	printf("My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
 
@@ -158,22 +148,24 @@ int main( int argc, char* argv[] )
 #else /* SMALL ARENA*/
 	if (gMyRole == BEGINNER) {
 		printf("I'm playing as BEGINNER in SMALL arena\n");
-		//small_beginner('r');/*TODO: @Simone: change the param!*/
+    gMyState = RUNNING;
+      small_beginner('r');/*TODO: @Simone: change the param!*/
+    gMyState = DONE;
 	} else if (gMyRole == FINISHER) {
 		printf("I'm playing as FINISHER in SMALL arena\n");
-		//small_finisher('r');/*TODO: @Simone: change the param!*/
+		small_finisher('l');/*TODO: @Simone: change the param!*/
 #endif /* BIG_ARENA */
 	} else {
 		printf("Wrong role and/or side, my friend! Cannot move!\n");
 	}
 
 	/* Waiting for messages sent by server and others */
-	pthread_create(&tid, NULL, __mod_btcom_wait_messages, NULL);
+    //pthread_create(&tid, NULL, __mod_btcom_wait_messages, NULL);
 
 	/* Periodically send the location */
-	pthread_create(&tid2, NULL, __mod_btcom_send_location, NULL);
+    //pthread_create(&tid2, NULL, __mod_btcom_send_location, NULL);
 
-	printf("Bluetooth communication started\n");
+    //printf("Bluetooth communication started\n");
 
 	while (1) {
 		/* Send the signal to server at the end of journey */
@@ -193,8 +185,8 @@ int main( int argc, char* argv[] )
 		sleep(1);
 	}
 
-	pthread_join(tid, NULL);
-	pthread_join(tid2, NULL);
+    //pthread_join(tid, NULL);
+    //pthread_join(tid2, NULL);
 
 	threads_deinit();
 	ev3_uninit();

@@ -40,23 +40,23 @@
 #define FINISHER_RIGHT_END_Y      20
 
 
-#define BEGINNER_LEFT_START_X    22
-#define BEGINNER_LEFT_START_Y    176
+#define BEGINNER_LEFT_START_X    30
+#define BEGINNER_LEFT_START_Y    20
 
-#define BEGINNER_LEFT_LEAVE_X    47
-#define BEGINNER_LEFT_LEAVE_Y    128
+#define BEGINNER_LEFT_LEAVE_X    50
+#define BEGINNER_LEFT_LEAVE_Y    80
 
-#define BEGINNER_LEFT_END_X      95
-#define BEGINNER_LEFT_END_Y      170
+#define BEGINNER_LEFT_END_X      30
+#define BEGINNER_LEFT_END_Y      180
 
-#define FINISHER_LEFT_START_X    95
-#define FINISHER_LEFT_START_Y    170
+#define FINISHER_LEFT_START_X    30
+#define FINISHER_LEFT_START_Y    180
 
-#define FINISHER_LEFT_SEARCH_X   47
-#define FINISHER_LEFT_SEARCH_Y   81
+#define FINISHER_LEFT_SEARCH_X   52
+#define FINISHER_LEFT_SEARCH_Y   120
 
-#define FINISHER_LEFT_END_X      22
-#define FINISHER_LEFT_END_Y      16
+#define FINISHER_LEFT_END_X      30
+#define FINISHER_LEFT_END_Y      20
 
 
 void small_beginner(char starting_point);

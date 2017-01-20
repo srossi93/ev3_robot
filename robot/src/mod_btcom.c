@@ -7,7 +7,8 @@
 //
 
 #include <mod_btcom.h>
-
+#include <byteswap.h>
+#include <math.h>
 /**
  * Connect to Bluetooth server.
  *
@@ -15,7 +16,7 @@
  */
 int mod_btcom_connect() {
 #ifndef WIFI_CONNECTION
-	struct sockaddr_rc addr = { 0 };
+  struct sockaddr_rc addr = { 0 };
 #else
 	struct sockaddr_in addr = { 0 };
 #endif
@@ -29,7 +30,7 @@ int mod_btcom_connect() {
 	addr.rc_family = AF_BLUETOOTH;
 	addr.rc_channel = (uint8_t) 1;
 	str2ba(SERV_ADDR, &addr.rc_bdaddr);
-#else
+#else 
 	printf("Connecting with LAN connection...\n");
 	/* allocate a socket */
 	s = socket(AF_INET, SOCK_STREAM, 0);
@@ -120,16 +121,21 @@ int mod_btcom_send_BALL(uint8_t act, int16_t x, int16_t y) {
  */
 int mod_btcom_send_POSITION(int x, int y) {
 	char string[9];
-
+  
+  int16_t x_little_endian = (int16_t)(x);
+  int16_t y_little_endian = (int16_t)(y);
 	/* Construct the data */
 	*((uint16_t *) string) = msgId++;
 	string[2] = TEAM_ID;	/* src */
 	string[3] = 0xFF;	/* dst */
 	string[4] = MSG_POSITION;
-	string[5] = x;
-	string[6] = 0x00;
-	string[7] = y;
-	string[8] = 0x00;
+  string[5] = x_little_endian;
+  memcpy(string + 5, &x_little_endian, sizeof(int16_t));
+  //string[5] = x;              // <<<<<<<<<< TODO Little endian
+  //string[6] = 0x00;
+  memcpy(string + 7, &y_little_endian, sizeof(int16_t));
+  //string[7] = y;
+  //string[8] = 0x00;
 
 	/* Send the string to server */
 	return mod_btcom_send_to_server(string, 9);
@@ -211,6 +217,9 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 		case MSG_NEXT:
 			break;	/* no additional info needed */
 		case MSG_START:
+      *arg1 = (uint8_t ) string[5];
+      *arg2 = (int16_t ) string[6];
+      *arg3 = (int16_t ) string[7];
 			break;	/* no additional info needed */
 		case MSG_STOP:
 			break;	/* no additional info needed */
@@ -236,7 +245,7 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 	return ret;
 }
 
-void *__mod_btcom_wait_messages(void) {
+void *__mod_btcom_wait_messages(void* arg) {
 	uint8_t actionType;
 	uint8_t arg1;
 	int16_t arg2, arg3;
@@ -263,7 +272,11 @@ void *__mod_btcom_wait_messages(void) {
 					}
 					break;
 				case MSG_START:
-					printf("I already started. Skip.\n");
+          gMyRole = (unsigned char) arg1;
+          gMySide = (unsigned char) arg2;
+          gTeamMateId = (unsigned char) arg3;
+
+          //printf("I already started. Skip.\n");
 					break;
 				case MSG_STOP:
 					printf("Got the STOP message.\n");
@@ -288,7 +301,7 @@ void *__mod_btcom_wait_messages(void) {
 				case MSG_BALL:
 					printf("Got the BALL message.\n");
 					if (arg1 == DROP) {
-						printf("Someone dropped a ball.\n");
+						printf("Someone dropped a ball\n");
 						printf("at location x=%d, y=%d\n", arg2, arg3);
 					} else {
 						printf("Someone picked up the ball.\n");
@@ -309,28 +322,30 @@ void *__mod_btcom_wait_messages(void) {
 		sleep(1);
 	}
 	
-	return ret;
+	return NULL;
 }
 
-void *__mod_btcom_send_location(void) {
-	int ret, x, y;
+void *__mod_btcom_send_location(void* arg) {
+	int16_t ret, x, y;
 
 	x = 21; /*TODO: update the real values here*/
 	y = 22; /*TODO:*/
-
+  printf("Welcome from send location thread\n");
 	/* Periodically send the location */
-        while (1) {
-		if ((gMyState != STOPPED) && 
-			(gMyState != KICKED) &&
-			(gMyState != NOTSTARTED) ){
+  while (1) {
+    //if ( (gMyState != STOPPED) && (gMyState != KICKED) && (gMyState != NOTSTARTED) ){
+    printf("mystate = %d", gMyState );
+    if (gMyState == RUNNING) {
+      x = (int16_t)ceilf(robot_position.x);
+      y = (int16_t)ceilf(robot_position.y);
+    
 			printf("Sending location: x=%d, y=%d\n", x, y);
 			ret = mod_btcom_send_POSITION(x, y);
 
-			if (ret < 0) break;
-
-			sleep(2);
+      if (ret < 0) break;
 		}
+    sleep(2);
 	}
 
-	return ret;
+	return NULL;
 }
