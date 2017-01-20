@@ -111,9 +111,14 @@ void big_beginner(char side, char starting_point){
     move_by_offset(pos2_x - robot_position.x, pos2_y - robot_position.y, 500);
   } while (0);
   
+  
   do {
     move_by_offset(pos3_x - robot_position.x, pos3_y - robot_position.y, 500);
   } while (0);
+  
+  turn_inplace_by_relative_angle(-180, 200);
+  
+  release_ball(&engines[ARM], 25);
   
   do {
     move_by_offset(end_x - robot_position.x, end_y - robot_position.y, 500);

@@ -107,12 +107,12 @@ int main( int argc, char* argv[] ) {
 	if (!robot_init()) return 1;
 	msleep(1000);
 
-  robot_position.x = BEGINNER_RIGHT_START_X;
-  robot_position.y = BEGINNER_RIGHT_START_Y;
+  robot_position.x = BIG_BEGINNER_RIGHT_START_X;
+  robot_position.y = BIG_BEGINNER_RIGHT_START_Y;
   robot_position.head = 90;
 
-  small_beginner('l');
-  small_finisher('l');
+  big_beginner('r', '0');
+
   
   return 0;
   
