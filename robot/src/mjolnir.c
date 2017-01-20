@@ -9,6 +9,9 @@
 #include <stdio.h>
 #include "mjolnir.h"
 
+int msgId = 0;
+robot_state gMyState = NOTSTARTED;
+unsigned char gMyRole, gMySide, gTeamMateId;
 
 void small_beginner(char starting_point){
   

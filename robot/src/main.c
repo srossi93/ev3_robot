@@ -23,6 +23,7 @@
 #include "odometry.h"
 
 #include "mjolnir.h"
+#include "mod_btcom.h"
 
 extern pthread_cond_t cv_ball_detected;
 
@@ -102,178 +103,102 @@ void TEST5(void){
  */
 int main( int argc, char* argv[] )
 {
-  
-  
-  
-	//if ( argc < 5 ) {
-		//printf("Usage: %s [role] [area] [part] [action]\n", argv[0] );
-		//printf("Options:\n");
-		//printf("    role: 'b' or 'f' or 'g'(beginner or finisher, or (just for test) grabber)\n");
-		//printf("    area: 'l' or 's' (large or small)\n");
-		//printf("    part: 'l' or 'r' (left or right, valid only with LARGE area.)\n");
-		//printf("    action: 'g' or 'b' (just Go or place a Ball)\n");
+	pthread_t tid, tid2;
 
-		//return 1;
-	//}
-
+	/* Initializing the robot */
 	if (!robot_init()) return 1;
-  msleep(1000);
-  
-  robot_position.x = BEGINNER_RIGHT_START_X;
-  robot_position.y = BEGINNER_RIGHT_START_Y;
-  robot_position.head = 90;
-  while (1) {
-    small_beginner('r');
-    small_finisher('r');
-  }
-  
+	msleep(1000);
 
-  //print_position();
-  //go_straight_dist(10, 100, 1);
-  //print_position();
-  //go_straight_dist(20, 100, 1);
-  //print_position();
-  //go_straight_dist(30, 100, 1);
-  //print_position();
-  //turn_inplace_by_relative_angle(90, 100);
-  //print_position();
-  //search_and_grab(&engines[ARM]);
-  //grab_ball(&engines[ARM], min_distance/10-22);
-  
-  //turn_inplace_by_relative_angle(-30, 500);
-  //int angle;
-  //for (angle = 0; angle < 60; angle += 5)
-  //{
-    ////set_port_mode(us->address, "US-SI-CM");
-    ////msleep(500);
-    //msleep(500);
-    //int sum = us->distance;
-    //msleep(500);
-    //sum += us->distance;
-    //msleep(500);
-    //sum += us->distance;
+	/* Connecting with server */
+	printf("Connecting to server:\n");
 
-    
-    //printf("Distance AVG: %d\n", sum/3);
-    
-    //if ((sum/3) < 400) {
-      ////turn_inplace_by_relative_angle(-5, 50);
-        //printf("DETECTED\n");
-      //grab_ball(&engines[ARM], (sum/3)/10);
-      //break;
-    //}
-    //turn_inplace_by_relative_angle(+5, 50);
-  //}
-  
+	/* Try to connect to BT server */
+	if (mod_btcom_connect() != 0) {
+		printf("Unable to connect to the server.\n");
+#ifdef TEST
+		printf("[FOR TEST] Running without BT communication\n");
+		robot_position.x = BEGINNER_RIGHT_START_X;
+		robot_position.y = BEGINNER_RIGHT_START_Y;
+		robot_position.head = 90;
+		while (1) {
+		  small_beginner('r');
+		  small_finisher('r');
+		}
+#else
+		return (-1);
+#endif
+	}
 
-  //TEST5();
+	/* Connected OK */
+	/* Receiving the information from server */
+	while (mod_btcom_get_role(&gMySide, &gMyRole, &gTeamMateId) < 0){
+		/* Check after 1000 milisecond */
+		sleep(1);
+	}
+	/* until get the role */
+	printf("My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
 
-  
-  //go_straight_dist(100, 300, 1);
-  //turn_inplace_by_relative_angle(90, 200);
-  //go_straight_dist(75, 300, 1);
-  //turn_inplace_by_relative_angle(-90, 200);
-  //go_straight_dist(90, 300, 1);
-  
-  //set_sensor_mode(gyro->address, "GYRO-CAL");
-  //msleep(1000);
-  //set_sensor_mode(gyro->address, "GYRO-G&A");
-  
-  //turn_inplace_by_relative_angle(+90, 200);
-  //go_straight_dist(-45, 300, 1);
-  //release_ball(&engines[ARM], 15);
-  //turn_inplace_by_relative_angle(-90, 200);
-  //go_straight_dist(180, 300, 1);
-  
-  //set_sensor_mode(gyro->address, "GYRO-CAL");
-  //msleep(1000);
-  //set_sensor_mode(gyro->address, "GYRO-G&A");
-  
-  //turn_inplace_by_relative_angle(+90, 200);
-  //go_straight_dist(70, 300, 1);
-  //turn_inplace_by_relative_angle(+90, 200);
-  
-  //set_sensor_mode(gyro->address, "GYRO-CAL");
-  //msleep(1000);
-  //set_sensor_mode(gyro->address, "GYRO-G&A");
-  
-  //go_straight_dist(100, 300, 1);
-  //turn_inplace_by_relative_angle(90, 200);
-  //go_straight_dist(75, 300, 1);
-  //turn_inplace_by_relative_angle(-90, 200);
-  //go_straight_dist(85, 300, 1);
-  
-  //set_sensor_mode(gyro->address, "GYRO-CAL");
-  //msleep(1000);
-  //set_sensor_mode(gyro->address, "GYRO-G&A");
-  
-  //turn_inplace_by_relative_angle(-90, 200);
-  //grab_ball(&engines[ARM]);
-  //go_straight_dist(20, 300, 1);
-  
-  //set_sensor_mode(gyro->address, "GYRO-CAL");
-  //msleep(1000);
-  //set_sensor_mode(gyro->address, "GYRO-G&A");
+	/* Change state */
+	gMyState = STARTED;
 
-  //turn_inplace_by_relative_angle(+90, 200);
-  //go_straight_dist(180, 300, 1);
-  
-  
-	///* BEGINNER + SMALL */
-	//if ( (strcmp(argv[1], "b") == 0) && (strcmp(argv[2], "s") == 0) ) {
-		//if ( strcmp(argv[4], "g") == 0 ) { /* Just go */
-			//printf("TEST 1 start!\n");
-			//TEST1();
-			//printf("Mission completed!\n");
-			//return 1;
-		//} else if ( strcmp(argv[4], "b") == 0 ) { /* with placing the ball */
-			//printf("TEST 2 start!\n");
-			//TEST2();
-			//printf("Mission completed!\n");
-			//return 1;
-		//}
+	/* START */
+#ifdef BIG_ARENA
+	if ((gMyRole == BEGINNER) && (gMySide == LEFT)){
+		printf("I'm playing as BEGINNER in LEFT side\n");
+		//left_beginner('r');/*TODO: @Simone: change the param!*/
+	} else if ((gMyRole == BEGINNER) && (gMySide == RIGHT)) {
+		printf("I'm playing as BEGINNER in RIGHT side\n");
+		//right_beginner('r');/*TODO: @Simone: change the param!*/
+	} else if ((gMyRole == FINISHER) && (gMySide == LEFT)) {
+		printf("I'm playing as FINISHER in LEFT side\n");
+		//left_finisher('r');/*TODO: @Simone: change the param!*/
+	} else if ((gMyRole == FINISHER) && (gMySide == RIGHT)) {
+		printf("I'm playing as FINISHER in RIGHT side\n");
+		//right_finisher('r');/*TODO: @Simone: change the param!*/
+#else /* SMALL ARENA*/
+	if (gMyRole == BEGINNER) {
+		printf("I'm playing as BEGINNER in SMALL arena\n");
+		//small_beginner('r');/*TODO: @Simone: change the param!*/
+	} else if (gMyRole == FINISHER) {
+		printf("I'm playing as FINISHER in SMALL arena\n");
+		//small_finisher('r');/*TODO: @Simone: change the param!*/
+#endif /* BIG_ARENA */
+	} else {
+		printf("Wrong role and/or side, my friend! Cannot move!\n");
+	}
 
-	//} 
-	///* BEGINNER + LARGE */
-	//if ( (strcmp(argv[1], "b") == 0) && (strcmp(argv[2], "l") == 0) ) {
-		//if ( strcmp(argv[4], "g") == 0 ) { /* Just go */
-			//printf("TEST 3 start!\n");
-			//TEST3();
-			//printf("Mission completed!\n");
-			//return 1;
-		//} else if ( strcmp(argv[4], "b") == 0 ) { /* with placing the ball */
-			//printf("TEST 4 start!\n");
-			//TEST4();
-			//printf("Mission completed!\n");
-			//return 1;
-		//}
-	//}
+	/* Waiting for messages sent by server and others */
+	pthread_create(&tid, NULL, __mod_btcom_wait_messages, NULL);
 
-	///* GRABBER TEST */
-	//if (strcmp(argv[1], "g") == 0)  {
-		//printf("TEST 5 start!\n");
-		//TEST5();
-		//printf("Mission completed!\n");
-		//return 1;
-	//}
-	
-  //sleep(2);
-  
-  
-  //go_straight(10000, 500);
-  //go_straight(10000, 300);
-  //go_straight(10000, 300);
-  //go_straight(10000, 300);
-  //go_straight(10000, 300);
-  
-  
-  
-  
-  threads_deinit();
-  ev3_uninit();
-  printf( "*** ( EV3 ) Bye! ***\n" );
-  
-  return 0;
+	/* Periodically send the location */
+	pthread_create(&tid2, NULL, __mod_btcom_send_location, NULL);
+
+	printf("Bluetooth communication started\n");
+
+	while (1) {
+		/* Send the signal to server at the end of journey */
+		if (gMyState == DONE) {
+			printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
+			mod_btcom_send_NEXT(gTeamMateId);
+			printf("I become a FINISHER now\n");
+			gMyRole = FINISHER;
+			gMyState = WAITING;
+		}
+
+		if ( (gMyState == STOPPED) && (gMyState == KICKED) ) {
+			printf("We are done! Gotta stop now!\n");
+			break;
+		}
+		/* Loop every 1 second */
+		sleep(1);
+	}
+
+	pthread_join(tid, NULL);
+	pthread_join(tid2, NULL);
+
+	threads_deinit();
+	ev3_uninit();
+	printf( "*** ( EV3 ) Bye! ***\n" );
+
+	return 0;
 }
-
-

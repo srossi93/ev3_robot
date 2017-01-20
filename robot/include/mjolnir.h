@@ -62,4 +62,18 @@
 void small_beginner(char starting_point);
 void small_finisher(char starting_point);
 
+typedef enum {
+	NOTSTARTED,     /* Don't know its role yet. Waiting for instruction from server */
+	STARTED,                /* Got its role, ready for run. */
+	WAITING,                /* At its location, waiting for NEXT mesg to run */
+	RUNNING,                /* On its journey */
+	DONE,           /* When beginner or finisher completed its journey */
+	KICKED,
+	STOPPED
+} robot_state;
+
+extern int msgId;
+extern robot_state gMyState;
+extern unsigned char gMyRole, gMySide, gTeamMateId;
+
 #endif /* mjolnir_h */
