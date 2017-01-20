@@ -3,11 +3,7 @@
 #include <sys/time.h>
 
 int main(int argc, char* argv[]) {
-	//unsigned char gMySide, gMyRole, gTeamMateId;
-	//uint8_t actionType;
-	//enum robot_state gMyState = NOTSTARTED;
-	int count = 0, x, y;
-	pthread_t tid;
+	pthread_t tid, tid2;
 
 	printf("Connecting to server:\n");
 
@@ -32,20 +28,12 @@ int main(int argc, char* argv[]) {
 	/* Waiting for messages sent by server and others */
 	pthread_create(&tid, NULL, __mod_btcom_wait_messages, NULL);
 
+	/* Periodically send the location */
+	pthread_create(&tid2, NULL, __mod_btcom_send_location, NULL);
+
 	printf("Bluetooth communication started\n");
 
-	/* Periodically send the location */
 	while (1) {
-		//printf("Getting msg from server\n");
-
-		/* Send current location every 2 seconds*/
-		x = 21; /*TODO*/
-		y = 22; /*TODO*/
-		if ( (count++ % 2) == 0){
-			printf("Sending robot's location x=%d, y=%d\n", x, y);
-			mod_btcom_send_POSITION(x, y);
-		}
-
 		/* Send the signal to server at the end of journey */
 		if (gMyState == DONE) {
 			printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
@@ -55,9 +43,18 @@ int main(int argc, char* argv[]) {
 			gMyState = WAITING;
 		}
 
+		if ( (gMyState == STOPPED) && (gMyState == KICKED) ) {
+			printf("We are done! Gotta stop now!\n");
+			break;
+		}
 		/* Loop every 1 second */
 		sleep(1);
 	}
+
+	pthread_join(tid, NULL);
+	pthread_join(tid2, NULL);
+
+	printf("Bye!\n");
 
 	return 0;
 }

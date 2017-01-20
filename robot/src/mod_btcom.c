@@ -188,14 +188,15 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 
 	ret = mod_btcom_receive_from_server(s, string, 58);
 
-	//printf("Received %d bytes from server.\n", ret);
+	printf("Received %d bytes from server.\n", ret);
 
-	if (ret >= 0) {
+	if (ret > 0) {
 		*actionType = (uint8_t) string[4];
 		dst = (unsigned char) string[3];
 	} else {
 		fprintf(stderr, "Error in receiving data from server\n");
 		printf("Error code: %d\n", ret);
+		return -3;
 	}
 
 	/* Only take care messages sent to us */
@@ -242,12 +243,12 @@ void *__mod_btcom_wait_messages(void) {
 	int ret;
 
 	while (1) {
-		sleep(1);
-
 		printf("Getting msg from server\n");
 
 		/* Loop to get message from server */
 		ret = mod_btcom_get_message(&actionType, &arg1, &arg2, &arg3);
+
+		//printf("ret=%d\n", ret);
 
 		if (ret > 0) {
 			switch (actionType) {
@@ -273,9 +274,9 @@ void *__mod_btcom_wait_messages(void) {
 				case MSG_KICK:
 					printf("Got the KICK message.\n");
 					if (arg1 == TEAM_ID) {
-						gMyState = STOPPED;
 						printf("Damn, we got kicked!\n");
-						return 0; /* Exit */
+						gMyState = KICKED;
+						//return 0; /* Exit */
 					} else {
 						printf("Robot no.%d is out of game\n", arg1);
 					}
@@ -300,6 +301,36 @@ void *__mod_btcom_wait_messages(void) {
 					printf("Incorrect type of message received: %d\n", actionType);
 					break;
 			}
+		} else {
+			printf("Got a problem when receiving the message. ret=%d", ret);
+			break;
+		}
+
+		sleep(1);
+	}
+	
+	return ret;
+}
+
+void *__mod_btcom_send_location(void) {
+	int ret, x, y;
+
+	x = 21; /*TODO: update the real values here*/
+	y = 22; /*TODO:*/
+
+	/* Periodically send the location */
+        while (1) {
+		if ((gMyState != STOPPED) && 
+			(gMyState != KICKED) &&
+			(gMyState != NOTSTARTED) ){
+			printf("Sending location: x=%d, y=%d\n", x, y);
+			ret = mod_btcom_send_POSITION(x, y);
+
+			if (ret < 0) break;
+
+			sleep(2);
 		}
 	}
+
+	return ret;
 }

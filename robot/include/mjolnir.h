@@ -39,6 +39,7 @@ typedef enum {
 	WAITING,		/* At its location, waiting for NEXT mesg to run */
 	RUNNING,		/* On its journey */ 
 	DONE,		/* When beginner or finisher completed its journey */
+	KICKED,
 	STOPPED
 } robot_state;
 

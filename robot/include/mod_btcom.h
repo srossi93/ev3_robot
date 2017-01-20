@@ -113,7 +113,8 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 /* Optional */
 int mod_btcom_send_to_teammate(unsigned int teamMateId, char *customMessage, size_t size);
 
-/* Thread function */
+/* Thread functions */
 void *__mod_btcom_wait_messages(void);
+void *__mod_btcom_send_location(void);
 
 #endif /* MJOLNIR_MOD_BTCOM_H */
