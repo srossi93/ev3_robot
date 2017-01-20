@@ -59,8 +59,26 @@
 #define FINISHER_LEFT_END_Y      20
 
 
+
+#define BIG_BEGINNER_RIGHT_START_X  30
+#define BIG_BEGINNER_RIGHT_START_Y  20
+
+#define BIG_BEGINNER_RIGHT_POS1_X  90
+#define BIG_BEGINNER_RIGHT_POS1_Y  120
+
+#define BIG_BEGINNER_RIGHT_POS2_X  75
+#define BIG_BEGINNER_RIGHT_POS2_Y  185
+
+#define BIG_BEGINNER_RIGHT_POS3_X  30
+#define BIG_BEGINNER_RIGHT_POS3_Y  235
+
+#define BIG_BEGINNER_RIGHT_END_X  30
+#define BIG_BEGINNER_RIGHT_END_Y  370
+
 void small_beginner(char starting_point);
 void small_finisher(char starting_point);
+
+void big_beginner(char side, char starting_point);
 
 typedef enum {
 	NOTSTARTED,     /* Don't know its role yet. Waiting for instruction from server */

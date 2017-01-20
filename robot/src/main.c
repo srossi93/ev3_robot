@@ -111,10 +111,10 @@ int main( int argc, char* argv[] ) {
   robot_position.y = BEGINNER_RIGHT_START_Y;
   robot_position.head = 90;
 
-  //small_beginner('l');
-  //small_finisher('l');
+  small_beginner('l');
+  small_finisher('l');
   
-  //return 0;
+  return 0;
   
   
   

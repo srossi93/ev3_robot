@@ -81,28 +81,43 @@ void small_finisher(char starting_point){
   do  {
     move_by_offset(end_position_x - robot_position.x, end_position_y - robot_position.y + 7, 500);
   } while (fabsf(end_position_x - robot_position.x) > 10 || fabsf(end_position_y - robot_position.y) > 10);
-  
-  
-  
-  
-  
-
-  
-  //if (starting_point == 'r') {
-    //move_by_offset(FINISHER_RIGHT_SEARCH_X - robot_position.x, FINISHER_RIGHT_SEARCH_Y - robot_position.y, 500);
-    
-    //search_and_grab(&engines[ARM]);
-
-    //move_by_offset(FINISHER_RIGHT_END_X - robot_position.x, FINISHER_RIGHT_END_Y - robot_position.y, 500);
-  //}
-  //else if (starting_point == 'l') {
-    //move_by_offset(FINISHER_LEFT_SEARCH_X - robot_position.x, FINISHER_LEFT_SEARCH_Y - robot_position.y, 500);
-    
-    
-    
-    //move_by_offset(FINISHER_LEFT_END_X - robot_position.x, FINISHER_LEFT_END_Y - robot_position.y, 500);
-  //}
   return;
 }
 
+
+void big_beginner(char side, char starting_point){
+  int pos1_x = 0, pos2_x = 0, pos3_x = 0;
+  int pos1_y = 0, pos2_y = 0, pos3_y = 0;
+  int end_x = 0;
+  int end_y = 0;
+  
+  if (side == 'r')
+  {
+    pos1_x = BIG_BEGINNER_RIGHT_POS1_X;
+    pos1_y = BIG_BEGINNER_RIGHT_POS1_Y;
+    pos2_x = BIG_BEGINNER_RIGHT_POS2_X;
+    pos2_y = BIG_BEGINNER_RIGHT_POS2_Y;
+    pos3_x = BIG_BEGINNER_RIGHT_POS3_X;
+    pos3_y = BIG_BEGINNER_RIGHT_POS3_Y;
+    end_x  = BIG_BEGINNER_RIGHT_END_X;
+    end_y  = BIG_BEGINNER_RIGHT_END_Y;
+  }
+  
+  do {
+    move_by_offset(pos1_x - robot_position.x, pos1_y - robot_position.y, 500);
+  } while (0);
+
+  do {
+    move_by_offset(pos2_x - robot_position.x, pos2_y - robot_position.y, 500);
+  } while (0);
+  
+  do {
+    move_by_offset(pos3_x - robot_position.x, pos3_y - robot_position.y, 500);
+  } while (0);
+  
+  do {
+    move_by_offset(end_x - robot_position.x, end_y - robot_position.y, 500);
+  } while (0);
+  
+}
  
