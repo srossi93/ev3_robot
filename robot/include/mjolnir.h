@@ -21,6 +21,8 @@
 #include "odometry.h"
 
 
+#include "big_arena.h"
+
 #define BEGINNER_RIGHT_START_X    90
 #define BEGINNER_RIGHT_START_Y    20
 
@@ -60,38 +62,34 @@
 
 
 
-#define BIG_BEGINNER_RIGHT_START_X  30
-#define BIG_BEGINNER_RIGHT_START_Y  20
-
-#define BIG_BEGINNER_RIGHT_POS1_X  90
-#define BIG_BEGINNER_RIGHT_POS1_Y  120
-
-#define BIG_BEGINNER_RIGHT_POS2_X  70
-#define BIG_BEGINNER_RIGHT_POS2_Y  185
-
-#define BIG_BEGINNER_RIGHT_POS3_X  35
-#define BIG_BEGINNER_RIGHT_POS3_Y  230
-
-#define BIG_BEGINNER_RIGHT_END_X  25
-#define BIG_BEGINNER_RIGHT_END_Y  370
-
 void small_beginner(char starting_point);
 void small_finisher(char starting_point);
 
 void big_beginner(char side, char starting_point);
+void big_finisher(char side, char starting_point);
 
 typedef enum {
 	NOTSTARTED,     /* Don't know its role yet. Waiting for instruction from server */
-	STARTED,                /* Got its role, ready for run. */
-	WAITING,                /* At its location, waiting for NEXT mesg to run */
-	RUNNING,                /* On its journey */
+	STARTED,        /* Got its role, ready for run. */
+	WAITING,        /* At its location, waiting for NEXT mesg to run */
+  READY,          /* Ready to go (NEXT received) but still not running) */
+	RUNNING,        /* On its journey */
 	DONE,           /* When beginner or finisher completed its journey */
 	KICKED,
 	STOPPED
 } robot_state;
 
+typedef enum {
+  GAME_NOTSTARTED,     /* Don't know its role yet. Waiting for instruction from server */
+  GAME_STARTED,        /* Got its role, ready for run. */
+  GAME_RUN,
+  GAME_KICKED,
+  GAME_STOPPED
+} game_state;
+
 extern int msgId;
 extern robot_state gMyState;
+extern game_state gGameState;
 extern unsigned char gMyRole, gMySide, gTeamMateId;
 
 #endif /* mjolnir_h */

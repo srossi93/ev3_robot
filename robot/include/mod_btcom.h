@@ -12,6 +12,8 @@
 #define MJOLNIR_MOD_BTCOM_H
 
 #include <mjolnir.h>
+#include <pthread.h>
+
 #include <sys/socket.h>
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/rfcomm.h>
@@ -53,6 +55,8 @@
 
 /* Bluetooth socket */
 int s;
+pthread_cond_t cv_next;
+pthread_mutex_t bt_mutex;
 
 /* Message ID */
 //uint16_t msgId = 0;

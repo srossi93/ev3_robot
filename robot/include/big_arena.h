@@ -1,0 +1,78 @@
+//
+//  big_arena.h
+//  robot
+//
+//  Created by Simone Rossi on 21/01/17.
+//  Copyright © 2017 Simone Rossi. All rights reserved.
+//
+
+#ifndef big_arena_h
+#define big_arena_h
+
+
+#define BIG_BEGINNER_RIGHT_START_X  30
+#define BIG_BEGINNER_RIGHT_START_Y  20
+
+#define BIG_BEGINNER_RIGHT_POS1_X  90
+#define BIG_BEGINNER_RIGHT_POS1_Y  120
+
+#define BIG_BEGINNER_RIGHT_POS2_X  80
+#define BIG_BEGINNER_RIGHT_POS2_Y  185
+
+#define BIG_BEGINNER_RIGHT_POS3_X  50
+#define BIG_BEGINNER_RIGHT_POS3_Y  225
+
+#define BIG_BEGINNER_RIGHT_END_X  25
+#define BIG_BEGINNER_RIGHT_END_Y  370
+
+
+
+#define BIG_FINISHER_RIGHT_START_X 100
+#define BIG_FINISHER_RIGHT_START_Y 370
+
+#define BIG_FINISHER_RIGHT_POS1_X  40
+#define BIG_FINISHER_RIGHT_POS1_Y  220
+
+#define BIG_FINISHER_RIGHT_POS2_X  90
+#define BIG_FINISHER_RIGHT_POS2_Y  150
+
+#define BIG_FINISHER_RIGHT_END_X  85
+#define BIG_FINISHER_RIGHT_END_Y  20
+
+
+
+
+
+
+
+
+#define BIG_BEGINNER_LEFT_START_X  -30
+#define BIG_BEGINNER_LEFT_START_Y   20
+
+#define BIG_BEGINNER_LEFT_POS1_X  -100
+#define BIG_BEGINNER_LEFT_POS1_Y  120
+
+#define BIG_BEGINNER_LEFT_POS2_X  -70
+#define BIG_BEGINNER_LEFT_POS2_Y  185
+
+#define BIG_BEGINNER_LEFT_POS3_X  -50
+#define BIG_BEGINNER_LEFT_POS3_Y  220
+
+#define BIG_BEGINNER_LEFT_END_X  -50
+#define BIG_BEGINNER_LEFT_END_Y  370
+
+
+
+#define BIG_FINISHER_LEFT_START_X -100
+#define BIG_FINISHER_LEFT_START_Y 370
+
+#define BIG_FINISHER_LEFT_POS1_X  -30
+#define BIG_FINISHER_LEFT_POS1_Y  220
+
+#define BIG_FINISHER_LEFT_POS2_X  -90
+#define BIG_FINISHER_LEFT_POS2_Y  150
+
+#define BIG_FINISHER_LEFT_END_X  -85
+#define BIG_FINISHER_LEFT_END_Y  20
+
+#endif /* big_arena_h */

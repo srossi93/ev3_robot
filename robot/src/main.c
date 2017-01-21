@@ -101,89 +101,146 @@ void TEST5(void){
 /**
  * main role area part
  */
-int main( int argc, char* argv[] ) {
+int main (int argc, char* argv[]) {
+  
+  char arena[25];
+  if (argc != 2) {
+    printf("Please, specify the arena\n");
+    return -1;
+  }
+  memcpy(arena, argv[1], 25);
+  printf("Playing in the %s arena\n", arena);
 
 	/* Initializing the robot */
 	if (!robot_init()) return 1;
 	msleep(1000);
 
-  robot_position.x = BIG_BEGINNER_RIGHT_START_X;
-  robot_position.y = BIG_BEGINNER_RIGHT_START_Y;
-  robot_position.head = 90;
+  robot_position.x = BIG_FINISHER_RIGHT_START_X;
+  robot_position.y = BIG_FINISHER_RIGHT_START_Y;
+  robot_position.head = -90;
 
-  big_beginner('r', '0');
+  big_finisher('r', '0');
 
   
   return 0;
   
-  
-  
-	/* Connected OK */
-	/* Receiving the information from server */
-  //while (mod_btcom_get_role(&gMySide, &gMyRole, &gTeamMateId) < 0){
-		/* Check after 1000 milisecond */
-  //	sleep(1);
+
+  //sleep(2);
+	///* until get the role */
+	//printf("My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
+
+	///* Change state */
+	//gMyState = STARTED;
+  //gGameState = GAME_STARTED;
+  //if (memcmp(arena, "small", 5)) {
+    ///*=====================================================================================
+                                      //SMALL ARENA
+     //=====================================================================================*/
+    //char starting_position;
+    
+    //if (gMyRole ==  BEGINNER){
+      //starting_position = 'r';
+      //printf("I'm playing as BEGINNER in SMALL arena\n");
+      //gMyState = RUNNING;
+      //small_beginner(starting_position);
+      //gMyRole = FINISHER;
+      //gMyState = WAITING;
+    //}
+    //else {
+      //starting_position = 'l';
+    //}
+    
+    //while (gGameState == GAME_RUN) {
+      //pthread_mutex_lock(&bt_mutex);
+      //while (gMyState != READY){
+        //pthread_cond_wait(&cv_next, &bt_mutex);
+      //}
+      //gMyState = RUNNING;
+      //pthread_mutex_unlock(&bt_mutex);
+      //if (gMyRole == BEGINNER) {
+        //printf("I'm playing as BEGINNER in SMALL arena - side: %c\n", starting_position);
+        //gMyState = RUNNING;
+        //small_beginner(starting_position);
+        //gMyRole = FINISHER;
+        //gMyState = WAITING;
+        //printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
+        //mod_btcom_send_NEXT(gTeamMateId);
+
+      //}
+      //else if (gMyRole == FINISHER) {
+        //printf("I'm playing as FINISHER in SMALL arena - side: %c\n", starting_position);
+        //gMyState = RUNNING;
+        //small_finisher(starting_position);
+        //gMyRole = BEGINNER;
+        //gMyState = WAITING;
+        //printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
+        //mod_btcom_send_NEXT(gTeamMateId);
+      //}
+    //}
+    
   //}
-  sleep(2);
-	/* until get the role */
-	printf("My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
+  
+  
+	///* START */
+//#ifdef BIG_ARENA
+	//if ((gMyRole == BEGINNER) && (gMySide == LEFT)){
+		//printf("I'm playing as BEGINNER in LEFT side\n");
+		////left_beginner('r');/*TODO: @Simone: change the param!*/
+	//} else if ((gMyRole == BEGINNER) && (gMySide == RIGHT)) {
+		//printf("I'm playing as BEGINNER in RIGHT side\n");
+		////right_beginner('r');/*TODO: @Simone: change the param!*/
+	//} else if ((gMyRole == FINISHER) && (gMySide == LEFT)) {
+		//printf("I'm playing as FINISHER in LEFT side\n");
+		////left_finisher('r');/*TODO: @Simone: change the param!*/
+	//} else if ((gMyRole == FINISHER) && (gMySide == RIGHT)) {
+		//printf("I'm playing as FINISHER in RIGHT side\n");
+		////right_finisher('r');/*TODO: @Simone: change the param!*/
+//#else /* SMALL ARENA*/
+	//if (gMyRole == BEGINNER) {
+		//printf("I'm playing as BEGINNER in SMALL arena\n");
+    //gMyState = RUNNING;
+      //small_beginner('r');/*TODO: @Simone: change the param!*/
+    //gMyState = DONE;
+	//} else if (gMyRole == FINISHER) {
+		//printf("I'm playing as FINISHER in SMALL arena\n");
+    //pthread_mutex_lock(&bt_mutex);
+    //while (gMyState != READY){
+      //pthread_cond_wait(&cv_next, &bt_mutex);
+    //}
+    //gMyState = RUNNING;
+    //pthread_mutex_unlock(&bt_mutex);
+		//small_finisher('l');/*TODO: @Simone: change the param!*/
+    //gMyState = DONE;
+//#endif /* BIG_ARENA */
+	//} else {
+		//printf("Wrong role and/or side, my friend! Cannot move!\n");
+	//}
 
-	/* Change state */
-	gMyState = STARTED;
+	///* Waiting for messages sent by server and others */
+    ////pthread_create(&tid, NULL, __mod_btcom_wait_messages, NULL);
 
-	/* START */
-#ifdef BIG_ARENA
-	if ((gMyRole == BEGINNER) && (gMySide == LEFT)){
-		printf("I'm playing as BEGINNER in LEFT side\n");
-		//left_beginner('r');/*TODO: @Simone: change the param!*/
-	} else if ((gMyRole == BEGINNER) && (gMySide == RIGHT)) {
-		printf("I'm playing as BEGINNER in RIGHT side\n");
-		//right_beginner('r');/*TODO: @Simone: change the param!*/
-	} else if ((gMyRole == FINISHER) && (gMySide == LEFT)) {
-		printf("I'm playing as FINISHER in LEFT side\n");
-		//left_finisher('r');/*TODO: @Simone: change the param!*/
-	} else if ((gMyRole == FINISHER) && (gMySide == RIGHT)) {
-		printf("I'm playing as FINISHER in RIGHT side\n");
-		//right_finisher('r');/*TODO: @Simone: change the param!*/
-#else /* SMALL ARENA*/
-	if (gMyRole == BEGINNER) {
-		printf("I'm playing as BEGINNER in SMALL arena\n");
-    gMyState = RUNNING;
-      small_beginner('r');/*TODO: @Simone: change the param!*/
-    gMyState = DONE;
-	} else if (gMyRole == FINISHER) {
-		printf("I'm playing as FINISHER in SMALL arena\n");
-		small_finisher('l');/*TODO: @Simone: change the param!*/
-#endif /* BIG_ARENA */
-	} else {
-		printf("Wrong role and/or side, my friend! Cannot move!\n");
-	}
+	///* Periodically send the location */
+    ////pthread_create(&tid2, NULL, __mod_btcom_send_location, NULL);
 
-	/* Waiting for messages sent by server and others */
-    //pthread_create(&tid, NULL, __mod_btcom_wait_messages, NULL);
+    ////printf("Bluetooth communication started\n");
 
-	/* Periodically send the location */
-    //pthread_create(&tid2, NULL, __mod_btcom_send_location, NULL);
+	//while (1) {
+		///* Send the signal to server at the end of journey */
+		//if (gMyState == DONE) {
+			//printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
+			//mod_btcom_send_NEXT(gTeamMateId);
+			//printf("I become a FINISHER now\n");
+			//gMyRole = FINISHER;
+			//gMyState = WAITING;
+		//}
 
-    //printf("Bluetooth communication started\n");
-
-	while (1) {
-		/* Send the signal to server at the end of journey */
-		if (gMyState == DONE) {
-			printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
-			mod_btcom_send_NEXT(gTeamMateId);
-			printf("I become a FINISHER now\n");
-			gMyRole = FINISHER;
-			gMyState = WAITING;
-		}
-
-		if ( (gMyState == STOPPED) && (gMyState == KICKED) ) {
-			printf("We are done! Gotta stop now!\n");
-			break;
-		}
-		/* Loop every 1 second */
-		sleep(1);
-	}
+		//if ( (gMyState == STOPPED) && (gMyState == KICKED) ) {
+			//printf("We are done! Gotta stop now!\n");
+			//break;
+		//}
+		///* Loop every 1 second */
+		//sleep(1);
+	//}
 
     //pthread_join(tid, NULL);
     //pthread_join(tid2, NULL);

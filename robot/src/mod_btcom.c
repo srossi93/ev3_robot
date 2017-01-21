@@ -9,6 +9,10 @@
 #include <mod_btcom.h>
 #include <byteswap.h>
 #include <math.h>
+
+//pthread_cond_t cv_next;
+//pthread_mutex_t bt_mutex;
+
 /**
  * Connect to Bluetooth server.
  *
@@ -99,17 +103,19 @@ int mod_btcom_send_ACK(uint8_t dst, int16_t id_ack, int8_t state) {
  */
 int mod_btcom_send_BALL(uint8_t act, int16_t x, int16_t y) {
 	char string[10];
-
+  
 	/* Construct the data */
 	*((uint16_t *) string) = msgId++;
 	string[2] = TEAM_ID;	/* src */
 	string[3] = 0xFF;	/* dst */
 	string[4] = MSG_BALL;
 	string[5] = act;	/* DROP or PICKUP */
-	string[6] = x;
-	string[7] = 0x00;
-	string[8] = y;
-	string[9] = 0x00;
+  memcpy(string + 5, &x, sizeof(int16_t));
+  memcpy(string + 7, &y, sizeof(int16_t));
+	//string[6] = x;
+	//string[7] = 0x00;
+	//string[8] = y;
+	//string[9] = 0x00;
 
 	/* Send the string to server */
 	return mod_btcom_send_to_server(string, 9);
@@ -250,7 +256,10 @@ void *__mod_btcom_wait_messages(void* arg) {
 	uint8_t arg1;
 	int16_t arg2, arg3;
 	int ret;
-
+  
+  pthread_mutex_init(&bt_mutex, NULL);
+  pthread_cond_init(&cv_next, NULL);
+  
 	while (1) {
 		printf("Getting msg from server\n");
 
@@ -258,16 +267,18 @@ void *__mod_btcom_wait_messages(void* arg) {
 		ret = mod_btcom_get_message(&actionType, &arg1, &arg2, &arg3);
 
 		//printf("ret=%d\n", ret);
+    pthread_mutex_lock(&bt_mutex);
 
 		if (ret > 0) {
 			switch (actionType) {
 				case MSG_NEXT:
 					printf("Got the NEXT message\n");
-					if ((gMyRole == FINISHER) && (gMyState == WAITING)){
-						printf("Okay. The finisher starts right now!\n");
-						//finisher_start();
-						gMyState = RUNNING;
-					} else {
+					if (gMyState == WAITING){
+						printf("Okay. The finisher can start right now!\n");
+						gMyState = READY;
+            pthread_cond_signal(&cv_next);
+					}
+          else {
 						printf("I'm not a finisher or I'm running. Skip.\n");
 					}
 					break;
@@ -281,14 +292,16 @@ void *__mod_btcom_wait_messages(void* arg) {
 				case MSG_STOP:
 					printf("Got the STOP message.\n");
 					gMyState = STOPPED;
+          gGameState = GAME_STOPPED;
 					printf("I'm done!\n");
-					return 0; /* Exit */
+          //return 0; /* Exit */
 					break;
 				case MSG_KICK:
 					printf("Got the KICK message.\n");
 					if (arg1 == TEAM_ID) {
 						printf("Damn, we got kicked!\n");
 						gMyState = KICKED;
+            gGameState = GAME_KICKED;
 						//return 0; /* Exit */
 					} else {
 						printf("Robot no.%d is out of game\n", arg1);
@@ -315,12 +328,13 @@ void *__mod_btcom_wait_messages(void* arg) {
 					break;
 			}
 		} else {
-			printf("Got a problem when receiving the message. ret=%d", ret);
+			printf("Got a problem when receiving the message. RET = %d", ret);
 			break;
 		}
 
 		sleep(1);
 	}
+  pthread_mutex_unlock(&bt_mutex);
 	
 	return NULL;
 }
@@ -330,16 +344,16 @@ void *__mod_btcom_send_location(void* arg) {
 
 	x = 21; /*TODO: update the real values here*/
 	y = 22; /*TODO:*/
-  printf("Welcome from send location thread\n");
+  //printf("Welcome from send location thread\n");
 	/* Periodically send the location */
   while (1) {
     //if ( (gMyState != STOPPED) && (gMyState != KICKED) && (gMyState != NOTSTARTED) ){
-    printf("mystate = %d", gMyState );
+    //printf("mystate = %d", gMyState );
     if (gMyState == RUNNING) {
       x = (int16_t)ceilf(robot_position.x);
       y = (int16_t)ceilf(robot_position.y);
     
-			printf("Sending location: x=%d, y=%d\n", x, y);
+			printf("Sending location: x = %d, y = %d\n", x, y);
 			ret = mod_btcom_send_POSITION(x, y);
 
       if (ret < 0) break;

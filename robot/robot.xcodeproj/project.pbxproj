@@ -69,6 +69,7 @@
 		FCABB10B1DF81DD600B74E58 /* grabber.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = grabber.c; path = src/grabber.c; sourceTree = SOURCE_ROOT; };
 		FCABB10D1DF860F300B74E58 /* color_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = color_sensor.h; path = include/color_sensor.h; sourceTree = SOURCE_ROOT; };
 		FCABB10E1DF8638400B74E58 /* color_sensor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = color_sensor.c; path = src/color_sensor.c; sourceTree = SOURCE_ROOT; };
+		FCB1BD451E33BD38005DB437 /* big_arena.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = big_arena.h; path = include/big_arena.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +142,7 @@
 				FC2DAC791E29650D0083742F /* odometry.h */,
 				FC1D8F621E2D0663007DB9A8 /* mjolnir.h */,
 				FC1D8F651E2E601E007DB9A8 /* small_arena.h */,
+				FCB1BD451E33BD38005DB437 /* big_arena.h */,
 			);
 			name = include;
 			path = robot;
