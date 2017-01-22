@@ -106,8 +106,8 @@ void big_beginner(char side, char starting_point){
   int end_x = 0;
   int end_y = 0;
   
-  if (side == 'r')
-  {
+  if (side == 'r') 
+  { 
     pos1_x = BIG_BEGINNER_RIGHT_POS1_X;
     pos1_y = BIG_BEGINNER_RIGHT_POS1_Y;
     pos2_x = BIG_BEGINNER_RIGHT_POS2_X;
@@ -119,8 +119,8 @@ void big_beginner(char side, char starting_point){
   }
   else if (side == 'l'){
     pos1_x = BIG_BEGINNER_LEFT_POS1_X;
-    pos1_y = BIG_BEGINNER_LEFT_POS1_Y;
-    pos2_x = BIG_BEGINNER_LEFT_POS2_X;
+    pos1_y = BIG_BEGINNER_LEFT_POS1_Y; 
+    pos2_x = BIG_BEGINNER_LEFT_POS2_X; 
     pos2_y = BIG_BEGINNER_LEFT_POS2_Y;
     pos3_x = BIG_BEGINNER_LEFT_POS3_X;
     pos3_y = BIG_BEGINNER_LEFT_POS3_Y;
@@ -140,14 +140,20 @@ void big_beginner(char side, char starting_point){
   if (side == 'r')
     turn_inplace_by_relative_angle(-180, 300);
   else if (side == 'l')
-    turn_inplace_by_relative_angle(+180, 300);
+    turn_inplace_by_relative_angle(+195, 300);
   
   release_ball(&engines[ARM], 30);
   print_position();
+#ifndef NO_BLUETOOTH
+  int ball_x, ball_y;
+  ball_x = robot_position.x + 30 * cosf(RAD(robot_position.head));
+  ball_y = robot_position.y + 30 * sinf(RAD(robot_position.head));
+  mod_btcom_send_BALL(DROP, ball_x, ball_y);
+#endif
   
   move_by_offset(end_x - robot_position.x, end_y - robot_position.y, 400);
   print_position();
-}
+ }
 
 
 void big_finisher(char side, char starting_point){
@@ -161,7 +167,7 @@ void big_finisher(char side, char starting_point){
     pos1_x = BIG_FINISHER_RIGHT_POS1_X;
     pos1_y = BIG_FINISHER_RIGHT_POS1_Y;
     pos2_x = BIG_FINISHER_RIGHT_POS2_X;
-    pos2_y = BIG_FINISHER_RIGHT_POS2_Y;
+    pos2_y = BIG_FINISHER_RIGHT_POS2_Y; 
     end_x  = BIG_FINISHER_RIGHT_END_X;
     end_y  = BIG_FINISHER_RIGHT_END_Y;
   }
@@ -178,25 +184,40 @@ void big_finisher(char side, char starting_point){
   else
     return;
   
-  move_by_offset(pos1_x - robot_position.x, pos1_y - robot_position.y, 400);
+  move_by_offset(pos1_x - robot_position.x, pos1_y - robot_position.y, 100);
   print_position();
   
   if (side == 'r')
     turn_inplace_by_relative_angle(-(-35 - robot_position.head), 200);
   else
-    turn_inplace_by_relative_angle(-(-145 - robot_position.head), 200);
+    turn_inplace_by_relative_angle(-(-160 - robot_position.head), 200);
   print_position();
 
   
   search_and_grab(&engines[ARM]);
   print_position();
+#ifndef NO_BLUETOOTH
+  int ball_x, ball_y;
+  ball_x = robot_position.x + 10 * cosf(RAD(robot_position.head));
+  ball_y = robot_position.y + 10 * sinf(RAD(robot_position.head));
+  mod_btcom_send_BALL(PICKUP, ball_x, ball_y);
+#endif
+
   
-  move_by_offset(pos2_x - robot_position.x, pos2_y - robot_position.y, 400);
+  move_by_offset(pos2_x - robot_position.x, pos2_y - robot_position.y, 100);
   print_position();
   
-  move_by_offset(end_x - robot_position.x, end_y - robot_position.y, 400);
+  
+  if (side == 'r')
+    turn_inplace_by_relative_angle(-(-35 - robot_position.head), 200);
+  else
+    turn_inplace_by_relative_angle(-(-90 - robot_position.head), 200);
+  print_position();
+
+  
+  move_by_offset(end_x - robot_position.x, end_y - robot_position.y, 100);
   print_position();
 }
 
 
- 
+  

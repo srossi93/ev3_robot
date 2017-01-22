@@ -188,7 +188,7 @@ go_straight(uint16_t time, int16_t speed, FLAGS_T check_orientation)
     write_ramp_up_sp(&engines[R], 1000);
     write_ramp_up_sp(&engines[L], 1000);
     
-    if (abs(current_error) > 4) {
+    if (abs(current_error) > 5) {
       write_command(&engines[R], TACHO_STOP);
       write_command(&engines[L], TACHO_STOP);
       turn_inplace_by_relative_angle(-current_error, 200);
@@ -320,7 +320,7 @@ move_by_offset(int16_t x_off, int16_t y_off, int16_t speed){
     angle = (angle + 360);
   }
   
-  turn_inplace_by_relative_angle(angle, 250);
+  turn_inplace_by_relative_angle(angle, 200);
   go_straight_dist_obstacle(distance, speed);
   
 }

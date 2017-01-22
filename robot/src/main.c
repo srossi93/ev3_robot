@@ -114,72 +114,151 @@ int main (int argc, char* argv[]) {
 	/* Initializing the robot */
 	if (!robot_init()) return 1;
 	msleep(1000);
+  
+  //robot_position.x = BIG_BEGINNER_LEFT_START_X;
+  //robot_position.y = BIG_BEGINNER_LEFT_START_Y;
+  //robot_position.head = 90;
 
-  robot_position.x = BIG_FINISHER_RIGHT_START_X;
-  robot_position.y = BIG_FINISHER_RIGHT_START_Y;
-  robot_position.head = -90;
-
-  big_finisher('r', '0');
+  //big_beginner('l', '0');
 
   
-  return 0;
+  //return 0;
   
 
-  //sleep(2);
-	///* until get the role */
-	//printf("My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
+  sleep(2);
+	/* until get the role */
+	printf("My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
 
-	///* Change state */
-	//gMyState = STARTED;
-  //gGameState = GAME_STARTED;
-  //if (memcmp(arena, "small", 5)) {
-    ///*=====================================================================================
-                                      //SMALL ARENA
-     //=====================================================================================*/
-    //char starting_position;
+	/* Change state */
+	gMyState = STARTED;
+  gGameState = GAME_STARTED;
+  if (!memcmp(arena, "small", 5)) {
+    /*=====================================================================================
+                                      SMALL ARENA
+     =====================================================================================*/
+    printf("SMALL\n");
+    char starting_position;
     
-    //if (gMyRole ==  BEGINNER){
-      //starting_position = 'r';
-      //printf("I'm playing as BEGINNER in SMALL arena\n");
-      //gMyState = RUNNING;
-      //small_beginner(starting_position);
-      //gMyRole = FINISHER;
-      //gMyState = WAITING;
-    //}
-    //else {
-      //starting_position = 'l';
-    //}
+    if (gMyRole ==  BEGINNER){
+      
+      starting_position = 'r';
+      printf("I'm playing as BEGINNER in SMALL arena\n");
+      gMyState = RUNNING;
+      small_beginner(starting_position);
+      gMyRole = FINISHER;
+      gMyState = WAITING;
+    }
+    else {
+      starting_position = 'l';
+    }
     
-    //while (gGameState == GAME_RUN) {
-      //pthread_mutex_lock(&bt_mutex);
-      //while (gMyState != READY){
-        //pthread_cond_wait(&cv_next, &bt_mutex);
-      //}
-      //gMyState = RUNNING;
-      //pthread_mutex_unlock(&bt_mutex);
-      //if (gMyRole == BEGINNER) {
-        //printf("I'm playing as BEGINNER in SMALL arena - side: %c\n", starting_position);
-        //gMyState = RUNNING;
-        //small_beginner(starting_position);
-        //gMyRole = FINISHER;
-        //gMyState = WAITING;
-        //printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
-        //mod_btcom_send_NEXT(gTeamMateId);
+    while (gGameState == GAME_RUN) {
+      pthread_mutex_lock(&bt_mutex);
+      while (gMyState != READY){
+        pthread_cond_wait(&cv_next, &bt_mutex);
+      }
+      gMyState = RUNNING;
+      pthread_mutex_unlock(&bt_mutex);
+      if (gMyRole == BEGINNER) {
+        printf("I'm playing as BEGINNER in SMALL arena - side: %c\n", starting_position);
+        gMyState = RUNNING;
+        small_beginner(starting_position);
+        gMyRole = FINISHER;
+        gMyState = WAITING;
+        printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
+        mod_btcom_send_NEXT(gTeamMateId);
 
-      //}
-      //else if (gMyRole == FINISHER) {
-        //printf("I'm playing as FINISHER in SMALL arena - side: %c\n", starting_position);
-        //gMyState = RUNNING;
-        //small_finisher(starting_position);
-        //gMyRole = BEGINNER;
-        //gMyState = WAITING;
-        //printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
-        //mod_btcom_send_NEXT(gTeamMateId);
-      //}
-    //}
+      }
+      else if (gMyRole == FINISHER) {
+        printf("I'm playing as FINISHER in SMALL arena - side: %c\n", starting_position);
+        gMyState = RUNNING;
+        small_finisher(starting_position);
+        gMyRole = BEGINNER;
+        gMyState = WAITING;
+        printf("Sending NEXT message to team mate: %d\n", gTeamMateId);
+        mod_btcom_send_NEXT(gTeamMateId);
+      }
+    }
     
-  //}
-  
+  }
+  else if (!memcmp(arena, "big", 3)) {
+    /*=====================================================================================
+                                      BIG ARENA
+     =====================================================================================*/
+    printf("BIG\n");
+    char starting_position;
+    if (gMySide == 0) {
+      starting_position = 'r';
+      if (gMyRole == BEGINNER) {
+        robot_position.x = BIG_BEGINNER_RIGHT_START_X;
+        robot_position.y = BIG_BEGINNER_RIGHT_START_Y;
+        robot_position.head = 90;
+      }
+      else {
+        robot_position.x = BIG_FINISHER_RIGHT_START_X;
+        robot_position.y = BIG_FINISHER_RIGHT_START_Y;
+        robot_position.head = -90;
+      }
+    }
+    else if (gMySide == 1){
+      starting_position = 'l';
+      if (gMyRole == BEGINNER) {
+        robot_position.x = BIG_BEGINNER_LEFT_START_X;
+        robot_position.y = BIG_BEGINNER_LEFT_START_Y;
+        robot_position.head = 90;
+      }
+      else {
+        robot_position.x = BIG_FINISHER_LEFT_START_X;
+        robot_position.y = BIG_FINISHER_LEFT_START_Y;
+        robot_position.head = -90;
+      }
+    }
+    else
+      return -1;
+    
+    gMyState = STARTED;
+    gGameState = GAME_RUN;
+    printf("SETUP DONE -- WE CAN START\n");
+    
+    if (gMyRole ==  BEGINNER){
+      printf("I'm playing as BEGINNER in BIG arena\n");
+      gMyState = RUNNING;
+      big_beginner(starting_position, 'x');
+      gMyRole = FINISHER;
+      gMyState = WAITING;
+      mod_btcom_send_NEXT(gTeamMateId);
+    }
+
+    
+    while (gGameState == GAME_RUN) {
+      pthread_mutex_lock(&bt_mutex);
+      printf("Waiting for running\n");
+      while (gMyState != READY){
+        pthread_cond_wait(&cv_next, &bt_mutex);
+      }
+      gMyState = RUNNING;
+      pthread_mutex_unlock(&bt_mutex);
+      if (gMyRole == BEGINNER) {
+        printf("I'm playing as BEGINNER in BIG arena - side: %c\n", starting_position);
+        gMyState = RUNNING;
+        big_beginner(starting_position, 'x');
+        gMyRole = FINISHER;
+        gMyState = WAITING;
+
+        mod_btcom_send_NEXT(gTeamMateId);
+        
+      }
+      else if (gMyRole == FINISHER) {
+        printf("I'm playing as FINISHER in BIG arena - side: %c\n", starting_position);
+        gMyState = RUNNING;
+        big_finisher(starting_position, 'x');
+        gMyRole = BEGINNER;
+        gMyState = WAITING;
+        mod_btcom_send_NEXT(gTeamMateId);
+      }
+    }
+    
+  }
   
 	///* START */
 //#ifdef BIG_ARENA

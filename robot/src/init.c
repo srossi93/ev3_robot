@@ -51,7 +51,7 @@ robot_init(void){
   engines_init();
   threads_init();
   
-  if (gyro->angle > 1)
+  if (abs(gyro->angle) > 1)
     turn_inplace_by_relative_angle(-gyro->angle, 200);
   
   sleep(2);

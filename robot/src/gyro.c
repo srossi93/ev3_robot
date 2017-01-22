@@ -29,6 +29,7 @@ void read_gyro_status(gyro_sensor* gyro){
     int tmp = read_gyro_angle(gyro);
     if (!ev3_search_sensor(LEGO_EV3_GYRO, &gyro->address, 0)) return;
     if (abs(tmp) > 5000) return;
+    if (tmp == 0) return;
     sum += tmp;
 
   }

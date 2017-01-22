@@ -98,7 +98,7 @@ void* __update_position(){
   reset_position();
   //print_position();
   while (1) {
-    msleep(500);
+    msleep(100);
     update_position();
     //print_position();
   }

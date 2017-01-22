@@ -107,18 +107,18 @@ int mod_btcom_send_BALL(uint8_t act, int16_t x, int16_t y) {
 	/* Construct the data */
 	*((uint16_t *) string) = msgId++;
 	string[2] = TEAM_ID;	/* src */
-	string[3] = 0xFF;	/* dst */
+	string[3] = gTeamMateId;	/* dst */
 	string[4] = MSG_BALL;
 	string[5] = act;	/* DROP or PICKUP */
-  memcpy(string + 5, &x, sizeof(int16_t));
-  memcpy(string + 7, &y, sizeof(int16_t));
+  memcpy(string + 6, &x, sizeof(int16_t));
+  memcpy(string + 8, &y, sizeof(int16_t));
 	//string[6] = x;
 	//string[7] = 0x00;
 	//string[8] = y;
 	//string[9] = 0x00;
 
 	/* Send the string to server */
-	return mod_btcom_send_to_server(string, 9);
+	return mod_btcom_send_to_server(string, 10);
 }
 
 
@@ -151,6 +151,7 @@ int mod_btcom_send_POSITION(int x, int y) {
  * Send NEXT message whenever finishing my turn
  */
 int mod_btcom_send_NEXT(uint8_t dst) {
+  printf("Sending NEXT message to team mate: %d\n", dst);
 	char string[5];
 
 	/* Construct the data */
@@ -221,6 +222,7 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 		case MSG_ACK:
 			break;	/* no additional info needed */
 		case MSG_NEXT:
+      memcpy(&ret, string, sizeof(int16_t));
 			break;	/* no additional info needed */
 		case MSG_START:
       *arg1 = (uint8_t ) string[5];
@@ -238,6 +240,7 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 			*arg1 = (uint8_t ) string[2]; /* src */
 			break;	/* no additional info needed */
 		case MSG_BALL:
+      memcpy(&ret, string, sizeof(int16_t));
 			*arg1 = (uint8_t ) string[5];
 			*arg2 = (int16_t ) string[6];
 			*arg3 = (int16_t ) string[8];
@@ -247,7 +250,7 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 			ret = -2;	
 			break;
 	}
-
+  
 	return ret;
 }
 
@@ -269,7 +272,7 @@ void *__mod_btcom_wait_messages(void* arg) {
 		//printf("ret=%d\n", ret);
     pthread_mutex_lock(&bt_mutex);
 
-		if (ret > 0) {
+		if (ret >= 0) {
 			switch (actionType) {
 				case MSG_NEXT:
 					printf("Got the NEXT message\n");
@@ -277,6 +280,7 @@ void *__mod_btcom_wait_messages(void* arg) {
 						printf("Okay. The finisher can start right now!\n");
 						gMyState = READY;
             pthread_cond_signal(&cv_next);
+            mod_btcom_send_ACK(gTeamMateId, ret, ACK_OK);/*TODO*/
 					}
           else {
 						printf("I'm not a finisher or I'm running. Skip.\n");
@@ -313,6 +317,7 @@ void *__mod_btcom_wait_messages(void* arg) {
 					break;
 				case MSG_BALL:
 					printf("Got the BALL message.\n");
+          mod_btcom_send_ACK(gTeamMateId, ret, ACK_OK);/*TODO*/
 					if (arg1 == DROP) {
 						printf("Someone dropped a ball\n");
 						printf("at location x=%d, y=%d\n", arg2, arg3);
@@ -321,7 +326,7 @@ void *__mod_btcom_wait_messages(void* arg) {
 						printf("at location x=%d, y=%d\n", arg2, arg3);
 					}
 					/* Send ackowledgement*/
-					mod_btcom_send_ACK(gTeamMateId, 0, ACK_OK);/*TODO*/
+          //mod_btcom_send_ACK(gTeamMateId, 0, ACK_OK);/*TODO*/
 					break;
 				default:
 					printf("Incorrect type of message received: %d\n", actionType);

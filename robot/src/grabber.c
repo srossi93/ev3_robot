@@ -148,7 +148,7 @@ release_ball(engine* arm, int16_t space){
 
 void
 search_and_grab(engine* arm){
-  int span[] = {60, 60, 50};
+  int span[] = {60, 40, 50};
   int distance[200];
   int orientation[200];
   
@@ -211,7 +211,7 @@ search_and_grab(engine* arm){
     //turn_inplace_by_relative_angle(-90+4.2*min_position/2, 100);
     turn_inplace_by_relative_angle(-(gyro->angle - min_orientation), 100);
     
-    if (min_distance < 250) {
+    if (min_distance < 200) {
       continue;
     }
     go_straight_dist(10, 200, 1);
