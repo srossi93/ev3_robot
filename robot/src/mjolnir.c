@@ -39,21 +39,21 @@ void small_beginner(char starting_point){
   
   while ((target_position_x - robot_position.x) > 10 || (target_position_y - robot_position.y) > 10) {
      move_by_offset(target_position_x - robot_position.x, target_position_y - robot_position.y, 500);
-    print_position();
+
   }
   
   release_ball(&engines[ARM], 20);
   
 #ifndef NO_BLUETOOTH
   int ball_x, ball_y;
-  ball_x = robot_position.x + 30 * cosf(RAD(robot_position.head));
-  ball_y = robot_position.y + 30 * sinf(RAD(robot_position.head));
+  ball_x = robot_position.x + 10 * cosf(RAD(robot_position.head));
+  ball_y = robot_position.y + 10 * sinf(RAD(robot_position.head));
   mod_btcom_send_BALL(DROP, ball_x, ball_y);
 #endif
   
   while ((end_position_x - robot_position.x) > 10 || (end_position_y - robot_position.y) > 10) {
     move_by_offset(end_position_x - robot_position.x, end_position_y - robot_position.y, 500);
-        print_position();
+
   }
   
   return;
@@ -98,6 +98,10 @@ void small_finisher(char starting_point){
   } while (fabsf(end_position_x - robot_position.x) > 10 || fabsf(end_position_y - robot_position.y) > 10);
   return;
 }
+
+
+
+
 
 
 void big_beginner(char side, char starting_point){

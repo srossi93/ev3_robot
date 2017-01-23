@@ -62,9 +62,9 @@ grab_ball(engine* arm, int ball_distance){
   do{
     //deploy_arm(&engines[ARM], 500);
     //open_arm(&engines[ARM], 300);
-    log_to_file("Deploying arm...\n");
+    log_to_file(" [GRAB] Deploying arm...\n");
     turn_engine_by_angle(arm, -575, 400);
-    log_to_file("--> Arm deployed\n");
+    log_to_file(" [GRAB] --> Arm deployed\n");
     arm_status = ARM_OPEN;
       //pthread_t check_tid, run_tid;
       //turn_engine_arg_struct arg;
@@ -87,12 +87,12 @@ grab_ball(engine* arm, int ball_distance){
     arg.speed = 50;
     pthread_create(&tid, NULL, __go_straight_dist, (void*)&arg);
     
-    printf("Detection...\n");
+    printf(" [GRAB] Detection...\n");
     //  time+=250;
-    msleep(250);
+    msleep(500);
     while ((color->reflection < 4) && robot_status == ROBOT_RUNNING) {
-      if (robot_status == ROBOT_NOT_RUNNING) pthread_cancel(tid);
       msleep(250);
+      if (robot_status == ROBOT_NOT_RUNNING) pthread_cancel(tid);
     }
     stop_engines();
     pthread_join(tid, NULL);
@@ -116,9 +116,9 @@ grab_ball(engine* arm, int ball_distance){
     //close_arm(&engines[ARM], 250);
       //printf("color ref: %d\n", color->reflection);
       //undeploy_arm(&engines[ARM], 500);
-    log_to_file("Undeploying arm...\n");
+    log_to_file(" [GRAB] Undeploying arm...\n");
     turn_engine_by_angle(arm, +575, 500);
-    log_to_file("--> Arm undeployed\n");
+    log_to_file(" [GRAB] --> Arm undeployed\n");
     arm_status = ARM_UP;
     
   } while (color->reflection < 4);
@@ -140,9 +140,9 @@ release_ball(engine* arm, int16_t space){
   msleep(1000);
   //close_arm(&engines[ARM], 500);
   //undeploy_arm(&engines[ARM], 500);
-  log_to_file("Undeploying arm...\n");
+  log_to_file(" [GRAB] Undeploying arm...\n");
   turn_engine_by_angle(arm, +575, 500);
-  log_to_file("--> Arm undeployed\n");
+  log_to_file(" [GRAB] --> Arm undeployed\n");
   
 }
 
@@ -173,7 +173,9 @@ search_and_grab(engine* arm){
     turn_engine_arg_struct arg;
     arg.angle = span[j];
     //arg.speed = 20;
-    arg.speed = 100;
+    arg.speed = 200;
+    
+    printf(" [GRAB] Start scanning...\n");
     
     pthread_create(&tid, NULL, __turn_inplace_by_relative_angle, (void*)&arg);
     msleep(100);
@@ -206,7 +208,7 @@ search_and_grab(engine* arm){
       num_of_observations++;
     }
     
-    printf("Min distance: %d\nPosition: %d\nNum of obs: %d\nOrientation: %d\n", min_distance, min_position, num_of_observations, min_orientation);
+    printf(" [GRAB] Min distance: %d\n [GRAB] Position: %d\n [GRAB] Num of obs: %d\n [GRAB] Orientation: %d\n", min_distance/10, min_position, num_of_observations, min_orientation);
     
     //turn_inplace_by_relative_angle(-90+4.2*min_position/2, 100);
     turn_inplace_by_relative_angle(-(gyro->angle - min_orientation), 100);
@@ -214,11 +216,12 @@ search_and_grab(engine* arm){
     if (min_distance < 200) {
       continue;
     }
-    go_straight_dist(10, 200, 1);
+    go_straight_dist(15, 200, 1); //<<<<<<<<<<<<10,200,1
     
   }
   
-  if (min_distance > 350) {
+  if (min_distance > 400) {
+    printf(" [GRAB] Object detected too far away. It cannot be a ball!\n");
     return;
   }
   
@@ -227,6 +230,7 @@ search_and_grab(engine* arm){
     min_distance=200;
   }
   
+  printf(" [GRAB] Ball detected at %d. Approaching to the ball\n", min_distance/10);
   grab_ball(arm, min_distance/10-4);
 
 }

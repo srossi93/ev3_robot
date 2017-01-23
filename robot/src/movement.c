@@ -81,7 +81,7 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
   
   int i = 0;
   
-  sprintf(msg, "Turn %s %+d\n", (angle > 0 ? "right" : "left") , angle);
+  sprintf(msg, " [MOTION] Turn %s %+d\n", (angle > 0 ? "right" : "left") , angle);
   log_to_file(msg);
   
   do {
@@ -116,9 +116,9 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
     //get_sensor_value(0, gyro_sensor_id, &final_orientation);
     error = -(final_orientation - initial_orientation) + angle;
 
-    sprintf(msg, "\t Iter #%d -- Initial: %d\tTarget: %d\tActual: %d\tError: %d\n",
-            i, initial_orientation, angle, final_orientation, error);
-    log_to_file(msg);
+    // sprintf(msg, "\t Iter #%d -- Initial: %d\tTarget: %d\tActual: %d\tError: %d\n",
+    //        i, initial_orientation, angle, final_orientation, error);
+    //log_to_file(msg);
     i++;
 } while (abs(error) > 1);
   
@@ -264,7 +264,7 @@ go_straight_dist(int16_t position, int16_t speed, FLAGS_T check_orientation){
     time = ((speed * 1500 / 4000)) + abs((int)(position * 1000 / 2.5)) ;
   }
   
-  log_to_file("Moving ahead ...\n");
+  log_to_file(" [MOTION] Moving ahead ...\n");
   if (position < 0) 
     speed = -speed;
   
@@ -307,10 +307,10 @@ move_by_offset(int16_t x_off, int16_t y_off, int16_t speed){
   int16_t angle = (int)(-90 + robot_position.head + (atan2f(x_off, y_off) * 180) / 3.14) % 360;
   int16_t distance = sqrtf(POW2(x_off) + POW2(y_off));
   
-  sprintf(msg, "Moving by offset (x = %d, y = %d)\n", x_off, y_off);
+  sprintf(msg, " [MOTION] Moving by offset (x = %d, y = %d)\n", x_off, y_off);
   log_to_file(msg);
   
-  sprintf(msg, "Angle: %+d deg\nDistance: %d cm\n", angle, distance);
+  sprintf(msg, " [MOTION] Angle: %+d deg\n [MOTION]  Distance: %d cm\n", angle, distance);
   log_to_file(msg);
   
   if (angle > 180) {
@@ -389,6 +389,8 @@ __turn_engine_by_time(void *arg)
 
 void *
 __go_straight_dist(void* arg){
+  
+  printf(" [DEBUG] Thread created\n");
   
   turn_engine_arg_struct args = *(turn_engine_arg_struct*) arg;
   
