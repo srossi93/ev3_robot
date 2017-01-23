@@ -4,6 +4,14 @@ title: Architecture
 subtitle: The structure of the robot
 ---
 			<section>
+				<h2>Software architecture</h2>
+					<div class="box alt">
+					<div class="row uniform 50%">
+						<div class="12u"><span class="image fit"><img src="images/sw-architecture.png" alt="" /></span></div>
+					</div>
+				</div>
+			</section>
+			<section>
 				<h2>Structure</h2>
         <p> To build the robot three motors are deploied, two for the wheels and one for the grabber.
 At the same level as the wheels' motors there are placed the ultrasound sensor (placed as low as possible in order to let it detect obstacles and the ball), and the gyro sensor.
@@ -24,13 +32,4 @@ Motors are initialized once as soon as the robot is turned on.</p>
 					<p>The sensors we deployed are the gyro sensor,  the color sensor and  the ultrasound sensor. These sensors have built-in functions that can be exploited to read data from them. Using these sensor it was clear that the unit measure where arbitrary, therefore to find threshold values it was necessary a trial and error approach. Also because the data reported were a bit imprecise in some cases, a statistical approach should be used. </p>
 				</header>
 
-			</section>
-			
-			<section>
-				<h2>Software architecture</h2>
-					<div class="box alt">
-					<div class="row uniform 50%">
-						<div class="12u"><span class="image fit"><img src="images/sw-architecture.png" alt="" /></span></div>
-					</div>
-				</div>
 			</section>
