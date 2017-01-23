@@ -16,7 +16,7 @@ turn_engine_by_angle(engine* tacho, int16_t angle, int16_t speed)
   int count_to_rotate;
     
   write_speed_sp(tacho, speed);
-  write_ramp_up_sp(tacho, 5000);
+  write_ramp_up_sp(tacho, 2500);
   write_ramp_down_sp(tacho, 3500);
     
   count_to_rotate = (int)((angle) * 2 * tacho->count_per_rot / 360);
@@ -120,7 +120,7 @@ turn_inplace_by_relative_angle(int16_t angle, int16_t speed)
     //        i, initial_orientation, angle, final_orientation, error);
     //log_to_file(msg);
     i++;
-} while (abs(error) > 1);
+} while (abs(error) > 3);
   
   robot_status = ROBOT_NOT_RUNNING;
   
@@ -320,7 +320,7 @@ move_by_offset(int16_t x_off, int16_t y_off, int16_t speed){
     angle = (angle + 360);
   }
   
-  turn_inplace_by_relative_angle(angle, 200);
+  turn_inplace_by_relative_angle(angle, 400);
   go_straight_dist_obstacle(distance, speed);
   
 }

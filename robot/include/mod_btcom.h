@@ -19,7 +19,7 @@
 #include <bluetooth/rfcomm.h>
 
 #ifndef WIFI_CONNECTION
-#define SERV_ADDR  "70:56:81:92:89:AA"//"60:F8:1D:CB:8B:05"//"00:26:B6:7F:A6:F7"//"60:F8:1D:CB:8B:05"//"E0:94:67:C4:99:0F" "00:1E:10:00:06:2B" //94:67:c4:99:0f" //"dc:53:60:ad:61:90"
+#define SERV_ADDR  "00:1E:10:00:06:2B"//"70:56:81:92:89:AA"//"60:F8:1D:CB:8B:05"//"00:26:B6:7F:A6:F7"//"60:F8:1D:CB:8B:05"//"E0:94:67:C4:99:0F" "00:1E:10:00:06:2B" //94:67:c4:99:0f" //"dc:53:60:ad:61:90"
 #else /*! WIFI_CONNECTION */
 //#define SERV_ADDR   "10.42.0.1"     
 #define SERV_ADDR   "172.17.0.1"    

@@ -127,7 +127,7 @@ int main (int argc, char* argv[]) {
   //while (gGameState == GAME_NOTSTARTED) {
   //  msleep(250);
   //}
-  msleep(2000);
+  //msleep(2000);
   /* until get the role */
 	printf(" [MAIN] My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
 
@@ -174,6 +174,7 @@ int main (int argc, char* argv[]) {
     gMyState = WAITING;   
     
     while (gGameState == GAME_RUN) {
+      
 
       if (gMyRole == BEGINNER) {
         
@@ -187,6 +188,7 @@ int main (int argc, char* argv[]) {
 
       }
       else if (gMyRole == FINISHER) {
+        printf(" [MAIN] Waiting for running\n");
         
         pthread_mutex_lock(&bt_mutex);
         while (gMyState != READY){
@@ -222,7 +224,9 @@ int main (int argc, char* argv[]) {
     /*=====================================================================================
                                       BIG ARENA
      =====================================================================================*/
-    printf("BIG\n");
+    
+    printf(" [DEBUG] SETUP INITIAL POSITION\n");
+
     char starting_position;
     if (gMySide == 0) {
       starting_position = 'r';
@@ -255,10 +259,11 @@ int main (int argc, char* argv[]) {
     
     gMyState = STARTED;
     gGameState = GAME_RUN;
-    printf("SETUP DONE -- WE CAN START\n");
+
+    printf(" [DEBUG] SETUP DONE -- WE CAN START\n");
     
     if (gMyRole ==  BEGINNER){
-      printf("I'm playing as BEGINNER in BIG arena\n");
+      printf(" [MAIN] I'm playing as BEGINNER in BIG arena\n");
       gMyState = RUNNING;
       big_beginner(starting_position, 'x');
       gMyRole = FINISHER;
@@ -266,12 +271,13 @@ int main (int argc, char* argv[]) {
       mod_btcom_send_NEXT(gTeamMateId);
     }
     
+    gMyState = WAITING;
 
     
     while (gGameState == GAME_RUN) {
       
       pthread_mutex_lock(&bt_mutex);
-      printf("Waiting for running\n");
+      printf(" [MAIN] Waiting for running\n");
       while (gMyState != READY){
         pthread_cond_wait(&cv_next, &bt_mutex);
         if (gGameState != GAME_RUN) {
@@ -282,7 +288,7 @@ int main (int argc, char* argv[]) {
       pthread_mutex_unlock(&bt_mutex);
       if (gMyRole == BEGINNER) {
         
-        printf("I'm playing as BEGINNER in BIG arena - side: %c\n", starting_position);
+        printf(" [MAIN] I'm playing as BEGINNER in BIG arena - side: %c\n", starting_position);
         gMyState = RUNNING;
         big_beginner(starting_position, 'x');
         gMyRole = FINISHER;
@@ -292,7 +298,7 @@ int main (int argc, char* argv[]) {
         
       }
       else if (gMyRole == FINISHER) {
-        printf("I'm playing as FINISHER in BIG arena - side: %c\n", starting_position);
+        printf(" [MAIN] I'm playing as FINISHER in BIG arena - side: %c\n", starting_position);
         gMyState = RUNNING;
         big_finisher(starting_position, 'x');
         gMyRole = BEGINNER;
