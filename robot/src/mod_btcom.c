@@ -26,7 +26,7 @@ int mod_btcom_connect() {
 #endif
 	int status;
 #ifndef WIFI_CONNECTION
-	printf("Connecting with BT connection...\n");
+	printf(" [BT] Connecting with BT connection...\n");
 	/* allocate a socket */
 	s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 
@@ -48,11 +48,11 @@ int mod_btcom_connect() {
 	}
 #endif
 
-	printf("Trying to connect to %s...\n", SERV_ADDR);
+	printf(" [BT] Trying to connect to %s...\n", SERV_ADDR);
 	/* connect to server */
 	status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
 	return status;
-}
+} 
 
 /**
  * Receive data from the BT server
@@ -64,8 +64,10 @@ int mod_btcom_receive_from_server(int sock, char *buffer, size_t maxSize) {
 	int bytes_read = read(sock, buffer, maxSize);
 
 	if (bytes_read <= 0) {
-		fprintf(stderr, "Server unexpectedly closed connection...\n");
+		fprintf(stderr, " [ERROR] Server unexpectedly closed connection...\n");
 		close(s);
+    gGameState = GAME_STOPPED;
+    
 		//exit(EXIT_FAILURE);
 	}
 
@@ -94,10 +96,10 @@ int mod_btcom_send_ACK(uint8_t dst, int16_t id_ack, int8_t state) {
 	string[7] = state;	/* OK or ERROR */
 
 	/* Send the string to server */
-	return mod_btcom_send_to_server(string, 9);
+	return mod_btcom_send_to_server(string, 8);
 	
 }
-
+ 
 /**
  * Send BALL
  */
@@ -151,7 +153,7 @@ int mod_btcom_send_POSITION(int x, int y) {
  * Send NEXT message whenever finishing my turn
  */
 int mod_btcom_send_NEXT(uint8_t dst) {
-  printf("Sending NEXT message to team mate: %d\n", dst);
+  printf(" [BT] Sending NEXT message to robot %d\n", dst);
 	char string[5];
 
 	/* Construct the data */
@@ -182,8 +184,8 @@ int mod_btcom_get_role(unsigned char *side, unsigned char *role, unsigned char *
 			*ally = (unsigned char) string[7];
 		}
 	} else {
-		fprintf(stderr, "Error in receiving data from server\n");
-		printf("Error code: %d\n", ret);
+		fprintf(stderr, " [BT] Error in receiving data from server\n");
+		printf(" [BT] Error code: %d\n", ret);
 	}
 
 	return ret;
@@ -201,20 +203,20 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 
 	ret = mod_btcom_receive_from_server(s, string, 58);
 
-	printf("Received %d bytes from server.\n", ret);
+	printf(" [BT] Received %d bytes from server.\n", ret);
 
 	if (ret > 0) {
 		*actionType = (uint8_t) string[4];
 		dst = (unsigned char) string[3];
 	} else {
-		fprintf(stderr, "Error in receiving data from server\n");
-		printf("Error code: %d\n", ret);
+		fprintf(stderr, " [BT] Error in receiving data from server\n");
+		printf(" [BT] Error code: %d\n", ret);
 		return -3;
 	}
 
 	/* Only take care messages sent to us */
 	if (dst != TEAM_ID) {
-		printf("Received a message, but not for us. dst = %d. Skip!\n", dst);
+		printf(" [BT] Received a message, but not for us. dst = %d. Skip!\n", dst);
 		return -1;
 	}
 
@@ -223,6 +225,7 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 			break;	/* no additional info needed */
 		case MSG_NEXT:
       memcpy(&ret, string, sizeof(int16_t));
+      printf(" [BT] Next received - %d to be ACKed", ret);
 			break;	/* no additional info needed */
 		case MSG_START:
       *arg1 = (uint8_t ) string[5];
@@ -246,7 +249,7 @@ int mod_btcom_get_message(uint8_t *actionType, uint8_t *arg1, int16_t *arg2, int
 			*arg3 = (int16_t ) string[8];
 			break;
 		default:
-			printf("Invalid type of message.\n");
+			printf(" [BT] Invalid type of message.\n");
 			ret = -2;	
 			break;
 	}
@@ -264,82 +267,85 @@ void *__mod_btcom_wait_messages(void* arg) {
   pthread_cond_init(&cv_next, NULL);
   
 	while (1) {
-		printf("Getting msg from server\n");
-
 		/* Loop to get message from server */
 		ret = mod_btcom_get_message(&actionType, &arg1, &arg2, &arg3);
 
 		//printf("ret=%d\n", ret);
     pthread_mutex_lock(&bt_mutex);
-
-		if (ret >= 0) {
+    printf(" [BT] Getting msg from server\n");
+		
+    if (ret >= 0) {
 			switch (actionType) {
 				case MSG_NEXT:
-					printf("Got the NEXT message\n");
+					printf(" [BT] Got the NEXT message\n");
 					if (gMyState == WAITING){
-						printf("Okay. The finisher can start right now!\n");
+						printf(" [BT] Okay. The finisher can start right now!\n");
 						gMyState = READY;
             pthread_cond_signal(&cv_next);
             mod_btcom_send_ACK(gTeamMateId, ret, ACK_OK);/*TODO*/
 					}
           else {
-						printf("I'm not a finisher or I'm running. Skip.\n");
+						printf(" [BT] I'm not a finisher or I'm running. Skip.\n");
 					}
 					break;
 				case MSG_START:
           gMyRole = (unsigned char) arg1;
           gMySide = (unsigned char) arg2;
           gTeamMateId = (unsigned char) arg3;
+          gGameState = GAME_STARTED;
 
           //printf("I already started. Skip.\n");
 					break;
 				case MSG_STOP:
-					printf("Got the STOP message.\n");
+					printf(" [BT] Got the STOP message.\n");
 					gMyState = STOPPED;
           gGameState = GAME_STOPPED;
-					printf("I'm done!\n");
+          pthread_cond_signal(&cv_next);
+					printf(" [BT] I'm done!\n");
           //return 0; /* Exit */
 					break;
 				case MSG_KICK:
-					printf("Got the KICK message.\n");
+					printf(" [BT] Got the KICK message.\n");
 					if (arg1 == TEAM_ID) {
-						printf("Damn, we got kicked!\n");
+						printf(" [BT] Damn, we got kicked!\n");
 						gMyState = KICKED;
             gGameState = GAME_KICKED;
+            pthread_cond_signal(&cv_next);
 						//return 0; /* Exit */
 					} else {
-						printf("Robot no.%d is out of game\n", arg1);
+						printf(" [BT] Robot no.%d is out of game\n", arg1);
 					}
 					break;
 				case MSG_POSITION:
-					printf("Got the POSITION message\n");
-					printf("You sent to a wrong address, man: %d!\n", arg1);
+					printf(" [BT] Got the POSITION message\n");
+					printf(" [BT] You sent to a wrong address, man: %d!\n", arg1);
 					break;
 				case MSG_BALL:
-					printf("Got the BALL message.\n");
+					printf(" [BT] Got the BALL message.\n");
           mod_btcom_send_ACK(gTeamMateId, ret, ACK_OK);/*TODO*/
 					if (arg1 == DROP) {
-						printf("Someone dropped a ball\n");
-						printf("at location x=%d, y=%d\n", arg2, arg3);
+						printf(" [BT] Someone dropped a ball at location x = %d, y = %d\n", arg2, arg3);
 					} else {
-						printf("Someone picked up the ball.\n");
-						printf("at location x=%d, y=%d\n", arg2, arg3);
+						printf(" [BT] Someone picked up the ball at location x = %d, y = %d\n", arg2, arg3);
 					}
 					/* Send ackowledgement*/
           //mod_btcom_send_ACK(gTeamMateId, 0, ACK_OK);/*TODO*/
 					break;
+        case ACK_OK:
+          printf(" [BT] ACK received. Thanks, mate!\n");
+          break;
 				default:
-					printf("Incorrect type of message received: %d\n", actionType);
+					printf(" [ERROR] Incorrect type of message received: %d\n", actionType);
 					break;
 			}
 		} else {
-			printf("Got a problem when receiving the message. RET = %d", ret);
+			printf(" [ERROR] Got a problem when receiving the message. RET = %d", ret);
 			break;
 		}
-
+    pthread_mutex_unlock(&bt_mutex);
 		sleep(1);
 	}
-  pthread_mutex_unlock(&bt_mutex);
+
 	
 	return NULL;
 }
@@ -358,7 +364,7 @@ void *__mod_btcom_send_location(void* arg) {
       x = (int16_t)ceilf(robot_position.x);
       y = (int16_t)ceilf(robot_position.y);
     
-			printf("Sending location: x = %d, y = %d\n", x, y);
+			printf(" [BT] Sending location: X = %d, Y = %d\n", x, y);
 			ret = mod_btcom_send_POSITION(x, y);
 
       if (ret < 0) break;
