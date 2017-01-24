@@ -5,19 +5,19 @@ subtitle: How to Download the source code, Compile and Run it?
 ---
 			<section>
 				<h2>Prerequisites</h2>
-				<p>Please follow the detail instruction on EV3 official page, here: http://www.ev3dev.org/docs/getting-started/</p>
+				<p>Please follow the detail instruction on EV3 official page for installing the library, here: http://www.ev3dev.org/docs/getting-started/</p>
 				<p>Connect to the EV3 robot by ssh. If you are connection via USB, please follow this instruction: http://www.ev3dev.org/docs/tutorials/connecting-to-the-internet-via-usb/</p>
-				
+
 				<h2>Download source code</h2>
 				<p> After connecting to the EV3:</p>
-				<pre><code>$ git clone https://github.com/srossi93/ev3_robot
+				<pre><code>$ git clone --recursive https://github.com/srossi93/ev3_robot
 </code></pre>
-				
+
 				<h2>Compile</h2>
 				<pre><code>$ cd ev3_robot
 $ make</code></pre>
-				
+
 				<h2>Run</h2>
-        <pre><code>$ ./run</code></pre>
-				
+        <pre><code>$ ./run [small | big]</code></pre>
+
 				</section>
