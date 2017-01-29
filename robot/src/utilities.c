@@ -8,7 +8,8 @@
 
 extern char msg[255];
 
-char *time_stamp(){
+char
+*time_stamp(){
   
   char *timestamp = (char *)malloc(sizeof(char) * 21);
   time_t ltime;
@@ -23,8 +24,7 @@ char *time_stamp(){
 
 
 void
-log_to_file(char *msg)
-{
+log_to_file(char *msg){
   FILE *file_ptr = fopen("log.txt", "a");
   char msg_to_file[255];
   

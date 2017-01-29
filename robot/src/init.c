@@ -201,22 +201,11 @@ int
 open_bt(void){
   
   /* Connecting with server */
-  printf("Connecting to server:\n");
+  printf(" [BT] Connecting to server:\n");
   /* Try to connect to BT server */
   if (mod_btcom_connect() != 0) {
-    printf("Unable to connect to the server.\n");
-    //#ifdef TEST
-    //printf("[FOR TEST] Running without BT communication\n");
-    //robot_position.x = BEGINNER_RIGHT_START_X;
-    //robot_position.y = BEGINNER_RIGHT_START_Y;
-    //robot_position.head = 90;
-    //while (1) {
-      //small_beginner('r');
-      //small_finisher('r');
-    //}
-    //#else
+    printf(" [BT] Unable to connect to the server.\n");
     return (0);
-    //#endif
   }
   return 1;
 }

@@ -99,7 +99,7 @@ void small_finisher(char starting_point){
   return;
 }
 
- 
+   
 
 
 void big_beginner(char side, char starting_point){
@@ -219,5 +219,5 @@ void big_finisher(char side, char starting_point){
   move_by_offset(end_x - robot_position.x, end_y - robot_position.y, 300);
 }
 
-
+ 
   

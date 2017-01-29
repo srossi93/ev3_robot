@@ -115,20 +115,7 @@ int main (int argc, char* argv[]) {
 	if (!robot_init()) return 1;
   msleep(1000);
   
-  //robot_position.x = BIG_BEGINNER_LEFT_START_X;
-  //robot_position.y = BIG_BEGINNER_LEFT_START_Y;
-  //robot_position.head = 90;
 
-  //big_beginner('l', '0');
-
-  
-  //return 0;
-  
-  //while (gGameState == GAME_NOTSTARTED) {
-  //  msleep(250);
-  //}
-  //msleep(2000);
-  /* until get the role */
 	printf(" [MAIN] My role: %d, my side: %d, my team mate ID: %d\n", gMyRole, gMySide, gTeamMateId);
 
 	/* Change state */

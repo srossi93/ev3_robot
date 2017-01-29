@@ -50,35 +50,10 @@ int get_heading_from_gyro(gyro_sensor* gyro){
   return heading;
 }
 
-//int get_heading_from_engines(engine* motorR, engine* motorL){
-  //int heading;
-  //int positionR, positionL;
-  //positionR = motorR->position;
-  //positionL = motorL->position;
-  ////printf("HEADING\n");
-  ////printf("PositionL: %d\nPositionR:%d\n\n", positionL, positionR);
-  
-  //if (abs(positionL - previous_rotation_L) < 5)
-    //return heading;
-
-  //if (abs(positionR - previous_rotation_R) < 5)
-    //return heading;
-  
-  //heading =  previous_heading - (((positionR - positionL - previous_rotation_R + previous_rotation_L) * PI * WHEEL_DIAMETER) / 720 ) * TRACK;
-
-  ////previous_heading_engines = heading;
-  //previous_rotation_R = positionR;
-  //previous_rotation_L = positionL;
-  
-  //return heading;
-  
-//}
 
 void update_position(){
   float displacement = get_displacement(&engines[R], &engines[L]);
-  //int heading = get_heading_from_gyro(gyro);
   int heading = get_heading_from_gyro(gyro);
-  //printf("DISP: %f\nHEAD: %d\n", displacement, heading);
   previous_heading = heading;
   robot_position.x += displacement * (float)cos(RAD(heading));
   robot_position.y += displacement * (float)sin(RAD(heading));

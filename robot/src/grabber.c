@@ -13,9 +13,9 @@
 void
 deploy_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_UP){
-    log_to_file("Deploying arm...\n");
+    log_to_file(" [GRAB] Deploying arm...\n");
     turn_engine_by_angle(arm, -250, speed);
-    log_to_file("--> Arm deployed\n");
+    log_to_file(" [GRAB] --> Arm deployed\n");
     arm_status = ARM_DOWN;
   }
   return;
@@ -24,9 +24,9 @@ deploy_arm(engine* arm, int16_t speed) {
 void
 open_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_DOWN){
-    log_to_file("Opening arm...\n");
+    log_to_file(" [GRAB] Opening arm...\n");
     turn_engine_by_angle(arm, -325, speed);
-    log_to_file("--> Arm open\n");
+    log_to_file(" [GRAB] --> Arm open\n");
     arm_status = ARM_OPEN;
   }
   return;
@@ -35,9 +35,9 @@ open_arm(engine* arm, int16_t speed) {
 void
 close_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_OPEN){
-    log_to_file("Closing arm...\n");
+    log_to_file(" [GRAB] Closing arm...\n");
     turn_engine_by_angle(arm, +325, speed);
-    log_to_file("--> Arm closed\n");
+    log_to_file(" [GRAB] --> Arm closed\n");
     arm_status = ARM_DOWN;
   }
   return;
@@ -46,9 +46,9 @@ close_arm(engine* arm, int16_t speed) {
 void
 undeploy_arm(engine* arm, int16_t speed) {
   if (arm_status == ARM_DOWN){
-    log_to_file("Undeploying arm...\n");
+    log_to_file(" [GRAB] Undeploying arm...\n");
     turn_engine_by_angle(arm, +250, speed);
-    log_to_file("--> Arm deployed\n");
+    log_to_file(" [GRAB] --> Arm deployed\n");
     arm_status = ARM_UP;
   }
   return;
@@ -173,7 +173,7 @@ search_and_grab(engine* arm){
     turn_engine_arg_struct arg;
     arg.angle = span[j];
     //arg.speed = 20;
-    arg.speed = 200;
+    arg.speed = 100;
     
     printf(" [GRAB] Start scanning...\n");
     

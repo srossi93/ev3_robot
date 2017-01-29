@@ -7,13 +7,13 @@
 //
 
 #include <mod_btcom.h>
-#include <byteswap.h>
+#include <byteswap.h> 
 #include <math.h> 
 
 //pthread_cond_t cv_next;
 //pthread_mutex_t bt_mutex;
 
-/**
+/** 
  * Connect to Bluetooth server.
  *
  * @return Status of socket after trying to connect
@@ -55,7 +55,7 @@ int mod_btcom_connect() {
 } 
 
 /**
- * Receive data from the BT server
+ * Receive data from the BT server 
  * @param[in/out]	buffer	Buffer to store data read from server
  * @param[int]		maxSize	Maximum bytes to read
  * @return		Number of bytes have been read
@@ -114,10 +114,7 @@ int mod_btcom_send_BALL(uint8_t act, int16_t x, int16_t y) {
 	string[5] = act;	/* DROP or PICKUP */
   memcpy(string + 6, &x, sizeof(int16_t));
   memcpy(string + 8, &y, sizeof(int16_t));
-	//string[6] = x;
-	//string[7] = 0x00;
-	//string[8] = y;
-	//string[9] = 0x00;
+
 
 	/* Send the string to server */
 	return mod_btcom_send_to_server(string, 10);
@@ -139,11 +136,7 @@ int mod_btcom_send_POSITION(int x, int y) {
 	string[4] = MSG_POSITION;
   string[5] = x_little_endian;
   memcpy(string + 5, &x_little_endian, sizeof(int16_t));
-  //string[5] = x;              // <<<<<<<<<< TODO Little endian
-  //string[6] = 0x00;
   memcpy(string + 7, &y_little_endian, sizeof(int16_t));
-  //string[7] = y;
-  //string[8] = 0x00;
 
 	/* Send the string to server */
 	return mod_btcom_send_to_server(string, 9);
@@ -311,7 +304,7 @@ void *__mod_btcom_wait_messages(void* arg) {
 						gMyState = KICKED;
             gGameState = GAME_KICKED;
             pthread_cond_signal(&cv_next);
-						//return 0; /* Exit */
+
 					} else {
 						printf(" [BT] Robot no.%d is out of game\n", arg1);
 					}
@@ -329,7 +322,7 @@ void *__mod_btcom_wait_messages(void* arg) {
 						printf(" [BT] Someone picked up the ball at location x = %d, y = %d\n", arg2, arg3);
 					}
 					/* Send ackowledgement*/
-          //mod_btcom_send_ACK(gTeamMateId, 0, ACK_OK);/*TODO*/
+
 					break;
         case ACK_OK:
           printf(" [BT] ACK received. Thanks, mate!\n");
@@ -353,13 +346,8 @@ void *__mod_btcom_wait_messages(void* arg) {
 void *__mod_btcom_send_location(void* arg) {
 	int16_t ret, x, y;
 
-	x = 21; /*TODO: update the real values here*/
-	y = 22; /*TODO:*/
-  //printf("Welcome from send location thread\n");
 	/* Periodically send the location */
   while (1) {
-    //if ( (gMyState != STOPPED) && (gMyState != KICKED) && (gMyState != NOTSTARTED) ){
-    //printf("mystate = %d", gMyState );
     if (gMyState == RUNNING) {
       x = (int16_t)ceilf(robot_position.x);
       y = (int16_t)ceilf(robot_position.y);
